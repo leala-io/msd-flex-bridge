@@ -1,0 +1,14 @@
+# Node dependencies
+node_modules/
+
+# Build artefacts
+dist/
+*.tgz
+
+# Logs and OS cruft
+*.log
+.DS_Store
+
+# Local Claude Code config / guardrails — not for the public repo
+.claude/
+CLAUDE.md
