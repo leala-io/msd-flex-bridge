@@ -1,0 +1,1778 @@
+{
+  "read": [],
+  "classification": {
+    "accepted": true,
+    "kind": "location_group"
+  },
+  "provenance": {
+    "last_updated": {
+      "level": 1,
+      "source_field": "feed_info.feed_version",
+      "value": "20260215"
+    },
+    "contact_email": {
+      "source_field": "feed_info.feed_contact_email",
+      "value": "koutuu@town.mizuho.tokyo.jp",
+      "rule": "fallback: agency_email absent"
+    },
+    "country": {
+      "source_field": "agency_timezone",
+      "value": "Asia/Tokyo",
+      "rule": "explicit zone→country table"
+    },
+    "timezone": {
+      "source_field": "agency.agency_timezone",
+      "value": "Asia/Tokyo"
+    }
+  },
+  "source": {
+    "agency": {
+      "agency_id": "mizuhomachi",
+      "agency_name": "瑞穂町",
+      "agency_url": "https://www.town.mizuho.tokyo.jp/",
+      "agency_timezone": "Asia/Tokyo",
+      "agency_lang": "ja",
+      "agency_phone": "050-2030-2630"
+    },
+    "feed_info": {
+      "feed_publisher_name": "瑞穂町",
+      "feed_publisher_url": "https://www.town.mizuho.tokyo.jp/",
+      "feed_lang": "ja",
+      "feed_start_date": "20241001",
+      "feed_end_date": "20260930",
+      "feed_version": "20260215",
+      "feed_contact_email": "koutuu@town.mizuho.tokyo.jp"
+    },
+    "routes": [
+      {
+        "route_id": "mizuhomachi_route",
+        "agency_id": "mizuhomachi",
+        "route_short_name": "瑞穂町デマンド",
+        "route_long_name": "チョイソコみずほまち",
+        "route_type": "715",
+        "route_desc": "瑞穂町チョイソコみずほまちデマンドサービス",
+        "route_color": "008080",
+        "route_text_color": "FFFFFF"
+      }
+    ],
+    "trips": [
+      {
+        "route_id": "mizuhomachi_route",
+        "service_id": "east_service",
+        "trip_id": "east_trip",
+        "trip_headsign": "瑞穂町全域",
+        "direction_id": "0"
+      },
+      {
+        "route_id": "mizuhomachi_route",
+        "service_id": "west_service",
+        "trip_id": "west_trip",
+        "trip_headsign": "瑞穂町全域",
+        "direction_id": "0"
+      }
+    ],
+    "location_groups": [
+      {
+        "location_group_id": "mizuhomachi_group",
+        "location_group_name": "瑞穂町全乗降場"
+      }
+    ],
+    "booking_rules": [
+      {
+        "booking_rule_id": "general",
+        "booking_type": "1",
+        "prior_notice_duration_min": "30",
+        "message": "ご利用の30分前までに予約が必要で、電話予約は8:30から16:30まで、オンライン予約は24時間受付",
+        "phone_number": "050-2030-2630",
+        "info_url": "https://www.town.mizuho.tokyo.jp/",
+        "booking_url": ""
+      }
+    ],
+    "stop_times": [
+      {
+        "trip_id": "east_trip",
+        "location_group_id": "mizuhomachi_group",
+        "stop_sequence": "1",
+        "start_pickup_drop_off_window": "09:00:00",
+        "end_pickup_drop_off_window": "17:00:00",
+        "pickup_type": "2",
+        "drop_off_type": "1",
+        "pickup_booking_rule_id": "general",
+        "drop_off_booking_rule_id": "",
+        "timepoint": "1"
+      },
+      {
+        "trip_id": "east_trip",
+        "location_group_id": "mizuhomachi_group",
+        "stop_sequence": "2",
+        "start_pickup_drop_off_window": "09:00:00",
+        "end_pickup_drop_off_window": "17:00:00",
+        "pickup_type": "1",
+        "drop_off_type": "2",
+        "pickup_booking_rule_id": "",
+        "drop_off_booking_rule_id": "general",
+        "timepoint": "1"
+      },
+      {
+        "trip_id": "west_trip",
+        "location_group_id": "mizuhomachi_group",
+        "stop_sequence": "1",
+        "start_pickup_drop_off_window": "09:00:00",
+        "end_pickup_drop_off_window": "17:00:00",
+        "pickup_type": "2",
+        "drop_off_type": "1",
+        "pickup_booking_rule_id": "general",
+        "drop_off_booking_rule_id": "",
+        "timepoint": "1"
+      },
+      {
+        "trip_id": "west_trip",
+        "location_group_id": "mizuhomachi_group",
+        "stop_sequence": "2",
+        "start_pickup_drop_off_window": "09:00:00",
+        "end_pickup_drop_off_window": "17:00:00",
+        "pickup_type": "1",
+        "drop_off_type": "2",
+        "pickup_booking_rule_id": "",
+        "drop_off_booking_rule_id": "general",
+        "timepoint": "1"
+      }
+    ]
+  },
+  "services": {
+    "mizuhomachi_route": {
+      "calendar_merge": {
+        "merged": [
+          "east_service",
+          "west_service"
+        ],
+        "count": 2,
+        "statement": "Several calendars were merged into one service; the feed gives no reason for the separation."
+      }
+    }
+  },
+  "coordinates": [],
+  "translations": [
+    {
+      "table_name": "agency",
+      "field_name": "agency_name",
+      "language": "en",
+      "translation": "Mizuho Town",
+      "record_id": "mizuhomachi",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "routes",
+      "field_name": "route_short_name",
+      "language": "en",
+      "translation": "Mizuho Demand",
+      "record_id": "mizuhomachi_route",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "routes",
+      "field_name": "route_long_name",
+      "language": "en",
+      "translation": "Choisoko Mizuhomachi",
+      "record_id": "mizuhomachi_route",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "routes",
+      "field_name": "route_desc",
+      "language": "en",
+      "translation": "Demand responsive transport service in Mizuho Town",
+      "record_id": "mizuhomachi_route",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "trips",
+      "field_name": "trip_headsign",
+      "language": "en",
+      "translation": "Mizuho Town Area",
+      "record_id": "east_trip",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "trips",
+      "field_name": "trip_headsign",
+      "language": "en",
+      "translation": "Mizuho Town Area",
+      "record_id": "west_trip",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Tonogayakaikan",
+      "record_id": "1",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Gyokurinjikouen",
+      "record_id": "2",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Shimosunabashi",
+      "record_id": "3",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Nanohanakurinikku",
+      "record_id": "4",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Adomanzu",
+      "record_id": "5",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Yoriaihausu Ikoi",
+      "record_id": "6",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Tonogayapokettopaaku",
+      "record_id": "7",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Jiiaarugareejitama",
+      "record_id": "8",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Joifuruhonda",
+      "record_id": "9",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Toyotaesuandodiinishitoukyou Mizuhoten",
+      "record_id": "10",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Tasedaikouryuusentaamizukaru",
+      "record_id": "11",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Kunugikouen",
+      "record_id": "12",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Fukushouji",
+      "record_id": "13",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Higashisunachou",
+      "record_id": "14",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Ishihatachikusupootsuhiroba",
+      "record_id": "15",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Ishihatakaikan",
+      "record_id": "16",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Furukawakoumuten",
+      "record_id": "17",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Musashi",
+      "record_id": "18",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Ishihatashimoshuukaijo",
+      "record_id": "19",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Ishihatachuuoukaikan",
+      "record_id": "20",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Yoshinobashi",
+      "record_id": "21",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Ishihatashinryousho",
+      "record_id": "22",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Ishihatakamishuukaijo",
+      "record_id": "23",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Fureaisentaa",
+      "record_id": "24",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Hokensentaa",
+      "record_id": "25",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Sukaiho-Ru",
+      "record_id": "26",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Taishoudensetsu",
+      "record_id": "27",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Kuriharaikashikaiinkyouseishika",
+      "record_id": "28",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Dainibundantsumesho",
+      "record_id": "29",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Sayamaikekouen",
+      "record_id": "30",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Chiikikatsudoushiensentaahimawari・Mizuhomachifukushisagyoujosakura",
+      "record_id": "31",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Mizuhomachiyakuba",
+      "record_id": "32",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Oumeshinyoukinko Mizuhoshiten",
+      "record_id": "33",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Iwanagashikaiin",
+      "record_id": "34",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Enpukuji",
+      "record_id": "35",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Mizuhobudoukan",
+      "record_id": "36",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Mizuhobyouin",
+      "record_id": "37",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Ryouyuuen",
+      "record_id": "38",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Furesshuhausu",
+      "record_id": "39",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Orinpikku",
+      "record_id": "40",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Mizuhojukunenjukunoujou",
+      "record_id": "41",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Sakurakouen",
+      "record_id": "42",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Hakonegasakinishikaikan",
+      "record_id": "43",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Hakonegasakiekihigashiguchi",
+      "record_id": "44",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Hakonegasakiekinishiguchi",
+      "record_id": "45",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Hakonegasakishikaiin",
+      "record_id": "46",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Tamashinyoukinko Mizuhoshiten",
+      "record_id": "47",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Jieieinishitama Mizuhoshiten",
+      "record_id": "48",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Seibushinyoukinko Mizuhoshiten",
+      "record_id": "49",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Mizuhoyuubinkyoku",
+      "record_id": "50",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Takamizuiin",
+      "record_id": "51",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Mizuhoekopaaku",
+      "record_id": "52",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Higashimatsubara",
+      "record_id": "53",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Matsubarahigashikouen",
+      "record_id": "54",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Matsubarachouchounaikaishuukaijo",
+      "record_id": "55",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Mizuisoubi",
+      "record_id": "56",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Matsubarachuuoukouen",
+      "record_id": "57",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Takamizushouten",
+      "record_id": "58",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Choueidainigurando",
+      "record_id": "59",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Shimodadisukauntosentaa",
+      "record_id": "60",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Touzen'In",
+      "record_id": "61",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Marunoiin",
+      "record_id": "62",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Araikurinikku",
+      "record_id": "63",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Shimonokouen",
+      "record_id": "64",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Seibushinyoukinko Nagaokashiten",
+      "record_id": "65",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Jieieenishitamanagaokakyasshukoonaa",
+      "record_id": "66",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Nagaokaminamikaikan",
+      "record_id": "67",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Higashinagaokajuutaku",
+      "record_id": "68",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Nagaokayonchoume",
+      "record_id": "69",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Kasugakouen",
+      "record_id": "70",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Kasugakouennishiryokudou",
+      "record_id": "71",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Nagaokakomyuniteisentaa",
+      "record_id": "72",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Nagaokakaikan",
+      "record_id": "73",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Koueifudousan",
+      "record_id": "74",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Nakagakiengei",
+      "record_id": "75",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Furawaapuramu",
+      "record_id": "76",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Kenchinosono",
+      "record_id": "77",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Shirubaajinzaisentaa",
+      "record_id": "78",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Nihongikouenkita",
+      "record_id": "79",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Suupaanakamura",
+      "record_id": "80",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Motosayamakomyuniteisentaa",
+      "record_id": "81",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Jieieinishitama Motosayamashiten",
+      "record_id": "82",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Motosayamakouikibousaihiroba",
+      "record_id": "83",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Motosayamasupootsuhiroba",
+      "record_id": "84",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Doragguseimusu Mizuhonihongiten",
+      "record_id": "85",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Furounosato",
+      "record_id": "86",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Kuriharaengei",
+      "record_id": "87",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Tamagokoubouueno",
+      "record_id": "88",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Makikouboukkorobokkuru",
+      "record_id": "89",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Takaneshitakouen",
+      "record_id": "90",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Takanechoukaikan",
+      "record_id": "91",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Takanechou",
+      "record_id": "92",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Mizuhokeeburuterebi",
+      "record_id": "93",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Fujiyamakouen",
+      "record_id": "94",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Keyakikan",
+      "record_id": "95",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Sayamakatakurinosato",
+      "record_id": "96",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Mizuhosaijou",
+      "record_id": "97",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Ryuusenji",
+      "record_id": "98",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Mizuhoen",
+      "record_id": "99",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Tsutsujikouen",
+      "record_id": "100",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Matsuyamachoukita",
+      "record_id": "101",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Matsuyamakouen",
+      "record_id": "102",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Musashinokomyuniteisentaa",
+      "record_id": "103",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Musashinokouen",
+      "record_id": "104",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Nakayoshiichigoukouen",
+      "record_id": "105",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Sakaechou",
+      "record_id": "106",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Mizuhosakaekouen",
+      "record_id": "107",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Kitaharafamiriishika",
+      "record_id": "108",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Fujimikouen",
+      "record_id": "109",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Tsukushikouen",
+      "record_id": "110",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Toyotaesuandodiinishitoukyou Yuukaayokotabeesusaidoten",
+      "record_id": "111",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Musashinokaikan",
+      "record_id": "112",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Minamidairahibarikouenhigashi",
+      "record_id": "113",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Minamidairakita",
+      "record_id": "114",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Yamagishishikaiin",
+      "record_id": "115",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Minamidairainishi",
+      "record_id": "116",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Musashinobousaikaikan",
+      "record_id": "117",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Fussabyouin",
+      "record_id": "118",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Furesshurandonishitamayotsubanoyu",
+      "record_id": "119",
+      "record_sub_id": "",
+      "field_value": ""
+    },
+    {
+      "table_name": "stops",
+      "field_name": "stop_name",
+      "language": "en",
+      "translation": "Inarigaokakouen",
+      "record_id": "120",
+      "record_sub_id": "",
+      "field_value": ""
+    }
+  ],
+  "stops_extra": {
+    "columns": [
+      "location_type"
+    ],
+    "rows": [
+      {
+        "stop_id": "1",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "2",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "3",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "4",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "5",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "6",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "7",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "8",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "9",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "10",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "11",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "12",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "13",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "14",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "15",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "16",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "17",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "18",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "19",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "20",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "21",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "22",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "23",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "24",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "25",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "26",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "27",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "28",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "29",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "30",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "31",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "32",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "33",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "34",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "35",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "36",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "37",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "38",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "39",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "40",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "41",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "42",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "43",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "44",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "45",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "46",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "47",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "48",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "49",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "50",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "51",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "52",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "53",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "54",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "55",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "56",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "57",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "58",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "59",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "60",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "61",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "62",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "63",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "64",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "65",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "66",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "67",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "68",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "69",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "70",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "71",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "72",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "73",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "74",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "75",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "76",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "77",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "78",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "79",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "80",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "81",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "82",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "83",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "84",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "85",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "86",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "87",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "88",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "89",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "90",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "91",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "92",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "93",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "94",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "95",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "96",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "97",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "98",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "99",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "100",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "101",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "102",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "103",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "104",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "105",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "106",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "107",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "108",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "109",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "110",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "111",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "112",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "113",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "114",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "115",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "116",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "117",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "118",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "119",
+        "location_type": "0"
+      },
+      {
+        "stop_id": "120",
+        "location_type": "0"
+      }
+    ]
+  }
+}

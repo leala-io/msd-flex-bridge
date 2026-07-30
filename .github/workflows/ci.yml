@@ -4,10 +4,10 @@ on:
   push:
   pull_request:
 
-# Four of the six gates are enforceable at this stage. The remaining two — the
-# fixture snapshot gate and the determinism gate — arrive with the lift (P1.3)
-# and are deliberately not stubbed here: a gate that asserts nothing reads as
-# coverage without being any.
+# All six gates are active. Four run as their own steps; the fixture snapshot
+# gate, the determinism gate and the validation gate run inside the test suite,
+# where they can assert the reasons a snapshot is right rather than only that it
+# has not changed.
 #
 # `npm ci` reaches the registry; nothing else does. The vendor drift check, the
 # fixture assertions and the compliance grep are offline by construction, and
@@ -64,5 +64,17 @@ jobs:
             *) echo "::error::blocklist is out of date with respect to the term list — run: npm run blocklist"; exit $status ;;
           esac
 
+      # Gates 5 and 6 — the fixture snapshot and determinism gates — plus the
+      # validation gate and the fidelity tests that no gate would otherwise
+      # catch: names verbatim, omission over invention, diagnostics separation
+      # and the weekday vocabulary the schema leaves unconstrained.
       - name: Tests
         run: npm test
+
+      # The snapshot must be reproducible from the committed sources alone. If
+      # regenerating changes a byte, the committed snapshot is not what the
+      # current lift produces.
+      - name: Snapshots are reproducible
+        run: |
+          node scripts/write-snapshots.mjs
+          git diff --exit-code -- test/fixtures/expected/
