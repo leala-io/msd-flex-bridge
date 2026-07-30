@@ -13,6 +13,32 @@ per-channel booking metadata — is as much the point as the lift itself.
 It targets the MSD **schema v0.1.0** (as published in release v0.1.1), consumed read-only
 from the vendored upstream artefacts under `vendor/msd/`.
 
+## Usage
+
+```
+npx msd-flex-bridge lift <feed.zip | feed-dir> [-o out.msd.json]
+                                               [--residuals out.residuals.json]
+                                               [--diagnostics out.diagnostics.json]
+```
+
+A zip archive or an unpacked directory both work. Without `-o` the document goes to
+stdout and every message to stderr, so the tool composes:
+
+```
+npx msd-flex-bridge lift feed.zip > service.msd.json
+```
+
+The residual report and the diagnostics are written only when asked for. They are
+siblings of the document, never keys inside it: the residual report names what neither
+the format nor this feed can express, and the diagnostics preserve every source value
+that has no MSD target, so nothing is dropped silently.
+
+Exit codes: `0` the document validates · `1` it was produced but does not validate ·
+`2` the feed is not of the accepted kind and was refused, with a named reason and the
+evidence · `3` the input could not be read, or the command line was not understood.
+
+A refusal writes nothing at all — not a partial document, not an empty file.
+
 ## Status
 
 This is a **reference and demonstration tool**, not an operated service. It carries no
