@@ -1,32 +1,36 @@
 {
-  "_comment": [
-    "Blocklist for the compliance gate (blueprint C.3/6).",
-    "Scope is tracked files only: CLAUDE.md and .claude/ are untracked and name the",
-    "forbidden forms precisely in order to forbid them, so scanning them would flag",
-    "the guardrails themselves.",
-    "Every entry is matched with word boundaries, case-insensitively.",
-    "'institutional' and 'contest' are empty pending the maintainer's token list —",
-    "the checker reports the count of configured tokens on every run, so an empty",
-    "category is visible rather than silently passing."
-  ],
-  "terminology": [
-    {
-      "token": "v0.1.1 schema",
-      "why": "The schema is v0.1.0; v0.1.1 is the release that publishes it. Correct form: MSD schema v0.1.0 (release v0.1.1)."
-    }
-  ],
-  "institutional": [],
-  "contest": [],
-  "scoped": [
-    {
-      "token": "Japan",
-      "paths": ["README.md"],
-      "why": "The public face is tool-neutral and internationally generic; the first bundled case is content, not purpose. Country framing belongs in fixture attribution, not the README."
-    },
-    {
-      "token": "Japanese",
-      "paths": ["README.md"],
-      "why": "As above."
-    }
-  ]
+  "_comment": "SHA-256 of forbidden tokens. The clear-text list is deliberately not in this repository. Regenerate with scripts/gen-blocklist.mjs. Scope \"global\" applies to every tracked file; any other scope applies only to files whose path contains that scope name. A scope ending in \":exact\" is matched case-sensitively, for acronyms that collide with ordinary words.",
+  "algorithm": "sha256(token, utf8) — folded scopes lower-case the token first",
+  "generated_from": ".claude/compliance-terms.txt",
+  "scopes": {
+    "global": [
+      "150fe1e9d6ffa1fc08c9405c760d88f2e26a2bafd3cc7be9447fd813b7be2827",
+      "2789db59527a2c6a8d76f75dc3b8141a7653e6d8bdfbe06f9d02fc539abb907a",
+      "2db8de8af2bfa10a7784bbff72c017b388e98f0eaacf03124d390ea3d5551c0a",
+      "4fa1a13ac468ac495f3390e859d76d5e8ef49806815b45a21de7711bcc624194",
+      "5e85a507d8841f7594e212f58ba3fd3064f7c9ce757c79bc4e54cbf76380cc83",
+      "693b286515bd1dd00865e7b60e4e53556537bbe4b1cc90ab608d94eb7c56fdc6",
+      "6ff0121e147a44e7334f030db47ff0b8f641c18ed9921d1ec154baa4d43a01bc",
+      "86d1e1dd8b1a32168c75fd1cf30e0fcc59dd259a8662c1c426a39ba64a511704",
+      "a0f91e36859e963b9d4dba76880680304f475ae430ecfabc2702eddcee1ba068",
+      "baa8c53ef379771c4abf5be9e9f8b1fdd99aaf7ee6c63146c954a1646e55d749",
+      "bc83896ddba937744595d94ebbcc7bec6cbc38d5598e52be53812b2acc3d7c4b",
+      "c32f5de8269a9aced9a2a66afe8d228052211b0008b80b6993811ce29496bc91",
+      "d5490a032eaba97f2841b8fe2251d757bd664cd5146311b356b8adcf8c50302a",
+      "e63e976aada6626cb8e5835eb19b862493ba2a9ac88a5f6cea1d90c7505422a7",
+      "ef50577d72461b3fbacb0f3146047f1a50e2e2f093bb973f8634a63e74eb7156"
+    ],
+    "global:exact": [
+      "16aec4cc0cd3dca7df02abddcec6f18917115dbbd69f57058bfbfb9a78db1bc0",
+      "59130697f219bd8f4d96a1be8374a526b9885814493e7ffc33cd0c8ec7c87752",
+      "81500ae825ff225546997a049fee2946aacc72414a35c8bad7bf2cf6a456e719",
+      "c2385250186d29ac49370c0d87d40cfc0b434bdba9ae2e74e9a94c1cda87d667"
+    ],
+    "readme": [
+      "42e1eb95ac3ebc9076c837c657265bdf53febef917d4ccdbc32c1a2aa03ee088",
+      "59ae856cd788d0f57e39fdd66d421ba930cd89be4682de3aa36c22a2021a710d",
+      "5dd770ee7f528ef0e6c01bee7d05eca55a3fd6667ab5a8446e7649d022ed6652",
+      "c40b9efe0cbcd41e370d4d3368749cc23bc1fca4be652407f9b0b8a93b59ed18"
+    ]
+  }
 }

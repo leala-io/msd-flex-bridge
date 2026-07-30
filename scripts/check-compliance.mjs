@@ -1,115 +1,141 @@
 #!/usr/bin/env node
-// Compliance grep — public terminology and framing (blueprint C.3/6).
-//
-// Fails on: the forbidden terminology form for the schema version, any
-// configured institutional acronym, any configured contest or programme
-// branding, and any path-scoped token (country framing in the README). The
-// tokens themselves live in scripts/compliance-blocklist.json.
-//
-// Scope is TRACKED FILES ONLY, via `git ls-files`. CLAUDE.md and .claude/ are
-// untracked and contain the forbidden forms deliberately, in order to forbid
-// them; a naive scan of the working tree would flag the guardrails themselves.
-// Binary files are skipped by content, not by extension guesswork.
-//
-// The blocklist file is exempt from its own scan for the same reason: it must
-// name each forbidden form in order to forbid it. That is one file, named
-// explicitly below, not a general escape hatch.
-//
-// Matching is case-insensitive with word boundaries, so a token is neither
-// missed through capitalisation nor matched inside a longer word.
+/**
+ * check-compliance.mjs — compliance gate over tracked files
+ *
+ * Fails the build when a tracked file contains a forbidden token. The forbidden
+ * terms are known only as SHA-256 hashes (scripts/compliance-blocklist.json); see
+ * scripts/gen-blocklist.mjs for why.
+ *
+ * SCOPE — tracked files only, excluding vendor/. Both exclusions are deliberate.
+ *
+ * Tracked only: the repository's own guardrail documents are untracked and name the
+ * forbidden forms precisely in order to forbid them. A naive walk of the working
+ * tree would flag the guardrails themselves and the gate would be discarded as noise.
+ *
+ * Not vendor/: vendored files are verbatim copies whose byte-identity the drift check
+ * enforces. Their content is a fact about the upstream project, not a statement by
+ * this repository, and it cannot be edited even if a term appears in it. A gate that
+ * flags something unchangeable blocks permanently and teaches people to bypass it.
+ *
+ * Also checks literal patterns that are safe to state openly — version-string
+ * mistakes and similar — which need no concealment.
+ *
+ * Usage:  node scripts/check-compliance.mjs
+ * Exit:   0 clean | 1 violation found | 3 setup problem
+ */
 
-import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { readFileSync, existsSync, statSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
-import { dirname, join, resolve } from 'node:path';
+import { extname } from 'node:path';
 
-const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const blocklist = JSON.parse(readFileSync(join(repoRoot, 'scripts', 'compliance-blocklist.json'), 'utf8'));
+const BLOCKLIST = 'scripts/compliance-blocklist.json';
 
-/** Escape a literal token, then bound it with \b where the edges are word characters. */
-function tokenPattern(token) {
-  const escaped = token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const left = /^\w/.test(token) ? '\\b' : '';
-  const right = /\w$/.test(token) ? '\\b' : '';
-  return new RegExp(`${left}${escaped}${right}`, 'gi');
+/* Patterns that are safe to name in the open: they describe a mistake, not a
+   protected term. Kept here rather than in the hashed list so a reader can see
+   what the gate enforces. */
+const LITERAL_PATTERNS = [
+  { name: 'schema/release version confusion', re: /v0\.1\.1\s+schema/gi,
+    hint: 'the schema is v0.1.0; v0.1.1 is the release that publishes it' },
+];
+
+const SKIP_PATHS = [/^vendor\//];
+const SKIP_EXT = new Set(['.zip', '.png', '.jpg', '.jpeg', '.gif', '.pdf', '.ico', '.woff', '.woff2']);
+
+if (!existsSync(BLOCKLIST)) {
+  console.error(`missing ${BLOCKLIST} — run: node scripts/gen-blocklist.mjs`);
+  process.exit(3);
+}
+const blocklist = JSON.parse(readFileSync(BLOCKLIST, 'utf8'));
+const sets = Object.fromEntries(
+  Object.entries(blocklist.scopes).map(([scope, hashes]) => [scope, new Set(hashes)]),
+);
+/** A scope ending in ":exact" compares the token as written; others fold to lower case. */
+const isExact = scope => scope.endsWith(':exact');
+/** The path filter of a scope: the part before any ":mode" suffix. "global" means everywhere. */
+const scopePath = scope => scope.replace(/:[a-z]+$/, '');
+const totalTerms = Object.values(sets).reduce((n, s) => n + s.size, 0);
+
+let files;
+try {
+  files = execFileSync('git', ['ls-files'], { encoding: 'utf8' }).split('\n').filter(Boolean);
+} catch (e) {
+  console.error('cannot list tracked files — is this a git repository?');
+  process.exit(3);
 }
 
-const tracked = execFileSync('git', ['ls-files', '-z'], { cwd: repoRoot, encoding: 'utf8' })
-  .split('\0')
-  .filter(Boolean);
+const sha = s => createHash('sha256').update(s, 'utf8').digest('hex');
 
-const isBinary = (bytes) => bytes.includes(0x00);
-
-/** The blocklist names every forbidden form and cannot be scanned for them. */
-const SELF_EXEMPT = new Set(['scripts/compliance-blocklist.json']);
-
-const findings = [];
-
-for (const relPath of tracked) {
-  if (SELF_EXEMPT.has(relPath)) continue;
-  let bytes;
-  try {
-    bytes = readFileSync(join(repoRoot, relPath));
-  } catch {
-    continue; // deleted from the working tree but still in the index
+/** Which hash sets apply to this path? Every "global*" scope, plus any scope named in the path. */
+const setsFor = path => {
+  const lower = path.toLowerCase();
+  const applicable = [];
+  for (const [scope, set] of Object.entries(sets)) {
+    const filter = scopePath(scope);
+    if (filter === 'global' || lower.includes(filter)) applicable.push([scope, set]);
   }
-  if (isBinary(bytes)) continue;
-  const text = bytes.toString('utf8');
-  const lines = text.split('\n');
-
-  const rules = [
-    ...blocklist.terminology.map((e) => ({ ...e, category: 'terminology' })),
-    ...blocklist.institutional.map((e) => ({ ...e, category: 'institutional acronym' })),
-    ...blocklist.contest.map((e) => ({ ...e, category: 'contest branding' })),
-    ...blocklist.scoped
-      .filter((e) => e.paths.includes(relPath))
-      .map((e) => ({ ...e, category: 'scoped framing' })),
-  ];
-
-  for (const rule of rules) {
-    const pattern = tokenPattern(rule.token);
-    lines.forEach((line, i) => {
-      pattern.lastIndex = 0;
-      if (pattern.test(line)) {
-        findings.push({
-          file: relPath,
-          line: i + 1,
-          category: rule.category,
-          token: rule.token,
-          why: rule.why,
-          text: line.trim().slice(0, 120),
-        });
-      }
-    });
-  }
-}
-
-const counts = {
-  terminology: blocklist.terminology.length,
-  institutional: blocklist.institutional.length,
-  contest: blocklist.contest.length,
-  scoped: blocklist.scoped.length,
+  return applicable;
 };
 
-console.log(
-  `compliance grep — ${tracked.length} tracked files scanned; tokens configured: `
-  + Object.entries(counts).map(([k, v]) => `${k} ${v}`).join(', '),
+/* Tokenise on letters, digits and the few symbols that can be part of a name.
+   Unicode-aware so non-Latin text tokenises sensibly rather than collapsing. */
+const TOKEN = /[\p{L}\p{N}+_-]+/gu;
+
+const violations = [];
+let scanned = 0;
+
+for (const path of files) {
+  if (SKIP_PATHS.some(re => re.test(path))) continue;
+  if (SKIP_EXT.has(extname(path).toLowerCase())) continue;
+  let stat;
+  try { stat = statSync(path); } catch { continue; }
+  if (!stat.isFile() || stat.size > 4 * 1024 * 1024) continue;
+
+  let text;
+  try { text = readFileSync(path, 'utf8'); } catch { continue; }
+  if (text.includes('\u0000')) continue;   // binary
+  scanned++;
+
+  const applicable = setsFor(path);
+  const lines = text.split('\n');
+
+  lines.forEach((line, i) => {
+    for (const m of line.matchAll(TOKEN)) {
+      const folded = sha(m[0].toLowerCase());
+      const exact = sha(m[0]);
+      for (const [scope, set] of applicable) {
+        if (set.has(isExact(scope) ? exact : folded)) {
+          violations.push({ path, line: i + 1, col: m.index + 1, token: m[0], scope, kind: 'blocked term' });
+        }
+      }
+    }
+    for (const { name, re, hint } of LITERAL_PATTERNS) {
+      re.lastIndex = 0;
+      for (const m of line.matchAll(re)) {
+        violations.push({ path, line: i + 1, col: m.index + 1, token: m[0], scope: name, kind: hint });
+      }
+    }
+  });
+}
+
+const scopeSummary = Object.entries(sets).map(([s, set]) => `${s}:${set.size}`).join(' ');
+console.log(`compliance: ${scanned} tracked file(s) scanned against ${totalTerms} term(s) [${scopeSummary}] + ${LITERAL_PATTERNS.length} literal pattern(s)`);
+
+if (totalTerms === 0) {
+  console.error('WARNING: the blocklist is empty — the gate is a no-op until terms are configured.');
+}
+
+if (!violations.length) {
+  console.log('compliance: clean');
+  process.exit(0);
+}
+
+console.error(`\ncompliance: ${violations.length} violation(s)\n`);
+for (const v of violations) {
+  console.error(`  ${v.path}:${v.line}:${v.col}  "${v.token}"  (${v.scope}) — ${v.kind}`);
+}
+console.error(
+  '\nNote: if this fired in CI rather than locally, the term is already in the published history. ' +
+  'Removing it from the working tree does not remove it from earlier commits.',
 );
-if (counts.institutional === 0 || counts.contest === 0) {
-  console.log(
-    'note: the institutional and/or contest token lists are empty, so those categories '
-    + 'assert nothing yet — add tokens to scripts/compliance-blocklist.json.',
-  );
-}
-
-if (findings.length) {
-  console.error(`\ncompliance grep FAILED — ${findings.length} occurrence(s):\n`);
-  for (const f of findings) {
-    console.error(`  ${f.file}:${f.line}  [${f.category}] "${f.token}"`);
-    console.error(`      ${f.text}`);
-    console.error(`      ${f.why}`);
-  }
-  process.exit(1);
-}
-
-console.log('compliance grep passed');
+process.exit(1);

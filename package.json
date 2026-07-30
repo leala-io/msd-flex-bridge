@@ -10,6 +10,8 @@
   "scripts": {
     "test": "node --test \"test/*.test.js\"",
     "test:fixture": "node test/feed-assert.mjs test/fixtures/mizuho/Mizuho_Area-20260202.zip",
+    "blocklist": "node scripts/gen-blocklist.mjs",
+    "blocklist:check": "node scripts/gen-blocklist.mjs --check",
     "check:purity": "node scripts/check-purity.mjs",
     "check:vendor": "node scripts/check-vendor-drift.mjs",
     "check:compliance": "node scripts/check-compliance.mjs"
