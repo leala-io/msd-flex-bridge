@@ -4,6 +4,9 @@
   "description": "Reads a published GTFS-Flex feed of the location-group kind, lifts it into an MSD file, and reports what the source format structurally cannot express.",
   "license": "AGPL-3.0-only",
   "type": "module",
+  "bin": {
+    "msd-flex-bridge": "src/cli.js"
+  },
   "engines": {
     "node": ">=24"
   },
