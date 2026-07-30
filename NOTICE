@@ -1,0 +1,39 @@
+NOTICE — licences and attribution
+==================================
+
+This repository combines material under four distinct licence regimes. Read this
+file alongside LICENSE (AGPL-3.0, this repository's code).
+
+1. This repository's code — AGPL-3.0-or-later
+   Everything authored here: the source under src/, the CLI, the scripts, the
+   ESM shim vendor/msd/core.mjs, the tests, and the documentation under docs/.
+   See LICENSE.
+
+2. Vendored schema and registry — CC BY-SA 4.0 (verbatim, unmodified)
+   Files under vendor/msd/schema/ and vendor/msd/registry/, copied byte-for-byte
+   from leala-io/msd at commit 0e79571fb7e3a66a8e351261318c853f9f8f051c
+   (release v0.1.1). These are specification artefacts, distributed upstream under
+   LICENSE-SPEC (Creative Commons Attribution-ShareAlike 4.0 International).
+
+3. Vendored validation core — AGPL-3.0 (verbatim, unmodified)
+   vendor/msd/core.js, copied byte-for-byte from the same upstream commit. This is
+   code, distributed upstream under LICENSE-CODE (AGPL-3.0).
+
+4. Bundled sample feeds — CC BY 4.0 (per-fixture attribution)
+   Sample GTFS-Flex feeds bundled as test fixtures are licensed CC BY 4.0, each
+   with its own attribution file recording publisher, licence, retrieval date,
+   feed version, and sha256. None are present yet.
+
+Integrity of vendored material
+------------------------------
+The files under vendor/msd/ listed in regimes 2 and 3 are unmodified copies of the
+upstream artefacts at the pinned commit. Per-file sha256 hashes and byte sizes are
+recorded in docs/dependency.md, and the drift check (scripts/check-vendor-drift.mjs,
+a CI gate) recomputes and enforces them offline on every build. Any modification to a
+vendored file fails the build.
+
+Citation anchor
+---------------
+Upstream MSD is archived at Zenodo, DOI 10.5281/zenodo.20598627. This DOI is recorded
+here as a citation reference only; it is never used as a runtime or CI dependency, and
+nothing in this repository resolves it over the network.
