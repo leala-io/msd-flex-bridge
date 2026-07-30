@@ -123,6 +123,28 @@ GTFS reference. The inverse honours each:
   partial picture of the offering. This is the same failure the one-route-one-service rule exists to
   prevent, reached from the other side.
 
+### Classification and refusal codes
+
+Detection returns exactly one of these. Every refusal is a structured value carrying a one-sentence
+reason **and** the evidence — the file or field that was present or absent, and any offending value
+verbatim — never a thrown exception and never console output. The codes are the contract between this
+document and `src/core/detect.js`; the two must agree.
+
+| Outcome | Code | Fired by |
+|---|---|---|
+| accepted | — (`kind: "location_group"`) | Both fence edges clear, every route reaching exactly one location group. |
+| refused | `geojson_zone_kind` | `locations.geojson` present, or `stop_times.location_id` populated — fence edge (a). |
+| refused | `not_flex` | Neither `location_groups.txt` nor `location_group_stops.txt` present: ordinary scheduled GTFS. |
+| refused | `mixed_route_kinds` | A route reaches no location group through `trips` → `stop_times`, so the feed carries flex and non-flex routes together. |
+| refused | `unsupported_route_type` | A `route_type` outside `{3, 715}` — fence edge (b). |
+| refused | `multi_group_route` | One route referencing more than one location group. |
+| refused | `divergent_booking_rules` | Several routes whose booking-rule union or `info_url` differ (Finding 3). |
+| refused | `unrecognised` | Not a GTFS feed at all: no readable files, or `agency.txt`/`routes.txt` absent, or `routes.txt` carrying no data rows. |
+
+`mixed_route_kinds` is deliberately distinct from `not_flex`. Such a feed **is** flex, in part — saying
+it is "not flex" would misdescribe it to the publisher, who can see the flex route in their own data.
+The distinction is about what the reader is told, not about what is refused: both are refused whole.
+
 ---
 
 ## Mapping by source file
@@ -326,14 +348,29 @@ read from the feed. The presence of `locations.geojson` would **refuse** the fee
 | `location_group_id` | — | Establishes which flex group the trip's route serves (= that service's service area). | **diagnostic only** — unambiguous. |
 | `start_pickup_drop_off_window` | `services[i].operating_hours.default[j].start` | `HH:MM:SS` → `HH:MM`, taken from the rows of the trips running on **that entry's own calendar**. Extended GTFS hours are inverted: `24:00:00` → `00:00`; `25:30:00` → `01:30` (midnight-crossing window). | **derived** — **choice** (extended-hour handling; see below). |
 | `end_pickup_drop_off_window` | `services[i].operating_hours.default[j].end` | As `start`. | **derived** — **choice** (same). |
-| `pickup_type`, `drop_off_type` (`= 2`) | — | "Arrange via agency" — a structural placeholder required by the flex window rule; the actual channel lives in the linked booking rule. Recorded in `diagnostics`. | **diagnostic only** — unambiguous. |
-| `pickup_booking_rule_id`, `drop_off_booking_rule_id` | — | Structural link to `booking_rules` (deviation 2). | **diagnostic only** — unambiguous. |
+| `pickup_type`, `drop_off_type` | — | Structural codes required by the flex window rule; `2` is "arrange via agency" and `1` is "not available" on that row. The actual booking channel lives in the linked booking rule, never here. Recorded in `diagnostics` (see observed-pattern note). | **diagnostic only** — unambiguous. |
+| `pickup_booking_rule_id`, `drop_off_booking_rule_id` | — | Structural link to `booking_rules` (deviation 2); read as a **union** across the route, see booking-link note. | **diagnostic only** — unambiguous. |
 | `location_id` | — | Would indicate the GeoJSON-zone kind; its presence is a **refusal** trigger, not a mapping. | **not represented** (out of fence) — unambiguous. |
 | `stop_id` | — | Present where a flex row also names a discrete stop; the service area is built from `location_group_stops`, not from here. Captured to `diagnostics`. | **diagnostic only** — unambiguous. |
 | `arrival_time`, `departure_time` | — | Scheduled times; a location-group flex row carries a pickup **window**, not a timetable. Captured to `diagnostics`. | **not represented (a)** — unambiguous. |
 | `mean_duration_factor`, `mean_duration_offset`, `safe_duration_factor`, `safe_duration_offset` | — | Flex trip-duration modelling; MSD `routing_hints` carries `travel_time_factor` but not these per-window parameters, and nothing in the feed says they are the same quantity. Captured to `diagnostics`; **not** written to `routing_hints` (invention). | **not represented (a)** — unambiguous. |
 | `stop_headsign`, `timepoint`, `shape_dist_traveled`, `continuous_pickup`, `continuous_drop_off`, other columns | — | No MSD target; captured verbatim to `diagnostics` (`stop_headsign` under the names-verbatim rule). | **not represented (a/b)** — unambiguous. |
 
+- **Observed `pickup_type` / `drop_off_type` pattern.** This document previously annotated the row
+  `(= 2)`, describing both codes as a placeholder set to `2`. That was carried over from the forward
+  direction, where the exporter writes `2` in both, and it does not hold on a published feed. In the
+  bundled fixture the pattern is `2/1` on the first row of a trip and `1/2` on the second: the `2` marks
+  the direction arranged via the agency, and the paired `1` marks the other direction as unavailable on
+  that row. **The forward and reverse feeds differ here**, so the inverse reads the codes as found and
+  asserts nothing from their value. The disposition is unchanged — *diagnostic only*.
+- **Booking links are read as a union across the route.** A route's booking rules are the set of
+  **non-empty** `pickup_booking_rule_id` **and** `drop_off_booking_rule_id` values across all
+  `stop_times` rows of all its trips. Neither field alone is sufficient: the bundled fixture puts the
+  rule on the **pickup** link of the first row and on the **drop-off** link of the second, leaving the
+  other blank each time, so reading one field would see half the picture. That half-picture is not
+  merely incomplete — it feeds the divergent-booking-rules test in §`routes.txt`, where it could make
+  two routes carrying the identical rule look as though they carried different ones, and refuse a feed
+  that should be accepted. Empty values are skipped rather than treated as a distinct rule id.
 - **Extended hours (choice).** MSD `operating_hours` times match `^[0-9]{2}:[0-9]{2}$` — a 24-hour
   clock with no >24 convention. A GTFS window crossing midnight (`…→24:00:00`, `…→25:30:00`) inverts to
   a wall-clock `00:00` / `01:30`. Where an entry's `start`/`end` cannot be expressed as `HH:MM` in
@@ -460,39 +497,43 @@ Collected for review — these are the decisions the inverse could not make mech
    which is what attaches a service area to the right service.
 4. **Refusal when one route references several location groups** — named reason, never a silent merge and
    never an invented service split. Out of scope for P1.
-5. **Document-level `booking_rules` / `references` across several routes** — written only where every
+5. **A route's booking rules are the union of both link fields** — every non-empty
+   `pickup_booking_rule_id` and `drop_off_booking_rule_id` across the route's `stop_times` rows. Reading
+   either field alone would see half the picture on a feed that alternates them, and could refuse a feed
+   whose routes in fact share one rule.
+6. **Document-level `booking_rules` / `references` across several routes** — written only where every
    route references the same `booking_rule_id` and the same `info_url`; divergence is a named refusal
    plus a residual, never a document-wide assertion of one route's rule and never a merge. Single-route
    feeds unaffected. This is P1's behaviour in the presence of Finding 3, not a resolution of it.
-6. **`provider_id` slug** when `agency_id` is absent — MSD requires an id the feed may not supply.
-7. **`agency_timezone` inverted to `provider.country` only through an explicit table** of unambiguous
+7. **`provider_id` slug** when `agency_id` is absent — MSD requires an id the feed may not supply.
+8. **`agency_timezone` inverted to `provider.country` only through an explicit table** of unambiguous
    zones (`Asia/Tokyo`→`JP`, `Europe/Zurich`→`CH`, `Africa/Kampala`→`UG`); any other zone yields no
    `country`, with provenance recorded whenever it is set.
-8. **`services[i].name` precedence** — `route_long_name` preferred, `route_short_name` fallback.
-9. **`route_type` 3 and 715 both collapse to `mode: "bus"`** — the distinction survives only in
+9. **`services[i].name` precedence** — `route_long_name` preferred, `route_short_name` fallback.
+10. **`route_type` 3 and 715 both collapse to `mode: "bus"`** — the distinction survives only in
    diagnostics.
-10. **Day tokens `mo tu we th fr sa su`**, lowercase and Monday first, taken from the canonical MSD
+11. **Day tokens `mo tu we th fr sa su`**, lowercase and Monday first, taken from the canonical MSD
     reference example. The schema leaves `days` unconstrained, so the vocabulary is a choice this document
     must make rather than one validation can enforce.
-11. **Calendar merge within one service** — a route's several calendars → several `default[]` entries of
+12. **Calendar merge within one service** — a route's several calendars → several `default[]` entries of
     that route's service, with the mandatory per-service `diagnostics.calendar_merge`. A modelling choice,
     individually wrong for riders where separate calendars encode a distinction the format cannot carry.
     The merge never crosses routes.
-12. **`exception_type = 1`** represented as an exception entry with `closed: false`, `start`/`end`
+13. **`exception_type = 1`** represented as an exception entry with `closed: false`, `start`/`end`
     omitted when not otherwise stated. *(Untested — see §Rules not exercised by the bundled fixture.)*
-13. **Extended-hours reduction** for midnight-crossing windows (`24:00:00` → `00:00`, `25:30:00` →
+14. **Extended-hours reduction** for midnight-crossing windows (`24:00:00` → `00:00`, `25:30:00` →
     `01:30`); an unrepresentable window becomes a residual, not a truncation, and the resulting
     `end < start` entry follows the reference example's attested wrap-around form, with the schema's
     silence recorded under class (c). *(Untested — same section.)*
-14. **Coordinates written as numbers whenever they parse finite and in range**, with the original string
+15. **Coordinates written as numbers whenever they parse finite and in range**, with the original string
     kept in diagnostics where the serialised form differs; `coordinates` omitted entirely, with a
     residual, when the value does not parse or falls outside the range — never clamped, never a string.
-15. **`booking_type` interpretation** — `0` omits `minimum_minutes` (never `0`); `1`/`2` populate
+16. **`booking_type` interpretation** — `0` omits `minimum_minutes` (never `0`); `1`/`2` populate
     `advance_booking` only from fields structurally present.
-16. **Booking channels from structural presence only** — `booking_url` → `web`, `phone_number` →
+17. **Booking channels from structural presence only** — `booking_url` → `web`, `phone_number` →
     `phone`; nothing inferred from `booking_type` or from empty fields.
-17. **`last_updated` cascade** order and the refusal at level 4.
-18. **Contact precedence** — `agency.txt` fields preferred over `feed_info.txt` fallbacks.
+18. **`last_updated` cascade** order and the refusal at level 4.
+19. **Contact precedence** — `agency.txt` fields preferred over `feed_info.txt` fallbacks.
 
 ---
 

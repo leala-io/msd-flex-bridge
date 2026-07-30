@@ -23,6 +23,7 @@ export const REFUSAL_CODES = [
   'multi_group_route',
   'divergent_booking_rules',
   'not_flex',
+  'mixed_route_kinds',
   'unrecognised',
 ];
 
@@ -140,6 +141,10 @@ export function detectKind(feed) {
     const routeTrips = tripsByRoute.get(route.route_id) ?? [];
     const rowsForRoute = routeTrips.flatMap((t) => stopTimesByTrip.get(t.trip_id) ?? []);
     const groups = [...new Set(rowsForRoute.map((r) => r.location_group_id ?? '').filter((g) => g !== ''))];
+    // Union of both link fields across the route: a flex trip carries the rule
+    // on the pickup link of one row and the drop-off link of the other, leaving
+    // the counterpart blank, so either field alone sees half the picture
+    // (docs/mapping.md, booking-link note).
     const bookingRuleIds = [...new Set(
       rowsForRoute
         .flatMap((r) => [r.pickup_booking_rule_id ?? '', r.drop_off_booking_rule_id ?? ''])
@@ -147,8 +152,10 @@ export function detectKind(feed) {
     )].sort();
 
     if (groups.length === 0) {
+      // Not `not_flex`: this feed IS flex, in part. Telling the publisher it is
+      // not would misdescribe data they can see for themselves.
       return refuse(
-        'not_flex',
+        'mixed_route_kinds',
         `Route "${route.route_id}" reaches no location group through trips and stop_times, so the feed mixes flex and non-flex routes and is refused whole.`,
         {
           route_id: route.route_id,

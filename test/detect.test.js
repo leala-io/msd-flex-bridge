@@ -117,7 +117,7 @@ test('a feed mixing a conforming route with a non-conforming one is refused whol
   assert.deepEqual(result.routes, []);
 });
 
-test('a route that reaches no location group refuses the whole feed, naming the route', async () => {
+test('a route that reaches no location group refuses the whole feed as mixed kinds', async () => {
   const files = loadDir('valid-minimal');
   const decode = (name) => new TextDecoder().decode(files[name]);
   files['routes.txt'] = decode('routes.txt') + 'r2,demo,D2,Second Line,3\n';
@@ -127,10 +127,46 @@ test('a route that reaches no location group refuses the whole feed, naming the 
   const result = await classify(files);
 
   assert.equal(result.accepted, false);
-  assert.equal(result.reason.code, 'not_flex');
+  // Distinct from not_flex: this feed is flex in part, and the message must say
+  // that it mixes kinds rather than that it is not flex at all.
+  assert.equal(result.reason.code, 'mixed_route_kinds');
   assert.match(result.reason.message, /"r2"/);
+  assert.match(result.reason.message, /mixes flex and non-flex routes/);
   assert.equal(result.reason.evidence.route_id, 'r2');
+  assert.equal(result.reason.evidence.route_type, '3');
   assert.deepEqual(result.reason.evidence.trip_ids, ['t2']);
+  assert.equal(result.reason.evidence.stop_times_rows, 0);
+});
+
+test('the booking-rule union reads both link fields, not either alone', async () => {
+  // The bundled feed's shape: the rule sits on the pickup link of row 1 and the
+  // drop-off link of row 2. Reading one field alone would see half of it.
+  const feed = await readFeed(new Uint8Array(readFileSync(MIZUHO)));
+  const rows = feed.files['stop_times.txt'];
+  assert.equal(rows[0].pickup_booking_rule_id, 'general');
+  assert.equal(rows[0].drop_off_booking_rule_id, '');
+  assert.equal(rows[1].pickup_booking_rule_id, '');
+  assert.equal(rows[1].drop_off_booking_rule_id, 'general');
+
+  assert.deepEqual(detectKind(feed).routes[0].booking_rule_ids, ['general']);
+});
+
+test('the union does not make two routes on one rule look divergent', async () => {
+  // The failure the union rule prevents: r1 carries the rule on its pickup link
+  // and r2 on its drop-off link. Either field alone would see two different
+  // sets and refuse a feed that should be accepted.
+  const files = loadDir('valid-minimal');
+  const decode = (name) => new TextDecoder().decode(files[name]);
+  files['routes.txt'] = decode('routes.txt') + 'r2,demo,D2,Second Line,715\n';
+  files['trips.txt'] = decode('trips.txt') + 'r2,weekdays,t2,Whole area\n';
+  files['stop_times.txt'] = decode('stop_times.txt')
+    + 't2,g1,1,09:00:00,17:00:00,2,1,,br1\n'
+    + 't2,g1,2,09:00:00,17:00:00,1,2,br1,\n';
+
+  const result = await classify(files);
+
+  assert.equal(result.accepted, true);
+  assert.deepEqual(result.routes.map((r) => r.booking_rule_ids), [['br1'], ['br1']]);
 });
 
 /* --------------------------------------------------------- multi-group route */
