@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Purity check — src/core/** must stay pure and deterministic.
 //
-// Two families of violation (blueprint C.3/4, CLAUDE.md 4c and §5):
+// Two families of violation:
 //   1. host imports — fs, path, child_process, process, os, url
 //   2. wall clock and randomness — Date.now(), new Date() with no argument,
 //      performance.now(), Math.random(), crypto.randomUUID()

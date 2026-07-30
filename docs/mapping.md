@@ -673,8 +673,8 @@ did.
 
 ## Findings (schema ↔ blueprint disagreements)
 
-Per CLAUDE.md §6, where a spec document and the artefact disagree, the artefact is the state and the
-disagreement is a finding — not something to fix by inventing a key.
+Where a spec document and the artefact disagree, the artefact is the state and the disagreement is a
+finding — not something to fix by inventing a key.
 
 1. **No `provider.phone` field.** Blueprint P1.3 lists `agency.txt → provider (… phone …)`, but the MSD
    schema `provider` has no telephone property (only `contact_email`). `agency_phone` is therefore
@@ -693,7 +693,8 @@ disagreement is a finding — not something to fix by inventing a key.
    and merging divergent rules would assert a rule no route states. For a single-route feed the question
    does not arise, and the mapping above applies unchanged. How P1 behaves in the meantime is fixed in
    §`routes.txt` — write only on full agreement between the routes, named refusal otherwise; **the gap
-   itself is referred to the build report** (scope discipline, CLAUDE.md §8).
+   itself is referred to the build report** — scope discipline: a question arising mid-build goes into
+   the report, not into scope.
 
 Findings 1 and 2 are recorded for the build report; neither is a defect to fix against upstream.
 Finding 3 is a consequence of the multi-route generalisation. P1's behaviour in its presence is settled

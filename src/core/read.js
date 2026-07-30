@@ -5,7 +5,7 @@
  * receives bytes or strings and never a filename on disk; the CLI does the
  * reading. Everything here is browser-portable.
  *
- * Fidelity rules (CLAUDE.md 4a, blueprint C.0/9): values are carried through
+ * Fidelity rules: values are carried through
  * exactly as the bytes give them. A UTF-8 BOM is stripped because it is a
  * transport artefact of the file, not a character of the first field. Nothing
  * else is touched — no .normalize(), no whitespace collapsing, no case folding,

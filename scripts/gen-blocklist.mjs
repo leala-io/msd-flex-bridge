@@ -17,24 +17,29 @@
  * list of forbidden words. A hash list looks like noise, and that is enough.
  *
  * SOURCE OF TRUTH
- * The clear-text list lives at .claude/compliance-terms.txt, which .gitignore keeps
- * out of the repository. It is NOT recoverable from the committed hashes. Keep a copy
- * with your project documents — losing it means rebuilding the list by hand.
+ * The clear-text list lives at compliance-terms.txt in the repository root, which
+ * .gitignore keeps out of the repository. It is NOT recoverable from the committed
+ * hashes. Keep a copy with your project documents — losing it means rebuilding the
+ * list by hand. Any other path may be given as the first argument.
  *
- * Usage:  node scripts/gen-blocklist.mjs
- *         node scripts/gen-blocklist.mjs --check    (verify without writing)
+ * Usage:  node scripts/gen-blocklist.mjs [term-list]
+ *         node scripts/gen-blocklist.mjs [term-list] --check   (verify without writing)
  */
 
 import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 
-const SOURCE = '.claude/compliance-terms.txt';
+const DEFAULT_SOURCE = 'compliance-terms.txt';
 const TARGET = 'scripts/compliance-blocklist.json';
-const checkOnly = process.argv.includes('--check');
+
+const args = process.argv.slice(2);
+const checkOnly = args.includes('--check');
+const SOURCE = args.find((a) => !a.startsWith('-')) ?? DEFAULT_SOURCE;
 
 if (!existsSync(SOURCE)) {
   console.error(`missing ${SOURCE}`);
-  console.error('This file is deliberately untracked. Restore it from your project documents.');
+  console.error('This file is deliberately untracked. Restore it from your project documents,');
+  console.error(`or pass its path: node scripts/gen-blocklist.mjs <term-list>${checkOnly ? ' --check' : ''}`);
   process.exit(3);
 }
 

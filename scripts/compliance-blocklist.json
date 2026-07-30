@@ -1,7 +1,7 @@
 {
   "_comment": "SHA-256 of forbidden tokens. The clear-text list is deliberately not in this repository. Regenerate with scripts/gen-blocklist.mjs. Scope \"global\" applies to every tracked file; any other scope applies only to files whose path contains that scope name. A scope ending in \":exact\" is matched case-sensitively, for acronyms that collide with ordinary words.",
   "algorithm": "sha256(token, utf8) — folded scopes lower-case the token first",
-  "generated_from": ".claude/compliance-terms.txt",
+  "generated_from": "compliance-terms.txt",
   "scopes": {
     "global": [
       "150fe1e9d6ffa1fc08c9405c760d88f2e26a2bafd3cc7be9447fd813b7be2827",
