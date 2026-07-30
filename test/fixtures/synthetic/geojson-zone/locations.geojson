@@ -1,0 +1,39 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "zone1",
+      "properties": {
+        "name": "Demo zone"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              8.53,
+              47.37
+            ],
+            [
+              8.55,
+              47.37
+            ],
+            [
+              8.55,
+              47.39
+            ],
+            [
+              8.53,
+              47.39
+            ],
+            [
+              8.53,
+              47.37
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

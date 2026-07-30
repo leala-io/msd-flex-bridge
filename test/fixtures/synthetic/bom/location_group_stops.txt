@@ -1,0 +1,3 @@
+﻿location_group_id,stop_id
+g1,s1
+g1,s2

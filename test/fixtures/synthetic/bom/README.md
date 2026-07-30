@@ -1,0 +1,1 @@
+Byte-for-byte twin of `../valid-minimal/` with a UTF-8 BOM on every file. Must read identically to its twin, field for field. The real fixture has no BOM (assertion B2), so this path is only testable synthetically.

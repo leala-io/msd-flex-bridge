@@ -1,0 +1,18 @@
+{
+  "name": "msd-flex-bridge",
+  "version": "0.1.0",
+  "description": "Reads a published GTFS-Flex feed of the location-group kind, lifts it into an MSD file, and reports what the source format structurally cannot express.",
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "test": "node --test \"test/*.test.js\"",
+    "test:fixture": "node test/feed-assert.mjs test/fixtures/mizuho/Mizuho_Area-20260202.zip"
+  },
+  "dependencies": {
+    "jszip": "^3.10.1",
+    "papaparse": "^5.4.1"
+  }
+}

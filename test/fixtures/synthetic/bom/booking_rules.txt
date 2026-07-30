@@ -1,0 +1,2 @@
+﻿booking_rule_id,booking_type,prior_notice_duration_min,message,phone_number,info_url,booking_url
+br1,1,30,Please book ahead,+41000000000,https://example.org/info,
