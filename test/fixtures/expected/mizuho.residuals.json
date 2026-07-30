@@ -1,45 +1,70 @@
 [
   {
-    "category": "rider_eligibility_and_membership",
+    "category": "rider_eligibility",
     "class": "b",
-    "statement": "The feed does not carry rider eligibility or membership conditions. GTFS-Flex has no field for them, and MSD v0.1.0 has no key for them either, so nothing is asserted about who may use the service.",
-    "v0_2_0_candidate": "eligibility"
+    "statement": "The feed does not carry rider eligibility conditions — who may use the service, and under what circumstances. GTFS-Flex has no field for them and MSD v0.1.0 has no key for them, so nothing is asserted about eligibility either way.",
+    "model_coverage": "documented_candidate",
+    "candidate": "eligibility"
+  },
+  {
+    "category": "membership_requirement",
+    "class": "b",
+    "statement": "The feed does not state whether membership or registration is a precondition of booking, nor any lead time such a registration would need. Nothing in the document implies that booking is open to all.",
+    "model_coverage": "documented_candidate",
+    "candidate": "membership_requirement"
   },
   {
     "category": "per_channel_booking_metadata",
     "class": "b",
-    "statement": "The feed states which booking channels exist, but not their hours, languages or per-channel conditions. Those are recorded as free text in the booking message, which is preserved verbatim in diagnostics and not parsed.",
-    "v0_2_0_candidate": "booking_channel_detail"
+    "statement": "The feed states which booking channels exist, but not their hours, credentials or capabilities. Those are described in the free-text booking message, which is preserved verbatim in diagnostics and never parsed into fields.",
+    "model_coverage": "documented_candidate",
+    "candidate": "booking-channel object shape"
   },
   {
     "category": "fares",
     "class": "b",
-    "statement": "The feed does not carry fare information: no fare_attributes.txt, fare_rules.txt or fare product files are present. The MSD fare_structures key is therefore absent rather than empty.",
-    "v0_2_0_candidate": "fare_structures"
+    "statement": "MSD can express fares: fare_structures is defined in the schema. This feed carries no fare information — no fare_attributes.txt, fare_rules.txt or fare product files — so the key is absent rather than empty.",
+    "model_coverage": "field_exists",
+    "field": "fare_structures"
   },
   {
     "category": "payment_methods",
     "class": "b",
-    "statement": "The feed does not state which payment methods the service accepts. MSD models payment methods only within a fare structure, and no fare structure is present.",
-    "v0_2_0_candidate": "payment_methods"
+    "statement": "MSD can express accepted payment methods, within a fare structure. This feed states none, and carries no fare structure to hold them, so the key is absent.",
+    "model_coverage": "field_exists",
+    "field": "payment_methods"
   },
   {
     "category": "organisational_parties",
     "class": "b",
-    "statement": "The feed identifies the operating agency but no legal entity behind it — no registration or VAT identifier. MSD provider.legal_entity is therefore absent.",
-    "v0_2_0_candidate": "legal_entity"
+    "statement": "MSD can express the legal entity behind a provider, with its registration and VAT identifiers. This feed identifies the operating agency only, so provider.legal_entity is absent.",
+    "model_coverage": "field_exists",
+    "field": "legal_entity"
   },
   {
     "category": "vehicles",
     "class": "b",
-    "statement": "The feed does not describe the fleet: no vehicle types, capacities, wheelchair spaces or propulsion. The MSD vehicles key is absent, and no accessibility assertion is derived — an absent wheelchair_boarding in GTFS is not the same statement as MSD false.",
-    "v0_2_0_candidate": "vehicles"
+    "statement": "MSD can express the fleet: vehicle types, seat and wheelchair capacities, propulsion and counts. This feed describes none of it, so the key is absent — and no accessibility assertion is derived, because an absent wheelchair_boarding in GTFS is not the same statement as MSD false.",
+    "model_coverage": "field_exists",
+    "field": "vehicles"
+  },
+  {
+    "category": "web_booking_channel",
+    "class": "b",
+    "statement": "MSD can express a web booking channel: \"web\" is a value of the booking_channel code list. This feed leaves booking_url empty, so no web channel is asserted — the channel list is built from what is structurally present and never inferred from the booking message, which may describe a portal the feed does not name.",
+    "model_coverage": "field_exists",
+    "field": "booking_channels",
+    "evidence": {
+      "source_field": "booking_rules.booking_url",
+      "value": ""
+    }
   },
   {
     "category": "provider_telephone",
     "class": "a",
     "statement": "The feed carries a provider telephone number. MSD v0.1.0 provider has no telephone property — only contact_email — so the number is kept in diagnostics rather than written to the document.",
-    "v0_2_0_candidate": "provider.phone",
+    "model_coverage": "undocumented_gap",
+    "coverage_note": "An observation about the coverage of MSD v0.1.0 — not a defect, not a request and not a proposal.",
     "evidence": {
       "source_field": "agency.agency_phone"
     }
@@ -47,8 +72,9 @@
   {
     "category": "service_description",
     "class": "a",
-    "statement": "The feed carries a description for each route. MSD v0.1.0 service has no description property, unlike provider, so the text is kept in diagnostics.",
-    "v0_2_0_candidate": "service.description",
+    "statement": "The feed carries a description for each route. MSD v0.1.0 service has no description property, although provider does, so the text is kept in diagnostics.",
+    "model_coverage": "undocumented_gap",
+    "coverage_note": "An observation about the coverage of MSD v0.1.0 — not a defect, not a request and not a proposal.",
     "evidence": {
       "source_field": "routes.route_desc",
       "routes": [
@@ -60,6 +86,8 @@
     "category": "stop_metadata",
     "class": "a",
     "statement": "The feed carries stop columns beyond identity, name and position. An MSD stop holds only stop_id, name and coordinates, so the remaining columns are kept in diagnostics.",
+    "model_coverage": "undocumented_gap",
+    "coverage_note": "An observation about the coverage of MSD v0.1.0 — not a defect, not a request and not a proposal.",
     "evidence": {
       "columns": [
         "location_type"
@@ -70,6 +98,8 @@
     "category": "location_group_name",
     "class": "a",
     "statement": "The location group carries a name. MSD service_area has no name property, so the group name is kept in diagnostics; the group itself becomes the stops-based service area.",
+    "model_coverage": "undocumented_gap",
+    "coverage_note": "An observation about the coverage of MSD v0.1.0 — not a defect, not a request and not a proposal.",
     "evidence": {
       "source_field": "location_groups.location_group_name"
     }
@@ -78,7 +108,8 @@
     "category": "booking_phone_number",
     "class": "a",
     "statement": "The booking rule carries a telephone number. MSD records that a phone channel exists but has no field for the number itself, so it is kept in diagnostics.",
-    "v0_2_0_candidate": "booking_channel_detail",
+    "model_coverage": "documented_candidate",
+    "candidate": "booking-channel object shape",
     "evidence": {
       "source_field": "booking_rules.phone_number"
     }
@@ -87,6 +118,8 @@
     "category": "booking_instructions_free_text",
     "class": "a",
     "statement": "The booking rule carries free-text instructions for riders. MSD has no field for them and this bridge does not parse prose into structured fields, so the text is preserved verbatim in diagnostics.",
+    "model_coverage": "undocumented_gap",
+    "coverage_note": "An observation about the coverage of MSD v0.1.0 — not a defect, not a request and not a proposal.",
     "evidence": {
       "source_field": "booking_rules.message"
     }
@@ -94,7 +127,9 @@
   {
     "category": "service_calendar_range",
     "class": "c",
-    "statement": "Each calendar states the date range over which it applies. MSD operating_hours models weekly patterns and dated exceptions but has no calendar validity range, so the range is not carried into the document.",
+    "statement": "Each calendar states the date range over which it applies. MSD operating_hours models weekly patterns and dated exceptions but carries no validity range for the service, so a reader of the document cannot see when the pattern began or when it is expected to end.",
+    "model_coverage": "documented_candidate",
+    "candidate": "service-level valid_from / valid_until",
     "evidence": {
       "source_fields": [
         "calendar.start_date",
@@ -108,7 +143,9 @@
   {
     "category": "feed_validity_end",
     "class": "c",
-    "statement": "The feed states a date until which it is valid. MSD has no equivalent field, so a consumer of the document cannot see when the publisher expects it to be superseded.",
+    "statement": "The feed states a date until which the feed itself is valid. That is a statement about the document rather than about the service, and MSD has no equivalent field, so a consumer cannot see when the publisher expects this description to be superseded.",
+    "model_coverage": "undocumented_gap",
+    "coverage_note": "An observation about the coverage of MSD v0.1.0 — not a defect, not a request and not a proposal.",
     "evidence": {
       "source_field": "feed_info.feed_end_date",
       "value": "20260930"
@@ -117,8 +154,9 @@
   {
     "category": "translations",
     "class": "c",
-    "statement": "The feed carries translated labels for stop, route and agency names. They are secondary labels rather than names, and MSD v0.1.0 has no field for alternates, so they are kept in diagnostics and never substituted into any name in the document.",
-    "v0_2_0_candidate": "name_translations",
+    "statement": "The feed carries translated labels for stop, route and agency names. They are secondary labels rather than names, and MSD v0.1.0 has no field for alternates, so they are kept in diagnostics and never substituted into any name in the document. The absence of an alternate-name field is a recorded observation upstream and explicitly not a candidate for a future version.",
+    "model_coverage": "undocumented_gap",
+    "coverage_note": "An observation about the coverage of MSD v0.1.0 — not a defect, not a request and not a proposal.",
     "evidence": {
       "rows": 126,
       "languages": [

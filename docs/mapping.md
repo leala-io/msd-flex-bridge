@@ -627,6 +627,48 @@ fault.
   `last_updated` is derived below cascade level 1 — a residual stating the publisher declares no document
   freshness of its own.
 
+### Model coverage: a second axis on every residual
+
+The class above says where a loss comes from. It does **not** say whether MSD could have carried the
+value, and conflating the two produced a defect worth recording: an earlier report presented five
+fields the schema already defines — `fare_structures`, `payment_methods`, `legal_entity`, `vehicles`,
+`booking_channels` — as candidates for a future version. The statements beside them were right and the
+column contradicted them.
+
+Every residual entry therefore carries exactly one **`model_coverage`** disposition:
+
+| Disposition | Meaning | Verifiable here? |
+|---|---|---|
+| `field_exists` | The schema defines the field; this feed says nothing, so the key is absent. The asymmetry is the point — the model can express it, this feed does not. | **Yes** |
+| `documented_candidate` | The schema has no such field, and the absence is tracked upstream as a candidate for a future version. Carries the candidate's name. | No |
+| `undocumented_gap` | The schema has no such field and no candidate is tracked for it. | Partly |
+
+`undocumented_gap` is **an observation about the coverage of MSD v0.1.0 — not a defect, not a request
+and not a proposal.** Each such entry says so in a `coverage_note`. This build's own findings live here:
+provider telephone, service description, and per-route booking rules on a multi-route feed.
+
+### Provenance of the coverage dispositions
+
+The three dispositions do not rest on the same evidence, and a reader should not treat them as if they
+did.
+
+- **`field_exists` is verifiable from this repository** and is verified: `test/residuals.test.js`
+  asserts that every such entry names a property the vendored
+  `vendor/msd/schema/v0.1.0/msd.schema.json` actually defines, and that no candidate names a property
+  it already defines. That check is mechanical and cannot go stale.
+- **The candidate names come from an upstream register that is not vendored here**, and are therefore
+  **not verifiable from this repository**. They were supplied for this build. The permitted set is
+  pinned in the test as a closed list, which prevents a new name appearing silently but does not
+  confirm the list is current — a weaker guarantee, deliberately distinguished from the one above.
+- **Appearing in the canonical reference example is not evidence that the schema defines a field.**
+  The schema leaves `additionalProperties` unset, so a document may carry keys it does not define, and
+  the reference example does exactly that for several of these. **The vendored schema is the only
+  test.** This is the trap the original defect fell into.
+- **When the vendored pin is advanced, the candidate assignments must be re-checked.** The register
+  moves independently of the schema: a candidate may become a defined field, in which case its entries
+  become `field_exists`, or it may be withdrawn. The `field_exists` test will catch the first case only
+  if a candidate is re-examined — it checks the claims that are made, not the ones that should be.
+
 ---
 
 ## Findings (schema ↔ blueprint disagreements)
