@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leala-io.github.io/msd/registry/v0.1.0/booking_confirmation.json",
+  "title": "MSD booking_confirmation code list (v0.1.0)",
+  "description": "Permitted values for booking_rules.booking_confirmation. Attested in Concept Paper §3.6 and the mybuxi example.",
+  "enum": ["immediate"]
+}

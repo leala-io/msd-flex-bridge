@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leala-io.github.io/msd/registry/v0.1.0/travel_time_source.json",
+  "title": "MSD travel_time_source code list (v0.1.0)",
+  "description": "Permitted values for routing_hints.travel_time_source. Attested in Concept Paper §3.9.",
+  "enum": ["gis_router", "provider_estimate"]
+}

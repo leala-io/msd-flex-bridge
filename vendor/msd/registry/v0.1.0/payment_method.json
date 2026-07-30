@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leala-io.github.io/msd/registry/v0.1.0/payment_method.json",
+  "title": "MSD payment_method code list (v0.1.0)",
+  "description": "Permitted values for fare_structure.payment_methods[]. Union of Concept Paper §3.5 (invoice, twint, credit_card) and the mybuxi example (cash_in_vehicle, app, webshop, invoice).",
+  "enum": ["invoice", "twint", "credit_card", "cash_in_vehicle", "app", "webshop"]
+}

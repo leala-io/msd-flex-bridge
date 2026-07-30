@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leala-io.github.io/msd/registry/v0.1.0/commission_type.json",
+  "title": "MSD commission_type code list (v0.1.0)",
+  "description": "Permitted values for settlement.commission_structure.type. Attested in Concept Paper §3.7.",
+  "enum": ["percentage"]
+}

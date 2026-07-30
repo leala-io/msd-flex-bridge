@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leala-io.github.io/msd/registry/v0.1.0/mode.json",
+  "title": "MSD mode code list (v0.1.0)",
+  "description": "Permitted values for service.mode. Attested in Concept Paper §3.3 and the mybuxi example.",
+  "enum": ["bus"]
+}

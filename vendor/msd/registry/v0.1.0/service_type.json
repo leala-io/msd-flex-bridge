@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leala-io.github.io/msd/registry/v0.1.0/service_type.json",
+  "title": "MSD service_type code list (v0.1.0)",
+  "description": "Permitted values for service.service_type. Attested in Concept Paper §3.3 and the mybuxi example. Adding a value is a non-breaking registry change (Convention C2).",
+  "enum": ["on_demand"]
+}

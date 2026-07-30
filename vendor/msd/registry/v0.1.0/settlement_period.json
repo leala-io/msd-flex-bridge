@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leala-io.github.io/msd/registry/v0.1.0/settlement_period.json",
+  "title": "MSD settlement_period code list (v0.1.0)",
+  "description": "Permitted values for settlement.settlement_period. Attested in Concept Paper §3.7.",
+  "enum": ["monthly"]
+}

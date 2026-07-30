@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leala-io.github.io/msd/registry/v0.1.0/constraint_type.json",
+  "title": "MSD constraint_type code list (v0.1.0)",
+  "description": "Permitted values for service_area.constraints[].type. Attested in Concept Paper §3.4.",
+  "enum": ["relation_restriction", "service_mode_restriction", "exclusive_zone"]
+}

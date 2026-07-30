@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leala-io.github.io/msd/registry/v0.1.0/passenger_identification.json",
+  "title": "MSD passenger_identification code list (v0.1.0)",
+  "description": "Permitted values for booking_rules.passenger_identification. Attested in Concept Paper §3.6 and the mybuxi example.",
+  "enum": ["none_required"]
+}

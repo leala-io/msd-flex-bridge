@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leala-io.github.io/msd/registry/v0.1.0/propulsion.json",
+  "title": "MSD propulsion code list (v0.1.0)",
+  "description": "Permitted values for vehicle.propulsion. Attested in Concept Paper §3.3 and the mybuxi example.",
+  "enum": ["electric"]
+}

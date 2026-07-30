@@ -1,0 +1,426 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leala-io.github.io/msd/schema/v0.1.0/msd.schema.json",
+  "title": "MSD — Mobility Service Description (v0.1.0)",
+  "description": "Structural schema for a single MSD document. Data model = Concept Paper §3 (3.1-3.9). Code-list values are external (Convention C2): every enumerated field $refs a file under registry/v0.1.0/. The schema is intentionally open (additionalProperties is not set to false) so provider extensions and national-profile fields validate as pass-through; the §3 core (types, required fields, geometry) is validated strictly. null is permitted on optional scalars to mean 'unknown' (Convention C1) — it is never equivalent to 0/false/[].",
+  "type": "object",
+  "required": ["msd_version", "last_updated", "provider", "services"],
+  "properties": {
+    "msd_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "MSD specification version this document targets, semver (e.g. \"0.1.0\")."
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "RFC 3339 date-time when this document was last updated."
+    },
+    "ttl": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "description": "Recommended cache lifetime in seconds. Omit if not specified; null means unknown (C1)."
+    },
+    "provider": { "$ref": "#/$defs/provider" },
+    "services": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/service" },
+      "description": "One or more mobility services offered by the provider. At least one is required."
+    },
+    "fare_structures": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/fare_structure" }
+    },
+    "booking_rules": { "$ref": "#/$defs/booking_rules" },
+    "settlement": { "$ref": "#/$defs/settlement" },
+    "routing_hints": { "$ref": "#/$defs/routing_hints" },
+    "references": { "$ref": "#/$defs/references" }
+  },
+
+  "$defs": {
+    "provider": {
+      "type": "object",
+      "description": "Concept Paper §3.2. The organisation offering the service(s).",
+      "required": ["provider_id", "name"],
+      "properties": {
+        "provider_id": { "type": "string", "description": "Stable provider identifier." },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "url": { "type": "string", "format": "uri" },
+        "contact_email": { "type": "string", "format": "email" },
+        "country": {
+          "type": "string",
+          "pattern": "^[A-Z]{2}$",
+          "description": "ISO 3166-1 alpha-2 country code."
+        },
+        "languages": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Supported languages as BCP-47 tags."
+        },
+        "legal_entity": { "$ref": "#/$defs/legal_entity" }
+      }
+    },
+
+    "legal_entity": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "registration_id": { "type": ["string", "null"] },
+        "vat_id": {
+          "type": ["string", "null"],
+          "description": "VAT identifier. null means unknown/not provided (C1); omit if not applicable."
+        }
+      }
+    },
+
+    "service": {
+      "type": "object",
+      "description": "Concept Paper §3.3. A distinct mobility offering.",
+      "required": ["service_id", "service_type", "name", "mode", "service_area"],
+      "properties": {
+        "service_id": { "type": "string" },
+        "service_type": { "$ref": "https://leala-io.github.io/msd/registry/v0.1.0/service_type.json" },
+        "name": { "type": "string" },
+        "mode": { "$ref": "https://leala-io.github.io/msd/registry/v0.1.0/mode.json" },
+        "operating_hours": { "$ref": "#/$defs/operating_hours" },
+        "service_area": { "$ref": "#/$defs/service_area" },
+        "vehicles": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/vehicle" }
+        },
+        "accessibility": { "$ref": "#/$defs/accessibility" }
+      }
+    },
+
+    "operating_hours": {
+      "type": "object",
+      "description": "Concept Paper §3.3. Recurring default hours plus dated exceptions.",
+      "properties": {
+        "default": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["days", "start", "end"],
+            "properties": {
+              "days": { "type": "array", "items": { "type": "string" } },
+              "start": { "type": "string", "pattern": "^[0-9]{2}:[0-9]{2}$" },
+              "end": { "type": "string", "pattern": "^[0-9]{2}:[0-9]{2}$" }
+            }
+          }
+        },
+        "exceptions": {
+          "type": "array",
+          "description": "Date-keyed exceptions to the default hours (Concept Paper §3.3).",
+          "items": {
+            "type": "object",
+            "required": ["date"],
+            "properties": {
+              "date": { "type": "string", "format": "date" },
+              "closed": { "type": "boolean" },
+              "start": { "type": "string", "pattern": "^[0-9]{2}:[0-9]{2}$" },
+              "end": { "type": "string", "pattern": "^[0-9]{2}:[0-9]{2}$" }
+            }
+          }
+        }
+      }
+    },
+
+    "service_area": {
+      "type": "object",
+      "description": "Concept Paper §3.3/§3.4 and Appendix D.1. A service area is defined either by zones (GeoJSON polygons) or by a list of named stops.",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["zones", "stops"],
+          "description": "Spatial model: 'zones' (GeoJSON polygons, §3.3) or 'stops' (named stop list, Appendix D.1). This is a structural discriminator, not an extensible code list."
+        },
+        "zones": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/zone" }
+        },
+        "stops": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/stop" }
+        },
+        "constraints": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/constraint" }
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "zones" } } },
+          "then": { "required": ["zones"] }
+        },
+        {
+          "if": { "properties": { "type": { "const": "stops" } } },
+          "then": { "required": ["stops"] }
+        }
+      ]
+    },
+
+    "zone": {
+      "type": "object",
+      "description": "Concept Paper §3.3. A service zone with a GeoJSON polygon geometry.",
+      "required": ["zone_id", "geometry"],
+      "properties": {
+        "zone_id": { "type": "string" },
+        "name": { "type": "string" },
+        "geometry": { "$ref": "#/$defs/geometry" }
+      }
+    },
+
+    "stop": {
+      "type": "object",
+      "description": "Concept Paper Appendix D.1. A named stop within a stops-based service area.",
+      "required": ["stop_id"],
+      "properties": {
+        "stop_id": { "type": "string" },
+        "name": { "type": "string" },
+        "coordinates": {
+          "type": "object",
+          "properties": {
+            "lat": { "type": "number", "minimum": -90, "maximum": 90 },
+            "lon": { "type": "number", "minimum": -180, "maximum": 180 }
+          }
+        }
+      }
+    },
+
+    "geometry": {
+      "type": "object",
+      "description": "GeoJSON Polygon or MultiPolygon (RFC 7946, WGS84).",
+      "required": ["type", "coordinates"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["Polygon", "MultiPolygon"],
+          "description": "GeoJSON geometry type. Structural constraint, not an extensible code list."
+        },
+        "coordinates": { "type": "array" }
+      }
+    },
+
+    "constraint": {
+      "type": "object",
+      "description": "Concept Paper §3.4. Negative/restrictive service logic within a service area.",
+      "required": ["type"],
+      "properties": {
+        "type": { "$ref": "https://leala-io.github.io/msd/registry/v0.1.0/constraint_type.json" },
+        "description": { "type": "string" },
+        "origin_zone": { "type": "string" },
+        "destination_zone": { "type": "string" },
+        "rule": { "type": "string" },
+        "zone": { "type": "string" },
+        "pickup_type": { "type": "string" }
+      }
+    },
+
+    "vehicle": {
+      "type": "object",
+      "description": "Concept Paper §3.3. A vehicle type in the fleet.",
+      "required": ["vehicle_type_id"],
+      "properties": {
+        "vehicle_type_id": { "type": "string" },
+        "name": { "type": "string" },
+        "capacity": {
+          "type": "object",
+          "properties": {
+            "seats": {
+              "type": ["integer", "null"],
+              "minimum": 0,
+              "description": "Number of seats. 0 means genuinely none; absent/null means unknown (C1)."
+            },
+            "wheelchair": {
+              "type": ["integer", "null"],
+              "minimum": 0,
+              "description": "Wheelchair spaces. 0 means explicitly none; absent/null means unknown (C1) — never infer 0."
+            }
+          }
+        },
+        "propulsion": { "$ref": "https://leala-io.github.io/msd/registry/v0.1.0/propulsion.json" },
+        "count": {
+          "type": ["integer", "null"],
+          "minimum": 0,
+          "description": "Number of vehicles of this type. null means unknown (C1); omit if not specified."
+        }
+      }
+    },
+
+    "accessibility": {
+      "type": "object",
+      "description": "Concept Paper §3.3.",
+      "properties": {
+        "wheelchair_accessible_vehicles": { "type": "boolean" },
+        "audio_announcements": { "type": "boolean" },
+        "booking_assistance_available": { "type": "boolean" }
+      }
+    },
+
+    "fare_structure": {
+      "type": "object",
+      "description": "Concept Paper §3.5.",
+      "required": ["fare_id", "service_ids", "currency", "rules"],
+      "properties": {
+        "fare_id": { "type": "string" },
+        "service_ids": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$",
+          "description": "ISO 4217 currency code."
+        },
+        "rules": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/fare_rule" }
+        },
+        "discounts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/discount" }
+        },
+        "payment_methods": {
+          "type": "array",
+          "items": { "$ref": "https://leala-io.github.io/msd/registry/v0.1.0/payment_method.json" }
+        },
+        "vat_rate": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "description": "VAT rate as a percentage. null means unknown (C1)."
+        },
+        "vat_included": { "type": "boolean" }
+      }
+    },
+
+    "fare_rule": {
+      "type": "object",
+      "description": "Concept Paper §3.5. A priced fare rule.",
+      "required": ["price"],
+      "properties": {
+        "description": { "type": "string" },
+        "conditions": { "type": "object" },
+        "price": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Price in the fare's currency. 0 means genuinely free (C1)."
+        }
+      }
+    },
+
+    "discount": {
+      "type": "object",
+      "description": "Concept Paper §3.5. A conditional discount.",
+      "required": ["discount_id", "type"],
+      "properties": {
+        "discount_id": { "type": "string" },
+        "name": { "type": "string" },
+        "type": { "$ref": "https://leala-io.github.io/msd/registry/v0.1.0/discount_type.json" },
+        "value": {
+          "type": ["number", "null"],
+          "description": "Discount magnitude (percent for 'percentage', absolute for 'fixed'). Not required for 'free'. null means unknown (C1)."
+        },
+        "conditions": { "type": "object" }
+      }
+    },
+
+    "booking_rules": {
+      "type": "object",
+      "description": "Concept Paper §3.6.",
+      "properties": {
+        "advance_booking": {
+          "type": "object",
+          "properties": {
+            "minimum_minutes": {
+              "type": ["integer", "null"],
+              "minimum": 0,
+              "description": "Minimum lead time in minutes. null means unknown (C1)."
+            },
+            "maximum_days": {
+              "type": ["integer", "null"],
+              "minimum": 0,
+              "description": "Maximum advance booking horizon in days. null means unknown (C1)."
+            }
+          }
+        },
+        "cancellation": {
+          "type": "object",
+          "properties": {
+            "free_cancellation_minutes": {
+              "type": ["integer", "null"],
+              "minimum": 0,
+              "description": "Free-cancellation window in minutes. null means unknown (C1)."
+            },
+            "late_cancellation_fee": {
+              "type": ["number", "null"],
+              "minimum": 0,
+              "description": "Late cancellation fee. 0 means genuinely no fee; null means unknown (C1)."
+            }
+          }
+        },
+        "booking_channels": {
+          "type": "array",
+          "items": { "$ref": "https://leala-io.github.io/msd/registry/v0.1.0/booking_channel.json" }
+        },
+        "booking_confirmation": { "$ref": "https://leala-io.github.io/msd/registry/v0.1.0/booking_confirmation.json" },
+        "passenger_identification": { "$ref": "https://leala-io.github.io/msd/registry/v0.1.0/passenger_identification.json" }
+      }
+    },
+
+    "settlement": {
+      "type": "object",
+      "description": "Concept Paper §3.7.",
+      "properties": {
+        "model": { "$ref": "https://leala-io.github.io/msd/registry/v0.1.0/settlement_model.json" },
+        "settlement_period": { "$ref": "https://leala-io.github.io/msd/registry/v0.1.0/settlement_period.json" },
+        "commission_structure": {
+          "type": "object",
+          "properties": {
+            "type": { "$ref": "https://leala-io.github.io/msd/registry/v0.1.0/commission_type.json" },
+            "value": { "type": ["number", "null"], "minimum": 0 },
+            "note": { "type": "string" }
+          }
+        },
+        "billing_contact": { "type": "string", "format": "email" },
+        "supported_settlement_protocols": {
+          "type": "array",
+          "items": { "$ref": "https://leala-io.github.io/msd/registry/v0.1.0/settlement_protocol.json" }
+        }
+      }
+    },
+
+    "routing_hints": {
+      "type": "object",
+      "description": "Concept Paper §3.9. Advisory hints for multimodal journey-planning integration.",
+      "properties": {
+        "travel_time_factor": { "type": "number", "minimum": 0 },
+        "travel_time_source": { "$ref": "https://leala-io.github.io/msd/registry/v0.1.0/travel_time_source.json" },
+        "transfer_penalty_equivalent": { "type": ["integer", "null"], "minimum": 0 },
+        "line_service_preference": {
+          "type": "object",
+          "properties": {
+            "threshold_minutes": { "type": ["integer", "null"], "minimum": 0 },
+            "minimum_advantage_percent": { "type": ["number", "null"], "minimum": 0 },
+            "description": { "type": "string" }
+          }
+        }
+      }
+    },
+
+    "references": {
+      "type": "object",
+      "description": "Concept Paper §3.8. Each reference is a URI string or null (null = not available, C1).",
+      "properties": {
+        "gtfs_feed_url": { "type": ["string", "null"], "format": "uri" },
+        "gbfs_feed_url": { "type": ["string", "null"], "format": "uri" },
+        "tomp_api_url": { "type": ["string", "null"], "format": "uri" },
+        "real_time_endpoint": { "type": ["string", "null"], "format": "uri" },
+        "info_url": { "type": ["string", "null"], "format": "uri" },
+        "terms_url": { "type": ["string", "null"], "format": "uri" }
+      }
+    }
+  }
+}

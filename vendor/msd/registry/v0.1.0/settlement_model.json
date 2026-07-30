@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leala-io.github.io/msd/registry/v0.1.0/settlement_model.json",
+  "title": "MSD settlement_model code list (v0.1.0)",
+  "description": "Permitted values for settlement.model. Union of Concept Paper §3.7 (postpaid) and the mybuxi example (mixed).",
+  "enum": ["postpaid", "mixed"]
+}

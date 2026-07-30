@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leala-io.github.io/msd/registry/v0.1.0/discount_type.json",
+  "title": "MSD discount_type code list (v0.1.0)",
+  "description": "Permitted values for fare_structure.discounts[].type. Union of Concept Paper §3.5 (percentage, free, fixed) and the mybuxi example (flat = flat group price per vehicle).",
+  "enum": ["percentage", "free", "fixed", "flat"]
+}

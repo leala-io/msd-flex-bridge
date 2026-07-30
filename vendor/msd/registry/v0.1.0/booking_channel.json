@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://leala-io.github.io/msd/registry/v0.1.0/booking_channel.json",
+  "title": "MSD booking_channel code list (v0.1.0)",
+  "description": "Permitted values for booking_rules.booking_channels[]. Union of Concept Paper §3.6 (app, phone, web) and the mybuxi example (app, phone, email).",
+  "enum": ["app", "phone", "web", "email"]
+}
