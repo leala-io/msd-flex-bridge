@@ -36,7 +36,7 @@ const has = (rows) => Array.isArray(rows) && rows.length > 0;
  * @returns {object[]} residual entries, in a fixed order
  */
 export function buildResiduals(ctx) {
-  const { msd, feed, provenance, coordinateNotes } = ctx;
+  const { msd, feed, provenance, coordinateNotes, exceptionConflicts = [] } = ctx;
   const rows = (name) => feed.files[name] ?? [];
   const residuals = [];
 
@@ -154,6 +154,20 @@ export function buildResiduals(ctx) {
       'booking_instructions_free_text', 'a',
       'The booking rule carries free-text instructions for riders. MSD has no field for them and this bridge does not parse prose into structured fields, so the text is preserved verbatim in diagnostics.',
       { evidence: { source_field: 'booking_rules.message' } },
+    ));
+  }
+
+  if (has(exceptionConflicts)) {
+    residuals.push(entry(
+      'calendar_selective_closure', 'a',
+      'Some dates are treated as exceptions by part of a service only: several calendars were merged into one service, and these dates are removed or added by some of them and not others. MSD models exceptions per service rather than per calendar, so no exception entry is written for those dates — an entry marking the whole service closed would be false for the riders the other calendars serve. The dates and the calendars on each side are recorded in diagnostics.',
+      {
+        v0_2_0_candidate: 'per_pattern_exceptions',
+        evidence: {
+          dates: exceptionConflicts.map((c) => c.date),
+          services: [...new Set(exceptionConflicts.map((c) => c.service_id))],
+        },
+      },
     ));
   }
 

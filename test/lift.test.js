@@ -324,15 +324,66 @@ test('two calendars on one route merge into one service, with the mandatory diag
   assert.match(merge.statement, /the feed gives no reason for the separation/);
 });
 
-test('exception dates are reformatted and marked closed', async () => {
-  const { msd } = await liftFlexToMsd(zipBytes());
+test('exceptions merge on consensus: one entry per date, not one per calendar', async () => {
+  const { msd, residuals, diagnostics } = await liftFlexToMsd(zipBytes());
   const exceptions = msd.services[0].operating_hours.exceptions;
 
-  assert.equal(exceptions.length, 96);
+  // 96 calendar_dates rows over 48 dates, each removed by both calendars.
+  assert.equal(exceptions.length, 48);
+  assert.equal(new Set(exceptions.map((e) => e.date)).size, 48);
+
   for (const exception of exceptions) {
     assert.match(exception.date, /^\d{4}-\d{2}-\d{2}$/);
     assert.equal(exception.closed, true);
   }
+
+  const dates = exceptions.map((e) => e.date);
+  assert.deepEqual(dates, [...dates].sort(), 'exception dates are emitted in ascending order');
+
+  // Full consensus throughout, so neither the diagnostic nor the residual fires.
+  assert.equal('exception_consensus' in diagnostics.services['mizuhomachi_route'], false);
+  assert.equal(residuals.some((r) => r.category === 'calendar_selective_closure'), false);
+});
+
+test('a date removed by only some merged calendars yields no entry, but is recorded', async () => {
+  const { msd, residuals, diagnostics } = await liftFlexToMsd(loadDir('partial-exception'));
+  const exceptions = msd.services[0].operating_hours.exceptions;
+
+  // Four dated exceptions in the fixture; only the two with consensus are written.
+  assert.deepEqual(exceptions, [
+    { date: '2026-01-02', closed: true },   // removed by both calendars
+    { date: '2026-01-07', closed: false },  // added by both calendars
+  ]);
+
+  // 2026-01-05 is removed by east only; 2026-01-06 is removed by east and added
+  // by west. Neither is written: the service still runs for the riders of the
+  // other calendar, so closed: true would be false, and two conflicting entries
+  // for one date are never emitted.
+  const written = new Set(exceptions.map((e) => e.date));
+  assert.equal(written.has('2026-01-05'), false);
+  assert.equal(written.has('2026-01-06'), false);
+
+  const consensus = diagnostics.services.r1.exception_consensus;
+  assert.equal(consensus.count, 2);
+  assert.deepEqual(consensus.conflicts, [
+    { date: '2026-01-05', calendars_removing: ['east'], calendars_adding: [], calendars_silent: ['west'] },
+    { date: '2026-01-06', calendars_removing: ['east'], calendars_adding: ['west'], calendars_silent: [] },
+  ]);
+
+  const residual = residuals.find((r) => r.category === 'calendar_selective_closure');
+  assert.equal(residual.class, 'a');
+  assert.deepEqual(residual.evidence.dates, ['2026-01-05', '2026-01-06']);
+
+  // The merge itself is unaffected: both day patterns are still carried.
+  assert.equal(msd.services[0].operating_hours.default.length, 2);
+  assert.equal(diagnostics.services.r1.calendar_merge.count, 2);
+});
+
+test('a single-calendar service reaches consensus trivially', async () => {
+  const { msd, residuals } = await liftFlexToMsd(loadDir('valid-minimal'));
+
+  assert.equal('exceptions' in (msd.services[0].operating_hours ?? {}), false);
+  assert.equal(residuals.some((r) => r.category === 'calendar_selective_closure'), false);
 });
 
 /* --------------------------------------------------------------- helpers */

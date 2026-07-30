@@ -1,0 +1,8 @@
+service_id,date,exception_type
+east,20260102,2
+west,20260102,2
+east,20260105,2
+east,20260106,2
+west,20260106,1
+east,20260107,1
+west,20260107,1

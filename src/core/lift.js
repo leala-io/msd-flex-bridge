@@ -159,7 +159,8 @@ export async function liftFlexToMsd(files) {
   }
 
   const coordinateNotes = [];
-  const calendarMerge = {};
+  const serviceDiagnostics = {};
+  const exceptionConflicts = [];
   const services = classification.routes.map((link) => {
     const route = rows('routes.txt').find((r) => r.route_id === link.route_id) ?? {};
     return buildService({
@@ -172,7 +173,8 @@ export async function liftFlexToMsd(files) {
       stopsById,
       groupMembers,
       coordinateNotes,
-      calendarMerge,
+      serviceDiagnostics,
+      exceptionConflicts,
     });
   });
 
@@ -206,12 +208,16 @@ export async function liftFlexToMsd(files) {
     booking_rules: rows('booking_rules.txt'),
     stop_times: rows('stop_times.txt'),
   };
-  diagnostics.services = calendarMerge;
+  // Keyed by service_id, not by array index: an index into a document the
+  // reader must cross-reference is fragile (docs/mapping.md, calendar.txt).
+  diagnostics.services = serviceDiagnostics;
   diagnostics.coordinates = coordinateNotes;
   diagnostics.translations = rows('translations.txt');
   diagnostics.stops_extra = collectStopExtras(rows('stops.txt'), feed.headers['stops.txt'] ?? []);
 
-  const residuals = buildResiduals({ msd, feed, classification, provenance, coordinateNotes });
+  const residuals = buildResiduals({
+    msd, feed, classification, provenance, coordinateNotes, exceptionConflicts,
+  });
 
   return { msd, residuals, diagnostics, refusal: null };
 }
@@ -295,7 +301,7 @@ function buildProvider(agency, feedInfo, provenance) {
 function buildService(ctx) {
   const {
     route, link, calendars, calendarDates, stopTimes, trips,
-    stopsById, groupMembers, coordinateNotes, calendarMerge,
+    stopsById, groupMembers, coordinateNotes, serviceDiagnostics, exceptionConflicts,
   } = ctx;
 
   const service = {};
@@ -305,7 +311,8 @@ function buildService(ctx) {
   service.mode = 'bus';
 
   const operatingHours = buildOperatingHours({
-    link, calendars, calendarDates, stopTimes, trips, calendarMerge, serviceId: service.service_id,
+    link, calendars, calendarDates, stopTimes, trips,
+    serviceDiagnostics, exceptionConflicts, serviceId: service.service_id,
   });
   if (operatingHours !== null) service.operating_hours = operatingHours;
 
@@ -322,7 +329,10 @@ function buildService(ctx) {
  * merge is per service and never crosses routes.
  */
 function buildOperatingHours(ctx) {
-  const { link, calendars, calendarDates, stopTimes, trips, calendarMerge, serviceId } = ctx;
+  const {
+    link, calendars, calendarDates, stopTimes, trips,
+    serviceDiagnostics, exceptionConflicts, serviceId,
+  } = ctx;
 
   const serviceIds = link.service_ids;
   const reaching = calendars.filter((c) => serviceIds.includes(c.service_id));
@@ -352,29 +362,90 @@ function buildOperatingHours(ctx) {
     defaults.push(entry);
   }
 
+  /*
+   * Exceptions merge on consensus.
+   *
+   * The calendars have already been merged into one service, so its closure
+   * days are one set too — carrying them per calendar would perform that merge
+   * only halfway and leave a reader unable to tell redundancy from a genuine
+   * double statement.
+   *
+   * The consensus condition is the rule, not a refinement of it. A date becomes
+   * one closed: true entry only when EVERY merged calendar removes it. Where
+   * only some do, the service still runs that day for some riders, and
+   * closed: true would be plainly false — so no entry is written, and the
+   * selective closure is recorded as a diagnostic and a class (a) residual
+   * instead. Two conflicting entries for one date are never emitted: the schema
+   * permits them and no consumer could resolve them.
+   */
+  const mergedIds = reaching.map((c) => c.service_id);
+
+  const exceptionRows = calendarDates.filter(
+    (row) => serviceIds.includes(row.service_id) && toIsoDate(row.date) !== null,
+  );
+
+  // The merged calendars are the denominator. A feed that states its service
+  // days only through calendar_dates.txt has no calendar.txt rows to merge, so
+  // there the calendars named by the exceptions themselves are the denominator.
+  const denominator = mergedIds.length > 0
+    ? mergedIds
+    : [...new Set(exceptionRows.map((row) => row.service_id))];
+
+  const byDate = new Map();
+  for (const row of exceptionRows) {
+    const date = toIsoDate(row.date);
+    const tally = byDate.get(date) ?? new Map();
+    tally.set(row.service_id, row.exception_type);
+    byDate.set(date, tally);
+  }
+
+  const exceptions = [];
+  for (const date of [...byDate.keys()].sort()) {
+    const tally = byDate.get(date);
+    const removing = denominator.filter((id) => tally.get(id) === '2');
+    const adding = denominator.filter((id) => tally.get(id) === '1');
+    const silent = denominator.filter((id) => !tally.has(id));
+
+    if (removing.length === denominator.length) {
+      const entry = {};
+      entry.date = date;
+      entry.closed = true;
+      exceptions.push(entry);
+    } else if (adding.length === denominator.length) {
+      // exception_type = 1, same consensus logic. Start/end are omitted rather
+      // than invented where the added date's hours are not otherwise stated.
+      const entry = {};
+      entry.date = date;
+      entry.closed = false;
+      exceptions.push(entry);
+    } else {
+      exceptionConflicts.push({
+        service_id: serviceId,
+        date,
+        calendars_removing: removing,
+        calendars_adding: adding,
+        calendars_silent: silent,
+      });
+    }
+  }
+
+  const perService = {};
   if (reaching.length > 1) {
-    calendarMerge[serviceId] = {
-      calendar_merge: {
-        merged: reaching.map((c) => c.service_id),
-        count: reaching.length,
-        statement: 'Several calendars were merged into one service; the feed gives no reason for the separation.',
-      },
+    perService.calendar_merge = {
+      merged: mergedIds,
+      count: reaching.length,
+      statement: 'Several calendars were merged into one service; the feed gives no reason for the separation.',
     };
   }
-
-  // One exception entry per calendar_dates row reaching this service.
-  const exceptions = [];
-  for (const row of calendarDates) {
-    if (!serviceIds.includes(row.service_id)) continue;
-    const date = toIsoDate(row.date);
-    if (date === null) continue;
-
-    const entry = {};
-    entry.date = date;
-    if (row.exception_type === '2') entry.closed = true;
-    else if (row.exception_type === '1') entry.closed = false;
-    exceptions.push(entry);
+  const conflicts = exceptionConflicts.filter((c) => c.service_id === serviceId);
+  if (conflicts.length > 0) {
+    perService.exception_consensus = {
+      conflicts: conflicts.map(({ service_id, ...rest }) => rest),
+      count: conflicts.length,
+      statement: 'These dates are treated as exceptions by some but not all of the merged calendars, so no exception entry is written for them: once the calendars are one service, a closure that applies to only some of them cannot be expressed.',
+    };
   }
+  if (Object.keys(perService).length > 0) serviceDiagnostics[serviceId] = perService;
 
   if (defaults.length === 0 && exceptions.length === 0) return null;
 

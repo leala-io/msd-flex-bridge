@@ -1,0 +1,1 @@
+Two calendars on one route with four exception dates: one removed by both, one removed by only one, one where the calendars disagree in kind, and one added by both. Exercises the exception-consensus rule, which the bundled feed cannot: there, all 48 dates are removed by both calendars.
