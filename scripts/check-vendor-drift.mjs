@@ -20,7 +20,16 @@ const depDoc = join(repoRoot, 'docs', 'dependency.md');
 const vendorDir = join(repoRoot, 'vendor', 'msd');
 
 // Files under vendor/msd/ that are this repository's own, not vendored artefacts.
-const REPO_OWNED = new Set(['vendor/msd/COMMIT', 'vendor/msd/core.mjs']);
+const REPO_OWNED = new Set([
+  'vendor/msd/COMMIT',
+  'vendor/msd/core.mjs',
+  // Scope marker, not a vendored artefact. The root package.json sets
+  // "type": "module", which makes Node treat every .js under this package as
+  // ESM — including the vendored CommonJS core.js, even when loaded through
+  // createRequire. This one-key file restores CommonJS semantics for that
+  // directory without touching a single vendored byte. See docs/dependency.md.
+  'vendor/msd/package.json',
+]);
 
 const fail = (msg) => {
   console.error(`vendor-drift: FAIL — ${msg}`);

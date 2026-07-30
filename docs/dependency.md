@@ -62,7 +62,7 @@ cleanup. Hashes computed with `shasum -a 256`.
 
 That is 16 files: one schema, 14 registry code lists, and the validation core.
 
-Two further files live under `vendor/msd/` but are **not** vendored artefacts and are outside the
+Three further files live under `vendor/msd/` but are **not** vendored artefacts and are outside the
 hash table above:
 
 - `vendor/msd/COMMIT` — the pinned commit SHA, this repository's own pin record.
@@ -71,6 +71,22 @@ hash table above:
   construction, and kept out of `src/core/**` so the pure core stays browser-portable. A browser
   build bundles `core.js` directly — bundlers handle CommonJS natively and the shim is not needed
   there.
+- `vendor/msd/package.json` — a two-line scope marker, `{"type": "commonjs"}`, and this
+  repository's own file.
+
+  **Why it is needed.** The root `package.json` declares `"type": "module"`. That declaration
+  applies to every `.js` file in the package tree, so Node parses the vendored `core.js` as ESM and
+  fails on its first `require(...)` — and it fails that way *even through* `createRequire`, because
+  the module type is decided by the nearest `package.json`, not by the caller. The shim alone is
+  therefore not sufficient. A nested `package.json` restores CommonJS semantics for that directory
+  only.
+
+  This is the documented Node mechanism for exactly this situation, and it is deliberately **not**
+  a modification of any upstream file: not one vendored byte changes, the hash table above still
+  matches, and the drift check treats the marker as repo-owned. The alternatives were worse —
+  renaming `core.js` to `core.cjs` would edit a vendored artefact, and copying it would create a
+  second, drifting copy of upstream code. Recorded as a build finding: the incompatibility is a
+  property of consuming a CommonJS artefact from an ESM package, not a defect in either project.
 
 ## Update path for a future MSD release
 
