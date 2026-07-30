@@ -4,11 +4,17 @@ on:
   push:
   pull_request:
 
-# No network access is required or used. At this stage CI runs one gate — the
-# vendor drift check. The other five gates arrive with the build (P1.1+).
+# Four of the six gates are enforceable at this stage. The remaining two — the
+# fixture snapshot gate and the determinism gate — arrive with the lift (P1.3)
+# and are deliberately not stubbed here: a gate that asserts nothing reads as
+# coverage without being any.
+#
+# `npm ci` reaches the registry; nothing else does. The vendor drift check, the
+# fixture assertions and the compliance grep are offline by construction, and
+# the core makes no network call at runtime.
 jobs:
-  vendor-drift:
-    name: Vendor drift check
+  build:
+    name: Gates
     runs-on: ubuntu-latest
     steps:
       - name: Check out
@@ -19,5 +25,27 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Recompute vendored hashes and compare against docs/dependency.md
+      - name: Install dependencies
+        run: npm ci
+
+      # Gate 1 — vendored artefacts are byte-identical to upstream at the pin.
+      - name: Vendor drift check
         run: node scripts/check-vendor-drift.mjs
+
+      # Gate 2 — src/core/** stays pure and deterministic. The checker itself is
+      # tested from both sides in test/purity.test.js.
+      - name: Purity check
+        run: node scripts/check-purity.mjs
+
+      # Gate 3 — the bundled feed still is what the build was written against.
+      # Independent of the lift by design: it says WHERE a feed differs, before
+      # any mapping code runs.
+      - name: Fixture assertions
+        run: npm run test:fixture
+
+      # Gate 4 — public terminology and framing, over tracked files only.
+      - name: Compliance grep
+        run: node scripts/check-compliance.mjs
+
+      - name: Tests
+        run: npm test

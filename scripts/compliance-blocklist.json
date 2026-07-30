@@ -1,0 +1,32 @@
+{
+  "_comment": [
+    "Blocklist for the compliance gate (blueprint C.3/6).",
+    "Scope is tracked files only: CLAUDE.md and .claude/ are untracked and name the",
+    "forbidden forms precisely in order to forbid them, so scanning them would flag",
+    "the guardrails themselves.",
+    "Every entry is matched with word boundaries, case-insensitively.",
+    "'institutional' and 'contest' are empty pending the maintainer's token list —",
+    "the checker reports the count of configured tokens on every run, so an empty",
+    "category is visible rather than silently passing."
+  ],
+  "terminology": [
+    {
+      "token": "v0.1.1 schema",
+      "why": "The schema is v0.1.0; v0.1.1 is the release that publishes it. Correct form: MSD schema v0.1.0 (release v0.1.1)."
+    }
+  ],
+  "institutional": [],
+  "contest": [],
+  "scoped": [
+    {
+      "token": "Japan",
+      "paths": ["README.md"],
+      "why": "The public face is tool-neutral and internationally generic; the first bundled case is content, not purpose. Country framing belongs in fixture attribution, not the README."
+    },
+    {
+      "token": "Japanese",
+      "paths": ["README.md"],
+      "why": "As above."
+    }
+  ]
+}
