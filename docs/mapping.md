@@ -92,9 +92,12 @@ GTFS reference. The inverse honours each:
   location group** become several `operating_hours.default[]` entries of **that route's** service — the
   feed states one offer with several day patterns. The merge is bounded by the route: two routes with
   distinct calendars are **two** entries in `services[]` and are never merged (see §`routes.txt`, "One
-  route, one service"). Mandatory `diagnostics.calendar_merge` is recorded **per service** and records how many
-  calendars were merged into it, their original `service_id` values verbatim, and that the feed gives no
-  reason for the separation.
+  route, one service"). Mandatory `calendar_merge` is recorded **per service**, at
+  `diagnostics.services[<service_id>].calendar_merge`, and records how many calendars were merged into
+  it, their original `service_id` values verbatim, and that the feed gives no reason for the
+  separation.
+  The merge extends to the **exceptions**: the merged service has one set of closure days, written on
+  consensus across the merged calendars and never one entry per source row (see §`calendar_dates.txt`).
   *Rationale (kept here by requirement):* the merged reading asserts the service runs on the **union**
   of all days. Where separate calendars encode a rider-side distinction the format cannot express —
   residence-based usage days, membership cohorts — that union is individually wrong for every rider,
@@ -145,6 +148,22 @@ document and `src/core/detect.js`; the two must agree.
 it is "not flex" would misdescribe it to the publisher, who can see the flex route in their own data.
 The distinction is about what the reader is told, not about what is refused: both are refused whole.
 
+#### Lift-scoped refusals
+
+The table above is **detection-scoped**: those codes are decided before any lifting begins. One
+refusal happens later, in the lift, because it depends on content detection does not inspect. Every
+refusal code in the project appears in one of these two tables.
+
+| Code | Fired by |
+|---|---|
+| `no_document_freshness` | The `last_updated` cascade reaches level 4: `feed_version` does not parse as `YYYYMMDD`, `feed_start_date` is absent, and no calendar carries a `start_date`. The evidence names all three. |
+
+**The lift's contract on a refused feed** — from either table — is `{ msd: null, residuals: [], diagnostics, refusal }`:
+the document is `null` rather than partial, no residual report is produced for a document that does
+not exist, the diagnostics gathered so far are still returned, and the refusal is the structured value
+detection produced, passed through unchanged. **Never a thrown exception**, in keeping with the rule
+that refusals are values.
+
 ---
 
 ## Mapping by source file
@@ -164,11 +183,21 @@ The distinction is about what the reader is told, not about what is refused: bot
 
 - **`provider_id` when `agency_id` is absent (choice).** GTFS makes `agency_id` conditionally optional
   (a single-agency feed may omit it). MSD requires `provider_id`. Rule: use `agency_id` verbatim if
-  present; otherwise a **deterministic slug of `agency_name`** — lowercased ASCII is *not* safe here
-  (names are non-Latin), so the slug is a stable, documented, byte-derived token (e.g. a fixed-length
-  hash prefix of the UTF-8 `agency_name`) recorded in `docs/mapping.md` as *the rule, not the result*.
-  The exact slug function is fixed in P1.3; it must be pure and deterministic. This is a **choice**
-  because MSD needs an id the feed did not supply.
+  present; otherwise a **deterministic slug of `agency_name`**. Lowercased ASCII is *not* safe here —
+  names are non-Latin — so the slug is byte-derived, and this is the rule rather than any particular
+  result:
+
+  > **FNV-1a (32-bit) over the UTF-8 bytes of `agency_name`, rendered lower-case hexadecimal, padded
+  > to eight digits, prefixed `agency-`.** For example a name hashing to `0x1f3a02bc` yields
+  > `agency-1f3a02bc`.
+
+  It is pure, deterministic across runs and platforms, independent of locale and of Unicode
+  normalisation, and it never inspects the characters of the name — only its bytes. It is **not** a
+  checksum for integrity and carries no meaning beyond identity; collisions are possible in principle
+  and would be a finding, not a silent merge. Whenever the slug is used, provenance is recorded at
+  `diagnostics.provenance.provider_id`. This is a **choice** because MSD needs an id the feed did not
+  supply. **Unexercised by the bundled feed**, which carries `agency_id` — see §"Rules not exercised
+  by the bundled fixture".
 - **`agency_timezone` → `provider.country` (choice).** The forward map *derives* `agency_timezone` from
   `provider.country` via a country→IANA table, calling it an assumption. The inverse is **not** a general
   function — many countries share a zone, and no attempt is made to write one. **Choice:** invert only
@@ -254,7 +283,7 @@ stop_time windows to the service its route produced. Nothing from it is written 
 
 | Source field | MSD target | Transformation | Disposition |
 |---|---|---|---|
-| `service_id` | `diagnostics.services[i].calendar_merge.merged[]` | Preserved verbatim as an original calendar id, under the service whose route the calendar belongs to — the merge record is per service. | **diagnostic only** — unambiguous. |
+| `service_id` | `diagnostics.services[<service_id>].calendar_merge.merged[]` | Preserved verbatim as an original calendar id, under the service whose route the calendar belongs to — the merge record is per service, **keyed by `service_id`** rather than by array index, since an index into a document the reader must cross-reference is fragile. | **diagnostic only** — unambiguous. |
 | `monday`…`sunday` | `services[i].operating_hours.default[j].days` | For each calendar, `days` = the tokens `mo tu we th fr sa su` whose flag is `1`, in that fixed week order (see day-token note). | **derived** — unambiguous rule; the *merge into one service* is a **choice** (see calendar-merge rule). |
 | `start_date` | `last_updated` (cascade level 3) | Earliest `start_date` across **all** calendars in the feed → `YYYY-MM-DDT00:00:00Z`, only if levels 1–2 did not fire. `last_updated` is a document-level field, so this level is not scoped per service. | **derived** — unambiguous within the cascade. |
 | `start_date` / `end_date` (as a range) | — | MSD has no service-calendar date range. | **not represented (c)** — unambiguous. |
@@ -278,15 +307,39 @@ stop_time windows to the service its route produced. Nothing from it is written 
 
 | Source field | MSD target | Transformation | Disposition |
 |---|---|---|---|
-| `service_id` | — | Joins the exception to the (merged) service, by the same route link as `calendar.txt`. | **diagnostic only** — unambiguous. |
-| `date` | `operating_hours.exceptions[].date` | `YYYYMMDD` → `YYYY-MM-DD`. | **derived** — unambiguous (pure reformat). |
-| `exception_type` | `operating_hours.exceptions[].closed` | `2` → `closed: true`. `1` (added service) → an exception entry with `closed: false`. | **derived** — **choice** (representation of `exception_type = 1`; see below). |
+| `service_id` | — | Joins the exception to the (merged) service, by the same route link as `calendar.txt`, and decides consensus (see below). | **diagnostic only** — unambiguous. |
+| `date` | `operating_hours.exceptions[].date` | `YYYYMMDD` → `YYYY-MM-DD`. One entry per **date**, not per row; dates are emitted in ascending order. | **derived** — unambiguous (pure reformat). |
+| `exception_type` | `operating_hours.exceptions[].closed` | `2` → `closed: true`, `1` (added service) → `closed: false`, **only on consensus across the merged calendars**. | **derived** — **choice** (consensus rule and the representation of `exception_type = 1`; see below). |
+
+- **Exceptions merge on consensus (rule).** The calendars of a route have already become **one**
+  service with several `default[]` entries. Carrying the exceptions per calendar would perform that
+  merge only halfway: the service is one, so its closure days are one set too. Emitting one entry per
+  source row is not merely untidy — it is semantically redundant, and a reader cannot tell redundancy
+  from a genuine double statement. Per date, across the calendars merged into the service:
+  - **Every merged calendar removes it** → **one** entry, `closed: true`.
+  - **Every merged calendar adds it** (`exception_type = 1`) → **one** entry, `closed: false`.
+  - **Some but not all** → **no entry at all.** The service still runs that day, for the riders of the
+    calendars that did not remove it, so `closed: true` would be plainly false. The date is recorded
+    in `diagnostics.services[<service_id>].exception_consensus` — naming the date and which calendars
+    removed it, added it and were silent — and as a class **(a)** residual: a calendar-selective
+    closure cannot be expressed once several calendars are one service. **Two conflicting entries for
+    one date are never emitted**: the schema permits them and no consumer could resolve them.
+
+  The consensus condition is the rule, not a footnote to it. Where a service has a single calendar,
+  consensus is trivially met and the rule is invisible. In the bundled fixture all 48 dates are
+  removed by both calendars, so the document carries 48 entries where the feed has 96 rows; the
+  partial branch is exercised by `test/fixtures/synthetic/partial-exception/`.
+
+  *Denominator:* the calendars merged into the service — the same set `calendar_merge` records. A feed
+  that states its service days only through `calendar_dates.txt`, with no `calendar.txt` rows to
+  merge, uses the calendars named by the exception rows themselves.
 
 - **`exception_type = 1` (choice).** GTFS `1` means "service added on this date". MSD exceptions model
   deviations from the default hours. Rule: `2` → `closed: true`; `1` → an entry with `closed: false`
-  (an added operating date). Where an added date's hours are not otherwise stated, the entry carries
-  the date and `closed: false` and **omits** `start`/`end` rather than inventing a window (C1). This
-  is a choice because MSD does not distinguish "added" from "modified". **This rule is derived from the
+  (an added operating date), subject to the same consensus condition. Where an added date's hours are
+  not otherwise stated, the entry carries the date and `closed: false` and **omits** `start`/`end`
+  rather than inventing a window (C1). This is a choice because MSD does not distinguish "added" from
+  "modified". **This rule is derived from the
   specification and is not exercised by the bundled fixture** — see §"Rules not exercised by the bundled
   fixture".
 
@@ -447,13 +500,24 @@ criterion 7 (external to this repository). `stops.tts_stop_name` is the same tra
 
 ## Rules not exercised by the bundled fixture
 
-Two rules below are derived from the GTFS specification and the MSD schema, **not** demonstrated on the
+The rules below are derived from the GTFS specification and the MSD schema, **not** demonstrated on the
 reference material. They are stated with the same confidence as the rest of the document, but they are
-**untested** and must not be read as verified until a fixture exercises them:
+**untested against a published feed** and must not be read as verified until one exercises them. Where
+a synthetic fixture covers a rule, that is noted: a synthetic fixture proves the code does what this
+document says, not that a real publisher writes feeds of that shape.
 
 - **`exception_type = 1` (added service date).** Every exception in the bundled fixture is type `2`
   (removal). The rule for added dates — an exception entry with `closed: false` and `start`/`end` omitted
   — is derived from the specification, not demonstrated on the reference material.
+  *(Synthetic cover: `test/fixtures/synthetic/partial-exception/`.)*
+- **Partial exception consensus.** In the bundled fixture all 48 dates are removed by **both** merged
+  calendars, so the branch where only some remove a date — no entry, plus a diagnostic and a class (a)
+  residual — is never taken on the reference material.
+  *(Synthetic cover: `test/fixtures/synthetic/partial-exception/`.)*
+- **The `provider_id` slug.** The bundled feed carries `agency_id`, so the FNV-1a fallback is never
+  reached on the reference material. Nothing is known about how a real publisher's `agency_name` behaves
+  under it — in particular whether two agencies in one corpus could collide.
+  *(Synthetic cover: `test/fixtures/synthetic/valid-minimal/` with `agency_id` removed.)*
 - **Extended-hours reduction (midnight crossing).** The bundled fixture's pickup window is `09:00–17:00`,
   so no window crosses midnight. The `24:00:00` → `00:00` / `25:30:00` → `01:30` reduction is derived from
   the specification and not exercised by the fixture. The `end < start` form it produces is attested in
@@ -519,21 +583,25 @@ Collected for review — these are the decisions the inverse could not make mech
     that route's service, with the mandatory per-service `diagnostics.calendar_merge`. A modelling choice,
     individually wrong for riders where separate calendars encode a distinction the format cannot carry.
     The merge never crosses routes.
-13. **`exception_type = 1`** represented as an exception entry with `closed: false`, `start`/`end`
-    omitted when not otherwise stated. *(Untested — see §Rules not exercised by the bundled fixture.)*
-14. **Extended-hours reduction** for midnight-crossing windows (`24:00:00` → `00:00`, `25:30:00` →
+13. **Exceptions merged on consensus** — one entry per date when every merged calendar agrees; no entry
+    at all when only some do, with a diagnostic and a class (a) residual instead, and never two
+    conflicting entries for one date. *(The partial branch is untested on the reference material — see
+    §Rules not exercised by the bundled fixture.)*
+14. **`exception_type = 1`** represented as an exception entry with `closed: false`, `start`/`end`
+    omitted when not otherwise stated. *(Untested — same section.)*
+15. **Extended-hours reduction** for midnight-crossing windows (`24:00:00` → `00:00`, `25:30:00` →
     `01:30`); an unrepresentable window becomes a residual, not a truncation, and the resulting
     `end < start` entry follows the reference example's attested wrap-around form, with the schema's
     silence recorded under class (c). *(Untested — same section.)*
-15. **Coordinates written as numbers whenever they parse finite and in range**, with the original string
+16. **Coordinates written as numbers whenever they parse finite and in range**, with the original string
     kept in diagnostics where the serialised form differs; `coordinates` omitted entirely, with a
     residual, when the value does not parse or falls outside the range — never clamped, never a string.
-16. **`booking_type` interpretation** — `0` omits `minimum_minutes` (never `0`); `1`/`2` populate
+17. **`booking_type` interpretation** — `0` omits `minimum_minutes` (never `0`); `1`/`2` populate
     `advance_booking` only from fields structurally present.
-17. **Booking channels from structural presence only** — `booking_url` → `web`, `phone_number` →
+18. **Booking channels from structural presence only** — `booking_url` → `web`, `phone_number` →
     `phone`; nothing inferred from `booking_type` or from empty fields.
-18. **`last_updated` cascade** order and the refusal at level 4.
-19. **Contact precedence** — `agency.txt` fields preferred over `feed_info.txt` fallbacks.
+19. **`last_updated` cascade** order and the refusal at level 4.
+20. **Contact precedence** — `agency.txt` fields preferred over `feed_info.txt` fallbacks.
 
 ---
 
