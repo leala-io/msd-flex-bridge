@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+# No network access is required or used. At this stage CI runs one gate — the
+# vendor drift check. The other five gates arrive with the build (P1.1+).
+jobs:
+  vendor-drift:
+    name: Vendor drift check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Recompute vendored hashes and compare against docs/dependency.md
+        run: node scripts/check-vendor-drift.mjs
