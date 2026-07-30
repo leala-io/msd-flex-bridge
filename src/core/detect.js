@@ -3,7 +3,7 @@
  *
  * Pure: no fs, no path, no process, no os, no url, no child_process.
  *
- * The fence is a first-class check (blueprint C.0.2), not an incidental
+ * The fence is a first-class check with its own tests, not an incidental
  * failure. It applies to the feed as a whole, never per route: a feed that
  * mixes a conforming flex route with a non-conforming one is refused whole,
  * because skipping routes would emit a document that looks complete while

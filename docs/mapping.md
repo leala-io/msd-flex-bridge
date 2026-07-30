@@ -5,8 +5,9 @@ This document is the **directional inverse** of the upstream adapter mapping. Up
 documents the **MSD → GTFS-Flex** direction in a spec-verified table with three deviations and a
 loss list. The bridge goes the other way — **GTFS-Flex → MSD** — so the mapping here is derived by
 inverting that table and reconciling it with the MSD schema v0.1.0 (release v0.1.1), Conventions
-C1/C2, and the blueprint rules that are not re-derivable (`last_updated` cascade, calendar merge,
-omission over invention, names verbatim, the two-edge fence).
+C1/C2, and the project rules that cannot be derived from either side — the `last_updated` cascade, the
+calendar merge, omission over invention, names verbatim and the two-edge fence. Those five are stated
+in full in §"Non-negotiable rules applied in this direction" below.
 
 **Status:** derivation for review. No lift code exists yet. This is a document.
 
@@ -46,8 +47,8 @@ residual class records the loss; the diagnostic preserves the bytes so nothing i
 
 ## Where the diagnostics and residuals live
 
-The blueprint defines the lift as `liftFlexToMsd(files) → { msd, residuals, diagnostics }`. The three
-are **siblings of the return value**: `msd` is the document that is serialised and validated;
+The lift returns three values — `liftFlexToMsd(files) → { msd, residuals, diagnostics }`, implemented
+in `src/core/lift.js`. They are **siblings**: `msd` is the document that is serialised and validated;
 `residuals` and `diagnostics` travel alongside it and are **never keys inside it**. Every
 `diagnostics.…` path in this document is therefore a path into that sibling object, not into the MSD
 file — the same for the residual entries collected in §"Not represented".
@@ -63,8 +64,8 @@ absence** of `diagnostics` (and of any residual container) from the emitted docu
 
 ## Upstream spec deviations respected
 
-The forward document flags three deviations from its own blueprint table, verified against the live
-GTFS reference. The inverse honours each:
+The forward document flags three deviations from its own specification table, verified against the
+live GTFS reference. The inverse honours each:
 
 1. **`maximum_days` ↔ `prior_notice_start_day`** (not `prior_notice_last_day`). MSD
    `advance_booking.maximum_days` is the booking *horizon* — the earliest day you may book — which is
@@ -110,11 +111,11 @@ GTFS reference. The inverse honours each:
   distinction the format cannot express; a cross-route merge would collapse one it expresses plainly.
 - **Omission over invention (C1).** Where the feed carries nothing, the MSD key is **absent** — never
   `null`, `0`, `false`, `[]`. Each omission produces a residual entry.
-- **Names verbatim (C.0/9).** Service, stop, operator and headsign values are carried byte-for-byte:
+- **Names verbatim.** Service, stop, operator and headsign values are carried byte-for-byte:
   no `.normalize()`, no `/\s+/` collapsing, no case folding, no transliteration, no substitution from
   `translations.txt`. `trim()` on outer edges only. `translations.txt` values become secondary labels
   in `diagnostics.translations` and are **never** written into the MSD file.
-- **Fence, two edges (C.0/5).** Accept only feeds that (a) express flex via `location_groups` +
+- **Fence, two edges.** Accept only feeds that (a) express flex via `location_groups` +
   `location_group_stops` **without** `locations.geojson`, and (b) carry `routes.route_type` in
   `{3, 715}`. Anything else is **refused with a named reason**, never coerced. Registry `mode` v0.1.0
   permits only `bus`, so an unsupported route type is not expressible.
@@ -493,8 +494,9 @@ field-level mapping below is unaffected either way.
 | `table_name`, `field_name`, `record_id`, `record_sub_id`, `field_value`, `language`, `translation` | `diagnostics.translations[]` | Every row captured verbatim as a **secondary label**. **Never** substituted into any name; **never** written into the MSD file. | **diagnostic only** — unambiguous. |
 
 This is the single hardest reflex to break: `translations.txt` is exactly where a helpful romanisation
-or English label lives, and it must not touch a `name`. See the blueprint's name-fidelity acceptance
-criterion 7 (external to this repository). `stops.tts_stop_name` is the same trap in pronunciation form.
+or English label lives, and it must not touch a `name`. The rule is enforced by a test in
+`test/lift.test.js`, which checks every one of the feed's translation values against every string in the
+emitted document. `stops.tts_stop_name` is the same trap in pronunciation form.
 
 ---
 
@@ -528,8 +530,9 @@ document says, not that a real publisher writes feeds of that shape.
 
 ## MSD-required fields with no direct source field
 
-Three required values are not feed content; each has a documented deterministic rule (blueprint
-C.0/11). They are listed here because the deliverable must show every required field is reachable.
+Six values below are not direct feed content; each has a documented deterministic rule, given in the
+table. They are listed here because the deliverable must show that every required field is reachable
+without inventing a fact.
 
 | MSD field | Rule | Disposition |
 |---|---|---|
@@ -671,18 +674,20 @@ did.
 
 ---
 
-## Findings (schema ↔ blueprint disagreements)
+## Findings — feed content the data model has no field for
 
 Where a spec document and the artefact disagree, the artefact is the state and the disagreement is a
 finding — not something to fix by inventing a key.
 
-1. **No `provider.phone` field.** Blueprint P1.3 lists `agency.txt → provider (… phone …)`, but the MSD
-   schema `provider` has no telephone property (only `contact_email`). `agency_phone` is therefore
-   **not represented (a)** and captured to diagnostics. Writing a `provider.phone` pass-through key would
-   invent a field the data model does not define; omission over invention forbids it.
-2. **No `service.description` field.** Blueprint P1.3 lists `routes.txt → service identity (name,
-   description)`, but the schema `service` has no `description` property (unlike `provider`). `route_desc`
-   is therefore **not represented (a)** / diagnostic, not a written field.
+1. **No `provider.phone` field.** GTFS `agency.txt` carries `agency_phone`, and a telephone number is
+   the contact route this service actually uses — but the MSD schema `provider` has no telephone
+   property, only `contact_email`. `agency_phone` is therefore **not represented (a)** and captured to
+   diagnostics. Writing a `provider.phone` pass-through key would invent a field the data model does not
+   define; omission over invention forbids it.
+2. **No `service.description` field.** GTFS `routes.txt` carries `route_desc`, and a service's identity
+   is plainly more than its name — but the schema `service` has no `description` property, although
+   `provider` does. `route_desc` is therefore **not represented (a)** / diagnostic, not a written
+   field.
 
 3. **`booking_rules` and `references` are document-level, `services` is an array.** The schema puts
    `booking_rules` and `references` on the document root (verified in

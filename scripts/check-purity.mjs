@@ -115,7 +115,9 @@ if (isMain) {
   if (findings.length) {
     console.error(`purity check FAILED — ${findings.length} violation(s):\n`);
     for (const f of findings) console.error(`  ${f.file}:${f.line}  ${f.kind}: ${f.detail}`);
-    console.error('\nsrc/core/** must stay pure and deterministic (blueprint C.0/6, C.0/8).');
+    console.error('\nsrc/core/** must stay pure and deterministic: the core takes bytes and');
+    console.error('returns values, so it stays portable to a browser, and identical input must');
+    console.error('produce byte-identical output. Host access belongs in src/cli.js.');
     process.exit(1);
   }
 

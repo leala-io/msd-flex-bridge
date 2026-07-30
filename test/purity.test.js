@@ -1,5 +1,5 @@
 /**
- * purity.test.js — the purity checker is itself tested (blueprint C.3/4).
+ * purity.test.js — the purity checker is itself tested.
  *
  * A gate that cannot be shown to reject a real violation, and to accept an
  * identifier that merely looks like one, is not a gate.

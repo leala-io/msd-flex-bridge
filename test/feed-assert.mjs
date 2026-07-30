@@ -201,7 +201,8 @@ assert(br.booking_url === '', 'D22 booking_url is EMPTY despite an existing port
 assert(br.message.length > 0, 'D23 free-text message present — carry verbatim, never parse',
   `${[...br.message].length} chars`);
 assert(!('prior_notice_start_day' in br) && !('prior_notice_last_day' in br),
-  'D24 no maximum booking horizon in the feed', 'ground truth says 2 weeks — class (c)');
+  'D24 no maximum booking horizon in the feed',
+  'neither horizon column exists, so advance_booking.maximum_days is omitted — class (c)');
 
 const fi = csv['feed_info.txt'].records[0];
 assert(fi.feed_version === '20260215', 'D25 feed_version pinned', fi.feed_version);
