@@ -75,6 +75,18 @@ test('serialisation is canonical: two-space indent, trailing newline, raw non-AS
   assert.ok(text.includes('瑞穂町'));
 });
 
+test('the BOM fixture lifts to the same document as its BOM-free twin', async () => {
+  const bom = await liftFlexToMsd(loadDir('bom'));
+  const twin = await liftFlexToMsd(loadDir('valid-minimal'));
+
+  // Byte-identical, not merely deep-equal: the BOM must not have survived into
+  // the first header key of any file and so into a value or a key here.
+  assert.equal(serialise(bom.msd), serialise(twin.msd));
+  assert.equal(serialise(bom.residuals), serialise(twin.residuals));
+  assert.equal(serialise(bom.diagnostics), serialise(twin.diagnostics));
+  assert.equal(serialise(bom.msd).includes('﻿'), false);
+});
+
 /* ---------------------------------------------------------- name fidelity */
 
 test('the nine U+3000 names and the fullwidth-Latin name survive into the document', async () => {
