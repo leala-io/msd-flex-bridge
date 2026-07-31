@@ -11,14 +11,17 @@
     <header class="head">
       <h1>Service description card</h1>
       <p class="subtitle">What a description layer carries, and what a discovery format cannot.</p>
-      <p class="intro">Every value below is read from a description document lifted out of a published, openly licensed feed, or from the residual register produced alongside it. Nothing is computed, completed or guessed. The axes that stay empty are the point of this card, not a shortfall in it.</p>
-    </header>
 
-    <section class="freshness">
-      <h2>Freshness</h2>
-      <p class="freshness-date"><span class="freshness-label">The feed’s own date</span> <time datetime="2026-02-15T00:00:00Z">2026-02-15T00:00:00Z</time></p>
-      <p class="note">This is the date the feed states about itself, carried through unchanged. No ground truth is compared against it in this card, so no second date is shown; where one exists, both dates belong here. Staleness is a property of published open data, not something to hide.</p>
-    </section>
+      <div class="freshness">
+        <h2>Freshness</h2>
+        <p class="freshness-date"><span class="freshness-label">The feed’s own date</span> <time datetime="2026-02-15T00:00:00Z" title="2026-02-15T00:00:00Z">15 February 2026</time></p>
+        <p class="freshness-exact">Exact value as stored: <code>2026-02-15T00:00:00Z</code></p>
+        <p class="note">The date is the one the feed states about itself. The stored value carries a midnight time that the feed does not: the derivation appends it to satisfy a timestamp format. It is kept above so nothing is lost, and it is not shown as the headline date, because midnight is a precision the source does not have.</p>
+        <p class="note">No ground truth is compared against this date in this card, so no second date is shown; where one exists, both dates belong here. Staleness is a property of published open data, not something to hide.</p>
+      </div>
+
+      <p class="intro">Every value below is read from a description document lifted out of a published, openly licensed feed, or from the residual register produced alongside it. Exactly one value — the provider country — is derived rather than read, and is marked where it appears. Nothing else is computed, completed or guessed. The axes that stay empty are the point of this card, not a shortfall in it.</p>
+    </header>
 
     <section class="service">
       <h2>The service</h2>
@@ -27,9 +30,10 @@
         <div class="pair"><dt>Service</dt><dd>チョイソコみずほまち</dd></div>
         <div class="pair"><dt>Service type</dt><dd>on_demand</dd></div>
         <div class="pair"><dt>Mode</dt><dd>bus</dd></div>
-        <div class="pair"><dt>Provider country</dt><dd>JP</dd></div>
+        <div class="pair pair-derived"><dt>Provider country <span class="tag-derived">Derived</span></dt><dd>JP</dd></div>
         <div class="pair"><dt>Provider languages</dt><dd>ja</dd></div>
       </dl>
+      <p class="note">Provider country is the one value on this card that the feed does not state: it is derived from the timezone the feed gives for its operator, through an explicit table of zones whose country is unambiguous, and a zone outside that table yields no country at all rather than a guess.</p>
       <p class="note">Names are shown exactly as the feed carries them, byte for byte, and are not transliterated.</p>
     </section>
 

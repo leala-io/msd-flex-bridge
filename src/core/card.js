@@ -178,6 +178,42 @@ const esc = escapeXml;
 const row = (label, value) =>
   `        <div class="pair"><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`;
 
+/**
+ * A value the feed does not state, marked as such where it appears.
+ *
+ * The card's opening claims nothing is computed or guessed, and that claim has
+ * to be true of every value on the page. One value is derived — the provider
+ * country — so it carries a marker rather than sitting undifferentiated beside
+ * values the feed states.
+ */
+const derivedRow = (label, value, tag) =>
+  `        <div class="pair pair-derived"><dt>${esc(label)} <span class="tag-derived">${esc(tag)}</span></dt><dd>${esc(value)}</dd></div>`;
+
+/**
+ * Write an ISO date as an unambiguous English date, without a locale API.
+ *
+ * `Intl` and `toLocaleDateString` are locale-dependent, which makes them
+ * non-deterministic across machines — the same reason the core carries no wall
+ * clock. The month name comes from the interface strings; only the digits come
+ * from the document.
+ *
+ * The time component is deliberately dropped. The derivation appends midnight to
+ * a date that carries no time, and showing it would claim a precision the source
+ * does not have. The exact stored value is kept beside it, so nothing is lost.
+ */
+export function formatDate(isoLike, strings) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(isoLike));
+  if (match === null) {
+    throw new Error(`"${isoLike}" is not a date this card knows how to write out`);
+  }
+  const [, year, month, day] = match;
+  const name = strings.monthNames[Number(month) - 1];
+  if (name === undefined) {
+    throw new Error(`"${isoLike}" names no month between 1 and 12`);
+  }
+  return `${Number(day)} ${name} ${year}`;
+}
+
 function renderAxis(axis, doc, register, strings) {
   const label = AXIS_LABELS[axis.id];
 
@@ -291,14 +327,20 @@ export function renderCard({ msd, residuals, strings }) {
     '    <header class="head">',
     `      <h1>${esc(strings.title)}</h1>`,
     `      <p class="subtitle">${esc(strings.subtitle)}</p>`,
+    '',
+    // Directly under the title, because a reader who skims meets it here. It
+    // used to sit below as a machine timestamp, which reads as an identifier
+    // rather than as a date.
+    '      <div class="freshness">',
+    `        <h2>${esc(strings.freshnessHeading)}</h2>`,
+    `        <p class="freshness-date"><span class="freshness-label">${esc(strings.freshnessLabel)}</span> <time datetime="${esc(msd.last_updated)}" title="${esc(msd.last_updated)}">${esc(formatDate(msd.last_updated, strings))}</time></p>`,
+    `        <p class="freshness-exact">${esc(strings.freshnessExactLabel)}: <code>${esc(msd.last_updated)}</code></p>`,
+    `        <p class="note">${esc(strings.freshnessTimeNote)}</p>`,
+    `        <p class="note">${esc(strings.freshnessNote)}</p>`,
+    '      </div>',
+    '',
     `      <p class="intro">${esc(strings.intro)}</p>`,
     '    </header>',
-    '',
-    '    <section class="freshness">',
-    `      <h2>${esc(strings.freshnessHeading)}</h2>`,
-    `      <p class="freshness-date"><span class="freshness-label">${esc(strings.freshnessLabel)}</span> <time datetime="${esc(msd.last_updated)}">${esc(msd.last_updated)}</time></p>`,
-    `      <p class="note">${esc(strings.freshnessNote)}</p>`,
-    '    </section>',
     '',
     '    <section class="service">',
     `      <h2>${esc(strings.serviceHeading)}</h2>`,
@@ -307,9 +349,10 @@ export function renderCard({ msd, residuals, strings }) {
     row(strings.serviceLabel, service.name),
     row(strings.serviceTypeLabel, service.service_type),
     row(strings.modeLabel, service.mode),
-    row(strings.countryLabel, provider.country),
+    derivedRow(strings.countryLabel, provider.country, strings.derivedTag),
     row(strings.languagesLabel, provider.languages.join(' ')),
     '      </dl>',
+    `      <p class="note">${esc(strings.countryDerivation)}</p>`,
     `      <p class="note">${esc(strings.nameNote)}</p>`,
     '    </section>',
     '',

@@ -67,9 +67,18 @@ section { margin-bottom: 2.25rem; }
   border: 1px solid var(--rule);
   border-left: 4px solid var(--ink);
   padding: 1rem 1.25rem;
+  margin: 0 0 1.25rem;
 }
 
-.freshness-date { margin: 0; font-size: 1.25rem; }
+.freshness h2 { font-size: .75rem; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-soft); margin-bottom: .35rem; }
+
+/* The headline is a date a person reads, not a machine timestamp. The exact
+   stored value sits under it so nothing is lost. */
+.freshness-date { margin: 0; font-size: 1.5rem; line-height: 1.25; }
+.freshness-date time { font-weight: 600; }
+.freshness-exact { margin: .3rem 0 0; font-size: .8rem; color: var(--ink-soft); }
+.freshness-exact code { font-size: .8rem; background: var(--page); padding: .05rem .3rem; border: 1px solid var(--rule); }
+
 .freshness-label {
   display: inline-block;
   font-size: .75rem;
@@ -78,7 +87,20 @@ section { margin-bottom: 2.25rem; }
   color: var(--ink-soft);
   margin-right: .5rem;
 }
-.freshness time { font-variant-numeric: tabular-nums; }
+
+/* A value the feed does not state must not sit undifferentiated beside ones it
+   does. Marked in the term, so it is visible wherever the value is read. */
+.pair-derived dt { color: var(--ink); }
+.tag-derived {
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--open);
+  background: var(--open-bg);
+  border: 1px dotted var(--open);
+  padding: .05rem .35rem;
+  white-space: nowrap;
+}
 
 /* --- value lists ---------------------------------------------------------- */
 

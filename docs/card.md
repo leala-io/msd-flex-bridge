@@ -61,6 +61,27 @@ are diagnostics.
 Names are carried byte-for-byte, ideographic spaces and full-width Latin characters included. No
 normalisation, no whitespace collapsing, no case folding, no substitution.
 
+### The one value the feed does not state
+
+`provider.country` is in the document, but the feed never says it: the lift derives it from the
+timezone the feed gives for its operator, through an explicit table of zones whose country is
+unambiguous, omitting the country entirely for a zone outside that table. The card does not compute
+it — but presenting it beside values the feed states would let a reader take it for one. It is
+therefore marked **Derived** in the term, and the rule is named beneath the list. The card's opening
+sentence names it too, so the claim that nothing else is computed or guessed is true of every value
+on the page.
+
+### The freshness date
+
+Shown in the header, above the introduction, where a reader who skims meets it, and written out as
+`15 February 2026` — a fixed English form, not a locale API, which would be machine-dependent for
+the same reason the core carries no wall clock.
+
+**The time component is dropped on purpose.** The `last_updated` derivation appends midnight to a
+date that carries no time; displaying it would claim a precision the source does not have. The exact
+stored value is kept directly beneath, in the `datetime` attribute and in a `title`, so nothing is
+lost and a machine reader still gets the timestamp.
+
 ## No basemap, and therefore no map library
 
 A basemap needs tiles; tiles need a network call at runtime; this repository makes none. The one

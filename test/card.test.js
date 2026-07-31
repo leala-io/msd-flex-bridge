@@ -17,7 +17,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
 import { liftFlexToMsd } from '../src/core/lift.js';
-import { renderCard, stateFromRegister, AXES } from '../src/core/card.js';
+import { renderCard, stateFromRegister, formatDate, AXES } from '../src/core/card.js';
 import { en, xx } from '../src/core/card-strings.js';
 import { buildCard } from '../scripts/build-card.mjs';
 
@@ -129,6 +129,70 @@ test('trip purpose is an open question, distinct from the confirmed gaps', () =>
   assert.notEqual(tripPurpose.badgeClass, noField.badgeClass);
   assert.equal(lifted.residuals.find((e) => e.category === 'trip_purpose'), undefined,
     'it must not be written into the register: no build needed the field and found none');
+});
+
+/* ---------------------------- freshness: a date, not a machine timestamp --- */
+
+test('the freshness date is written out, with the exact stored value kept beside it', () => {
+  // It reads as a date to someone skimming, rather than as an identifier.
+  assert.match(html, /<time datetime="2026-02-15T00:00:00Z" title="2026-02-15T00:00:00Z">15 February 2026<\/time>/);
+  // Nothing is lost: the stored value is on the page in full.
+  assert.match(html, /Exact value as stored: <code>2026-02-15T00:00:00Z<\/code>/);
+
+  // And it is where a skimming reader meets it — inside the header, above the
+  // introduction, not in a section further down.
+  const header = html.match(/<header class="head">([\s\S]*?)<\/header>/);
+  assert.ok(header, 'the card has a header');
+  assert.match(header[1], /class="freshness"/, 'freshness sits in the header');
+  assert.ok(header[1].indexOf('class="freshness"') < header[1].indexOf('class="intro"'),
+    'the date comes before the prose, not after it');
+});
+
+test('the headline date drops the midnight the source does not state', () => {
+  // The rendered text, not the markup: a `datetime` attribute is machine-facing
+  // and is exactly where the exact value belongs.
+  const headline = html.match(/<p class="freshness-date">([\s\S]*?)<\/p>/)[1]
+    .replace(/<[^>]*>/g, '');
+
+  assert.ok(headline.includes('15 February 2026'));
+  assert.ok(!headline.includes('00:00:00'),
+    'showing midnight would claim a precision the feed does not have');
+  // The reason is on the page, not only in the commit message.
+  assert.match(html, /midnight is a precision the source does not have/);
+});
+
+test('the date is written without a locale API, so it cannot drift between machines', () => {
+  assert.equal(formatDate('2026-02-15T00:00:00Z', en), '15 February 2026');
+  assert.equal(formatDate('2026-02-15', en), '15 February 2026');
+  assert.equal(formatDate('2024-01-01T12:34:56Z', en), '1 January 2024');
+  assert.equal(formatDate('2026-12-31', en), '31 December 2026');
+
+  assert.throws(() => formatDate('15.02.2026', en), /not a date this card knows how to write out/);
+  assert.throws(() => formatDate('2026-13-01', en), /names no month between 1 and 12/);
+});
+
+/* ------------------------- the one value the feed does not state ----------- */
+
+test('provider country is marked as derived and the rule is named', () => {
+  assert.match(
+    html,
+    /<div class="pair pair-derived"><dt>Provider country <span class="tag-derived">Derived<\/span><\/dt><dd>JP<\/dd><\/div>/,
+    'the marker sits in the term, so it is visible wherever the value is read',
+  );
+  assert.match(html, /derived from the timezone the feed gives for its operator/);
+  assert.match(html, /a zone outside that table yields no country at all rather than a guess/);
+
+  // No other value on the card carries the marker: the claim is that this is
+  // the only derived one, and the card has to keep that claim true.
+  assert.equal((html.match(/pair-derived/g) ?? []).length, 1);
+});
+
+test('the opening sentence is true of every value on the card', () => {
+  assert.match(html, /Exactly one value — the provider country — is derived rather than read/);
+  assert.match(html, /Nothing else is computed, completed or guessed/);
+  // The old absolute claim must be gone: it was false while an undifferentiated
+  // derived value sat among the feed's own.
+  assert.ok(!html.includes('Nothing is computed, completed or guessed'));
 });
 
 /* ==================== 2. name fidelity — verbatim, or not at all ========== */

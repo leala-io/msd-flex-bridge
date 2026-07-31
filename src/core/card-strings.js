@@ -30,9 +30,16 @@ export const en = {
 
   intro:
     'Every value below is read from a description document lifted out of a published, openly '
-    + 'licensed feed, or from the residual register produced alongside it. Nothing is computed, '
-    + 'completed or guessed. The axes that stay empty are the point of this card, not a shortfall '
-    + 'in it.',
+    + 'licensed feed, or from the residual register produced alongside it. Exactly one value — the '
+    + 'provider country — is derived rather than read, and is marked where it appears. Nothing else '
+    + 'is computed, completed or guessed. The axes that stay empty are the point of this card, not '
+    + 'a shortfall in it.',
+
+  /** Month names, so a date can be written unambiguously without a locale API. */
+  monthNames: [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December',
+  ],
 
   /* --- the three states, and the qualifier that is not a fourth state ----- */
 
@@ -69,14 +76,26 @@ export const en = {
   modeLabel: 'Mode',
   countryLabel: 'Provider country',
   languagesLabel: 'Provider languages',
+  derivedTag: 'Derived',
+  countryDerivation:
+    'Provider country is the one value on this card that the feed does not state: it is derived '
+    + 'from the timezone the feed gives for its operator, through an explicit table of zones whose '
+    + 'country is unambiguous, and a zone outside that table yields no country at all rather than '
+    + 'a guess.',
   nameNote: 'Names are shown exactly as the feed carries them, byte for byte, and are not transliterated.',
 
   freshnessHeading: 'Freshness',
   freshnessLabel: 'The feed’s own date',
+  freshnessExactLabel: 'Exact value as stored',
+  freshnessTimeNote:
+    'The date is the one the feed states about itself. The stored value carries a midnight time '
+    + 'that the feed does not: the derivation appends it to satisfy a timestamp format. It is kept '
+    + 'above so nothing is lost, and it is not shown as the headline date, because midnight is a '
+    + 'precision the source does not have.',
   freshnessNote:
-    'This is the date the feed states about itself, carried through unchanged. No ground truth '
-    + 'is compared against it in this card, so no second date is shown; where one exists, both '
-    + 'dates belong here. Staleness is a property of published open data, not something to hide.',
+    'No ground truth is compared against this date in this card, so no second date is shown; where '
+    + 'one exists, both dates belong here. Staleness is a property of published open data, not '
+    + 'something to hide.',
 
   axesHeading: 'Description axes',
   axesNote:
