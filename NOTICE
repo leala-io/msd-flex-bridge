@@ -28,9 +28,19 @@ file alongside LICENSE (AGPL-3.0, this repository's code).
    run time; not one vendored byte is modified.
 
 4. Bundled sample feeds — CC BY 4.0 (per-fixture attribution)
-   Sample GTFS-Flex feeds bundled as test fixtures are licensed CC BY 4.0, each
-   with its own attribution file recording publisher, licence, retrieval date,
-   feed version, and sha256. None are present yet.
+   Published GTFS-Flex feeds bundled as test fixtures are licensed CC BY 4.0,
+   each with its own attribution file recording publisher, licence, source,
+   retrieval date, feed version, and sha256.
+
+   One such feed is bundled: test/fixtures/mizuho/Mizuho_Area-20260202.zip,
+   published by Mizuho Town (瑞穂町) under CC BY 4.0 and included verbatim as the
+   published archive — not unpacked, not re-zipped. Its attribution file is
+   test/fixtures/mizuho/ATTRIBUTION.md, which carries the publisher, licence,
+   source, retrieval date, feed version and sha256 in full.
+
+   The fixtures under test/fixtures/synthetic/ are not published data. They are
+   constructed by this repository to exercise specific edge cases, and fall
+   under regime 1 with the rest of the tests.
 
 Integrity of vendored material
 ------------------------------
