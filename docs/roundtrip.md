@@ -177,3 +177,86 @@ asserts the opposite — a numerically equal but differently formatted coordinat
 reported — because a diff that reports everything is as useless as one that reports nothing.
 
 Those tests are the reason to believe the result. They are written before the result is read.
+
+---
+
+# Appendix — recorded after the comparison ran
+
+**Everything above this line predates the run.** This appendix was appended
+afterwards and states results and the one operational decision the run forced. Nothing above it
+was edited to match what follows; the commit history shows the order.
+
+## Interoperability evidence — the canonical GTFS validator
+
+Both feeds are validated with **MobilityData gtfs-validator v8.0.1**, run by
+`scripts/gtfs-validator.mjs` (`npm run check:gtfs`) as a CI step.
+
+### The one network exception
+
+`CLAUDE.md` states that nothing in this repository reaches the network at runtime or in CI. This
+step is the single, explicit exception, because the validator is roughly 40 MB and not vendorable
+at a sensible size. It holds on three conditions, all enforced in the script:
+
+1. **fetched by pinned version** — `v8.0.1`, never `latest`, never a moving tag;
+2. **sha256 verified on every run**, a cached copy included, with the step failing on mismatch —
+   an unverified download would make the interoperability claim rest on whatever a server
+   returned that day;
+3. **the artefact is git-ignored** and never committed.
+
+| | |
+|---|---|
+| Release | `v8.0.1` |
+| Artefact | `gtfs-validator-8.0.1-cli.jar` |
+| sha256 | `19293ddd9b6f954f216d4f12054bd8a3232921751c4484339e339764a91000e2` |
+| bytes | 40256884 |
+
+### Why the validation date is pinned, and to what
+
+The validator defaults to the **current date** for time-based rules. Left alone, the same input
+would produce different output from one day to the next, and a CI result would silently stop
+meaning what it meant. Both variable inputs are therefore derived from the feed itself:
+
+- **date** `2026-02-15` — the lifted document's `last_updated`, which comes from the feed's own
+  `feed_version` through the documented cascade;
+- **country code** `jp` — the lifted document's `provider.country`.
+
+**A different date produces a different notice set**, particularly around calendar coverage. The
+date was not chosen to suit the result: the date the feed asserts about itself is the only one
+this repository can defend, and the two calendar-related notices below are a consequence of it
+rather than something to tune away.
+
+### Results, verbatim
+
+**Original feed** — 12 files, as published. 23 notices, 8 of them ERROR.
+
+| count | severity | code |
+|---|---|---|
+| 14 | WARNING | `mixed_case_recommended_field` |
+| 8 | ERROR | `stop_time_timepoint_without_times` |
+| 1 | WARNING | `unexpected_enum_value` |
+
+Stated as a fact about a published feed, and not as a criticism of a publisher: the ERRORs are
+`timepoint=1` set on stop times that carry a pickup window instead of an arrival and departure
+time — two per row across four rows. The `unexpected_enum_value` is `route_type=715`, the
+extended demand-response value. The 14 warnings are 13 stop names and one booking message that
+mix scripts within a field.
+
+**Generated feed** — 11 files. 16 notices, **0 of them ERROR**.
+
+| count | severity | code |
+|---|---|---|
+| 1 | INFO | `future_calendar` |
+| 14 | WARNING | `mixed_case_recommended_field` |
+| 1 | WARNING | `trip_coverage_not_active_for_next7_days` |
+
+The 14 warnings are the same 13 stop names — `stops.txt` is byte-identical between the two feeds
+— plus one on the generated `location_group_name`, which the exporter synthesises by appending an
+English literal to the service name. The two calendar notices follow from the pinned validation
+date falling one day before the first service day of the derived calendar.
+
+The step fails on an ERROR-severity notice in the generated feed and never on the original's
+result.
+
+**The claim under test was zero notices on foreign-derived material. That is not what happened:
+the generated feed carries 16.** None is an ERROR, and the largest group is inherited unchanged
+from the original — but the number is 16, not 0, and it is recorded here as such.

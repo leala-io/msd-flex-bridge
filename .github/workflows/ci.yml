@@ -9,9 +9,19 @@ on:
 # where they can assert the reasons a snapshot is right rather than only that it
 # has not changed.
 #
-# `npm ci` reaches the registry; nothing else does. The vendor drift check, the
-# fixture assertions and the terminology check are offline by construction, and
-# the core makes no network call at runtime.
+# Two further steps run after the gates and are not among the six: the roundtrip,
+# which produces the two feeds, and the canonical GTFS validator over both of
+# them. The validator step is interoperability evidence, not a seventh gate — it
+# fails only on an ERROR-severity notice in the generated feed and never on the
+# original's own result, which is recorded and reported as a fact about a
+# published feed.
+#
+# `npm ci` reaches the registry. The validator step fetches one pinned JAR and
+# verifies its sha256 before running it — the single, explicit exception to the
+# no-network rule, with its conditions stated in scripts/gtfs-validator.mjs and
+# in docs/roundtrip.md. Nothing else reaches the network: the vendor drift check,
+# the fixture assertions, the terminology check and the roundtrip are offline by
+# construction, and the core makes no network call at runtime.
 jobs:
   build:
     name: Gates
@@ -58,8 +68,31 @@ jobs:
 
       # The snapshot must be reproducible from the committed sources alone. If
       # regenerating changes a byte, the committed snapshot is not what the
-      # current lift produces.
+      # current lift produces. This covers the roundtrip diff report too.
       - name: Snapshots are reproducible
         run: |
           node scripts/write-snapshots.mjs
           git diff --exit-code -- test/fixtures/expected/
+
+      # Not a gate — evidence. Writes the two feeds the validator then reads:
+      # the bundled feed unpacked verbatim, and the feed the vendored exporter
+      # produces from the lifted document. Offline and deterministic.
+      - name: Roundtrip
+        run: npm run roundtrip
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      # THE ONE NETWORK EXCEPTION. Fetches gtfs-validator pinned at v8.0.1 and
+      # verifies its sha256 before running it; a mismatch fails the step, so the
+      # interoperability claim never rests on whatever a server returned that
+      # day. The JAR is git-ignored and never committed.
+      #
+      # Runs over the generated feed AND the original. Fails only on an
+      # ERROR-severity notice in the generated feed; the original's result is
+      # recorded and reported, never enforced.
+      - name: Canonical GTFS validator — both feeds
+        run: npm run check:gtfs

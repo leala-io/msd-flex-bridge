@@ -17,7 +17,8 @@
     "roundtrip": "node scripts/roundtrip.mjs",
     "check:purity": "node scripts/check-purity.mjs",
     "check:vendor": "node scripts/check-vendor-drift.mjs",
-    "check:terminology": "node scripts/check-terminology.mjs"
+    "check:terminology": "node scripts/check-terminology.mjs",
+    "check:gtfs": "node scripts/gtfs-validator.mjs"
   },
   "dependencies": {
     "ajv": "^8.17.1",
