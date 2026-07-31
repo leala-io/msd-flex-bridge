@@ -3,13 +3,15 @@
  * check-terminology.mjs — terminology check over tracked files
  *
  * Fails the build when a tracked file states the version relationship wrongly.
- * The schema is v0.1.0; v0.1.1 is the release that publishes it. Writing
- * "v0.1.1 schema" conflates two different version numbers for two different
- * things, and it has happened three times in this project.
+ * The schema is v0.1.0; the release that publishes it is v0.1.1. Attaching the
+ * release number to the word "schema" conflates two different version numbers
+ * for two different things, and it has happened three times in this project.
  *
  * The pattern is stated in clear text on purpose: it describes a mistake, not a
  * protected term, so there is nothing to conceal and a reader can see exactly
- * what the check enforces.
+ * what the check enforces. Prose here has to avoid writing the wrong form out —
+ * this comment triggered the check on its own first run, which is the self-hit
+ * the removed hashed gate produced twice.
  *
  * SCOPE — tracked files only, excluding vendor/. Both exclusions are deliberate.
  *
