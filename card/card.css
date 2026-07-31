@@ -1,0 +1,146 @@
+/* card.css — the service card's only stylesheet.
+ *
+ * No framework, no component library, no icon set beyond the inline symbols the
+ * SVG draws itself, no font fetched at runtime, no analytics. The card must open
+ * from the file system with no network access, so every rule here is local and
+ * the type stack is whatever the reader already has.
+ *
+ * The one rule that is not decoration: the three states must not look alike.
+ * "The feed does not say" and "the model has no field" are different statements,
+ * and a reader who cannot tell them apart at a glance has been told neither. They
+ * differ in colour, in border and in the shape of the badge, so the distinction
+ * survives greyscale printing and a colour-blind reader.
+ */
+
+:root {
+  --ink: #17181a;
+  --ink-soft: #55585d;
+  --rule: #d9dbdf;
+  --page: #fbfbfa;
+  --panel: #ffffff;
+
+  --present: #1b6b3a;
+  --present-bg: #e8f3ec;
+  --feed-silent: #8a5a00;
+  --feed-silent-bg: #fbf1dd;
+  --no-field: #8f2230;
+  --no-field-bg: #fbe9eb;
+  --open: #3a4a86;
+  --open-bg: #eaedf7;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 2rem 1.25rem 4rem;
+  background: var(--page);
+  color: var(--ink);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Noto Sans JP",
+        "Yu Gothic", Meiryo, sans-serif;
+}
+
+main { max-width: 60rem; margin: 0 auto; }
+
+h1 { font-size: 1.85rem; line-height: 1.2; margin: 0 0 .35rem; }
+h2 { font-size: 1.15rem; margin: 0 0 .75rem; letter-spacing: .01em; }
+h3 { font-size: 1rem; margin: 0 0 .5rem; }
+
+.subtitle { margin: 0 0 1rem; font-size: 1.05rem; color: var(--ink-soft); }
+.intro { margin: 0; max-width: 46rem; }
+
+.head { border-bottom: 1px solid var(--rule); padding-bottom: 1.5rem; margin-bottom: 1.75rem; }
+
+section { margin-bottom: 2.25rem; }
+
+.note {
+  color: var(--ink-soft);
+  font-size: .875rem;
+  max-width: 46rem;
+  margin: .75rem 0 0;
+}
+
+/* --- freshness: prominent on purpose ------------------------------------- */
+
+.freshness {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--ink);
+  padding: 1rem 1.25rem;
+}
+
+.freshness-date { margin: 0; font-size: 1.25rem; }
+.freshness-label {
+  display: inline-block;
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--ink-soft);
+  margin-right: .5rem;
+}
+.freshness time { font-variant-numeric: tabular-nums; }
+
+/* --- value lists ---------------------------------------------------------- */
+
+.values { margin: 0; display: grid; gap: .35rem .75rem; }
+.pair { display: grid; grid-template-columns: minmax(9rem, 16rem) 1fr; gap: .75rem; }
+.pair dt { color: var(--ink-soft); font-size: .875rem; }
+.pair dd { margin: 0; }
+
+/* --- the three states, plus the open question ----------------------------- */
+
+.state-key { background: var(--panel); border: 1px solid var(--rule); padding: 1.25rem; }
+.key-item { display: grid; grid-template-columns: 13rem 1fr; gap: 1rem; align-items: start; margin-bottom: .6rem; }
+.key-item p { margin: 0; font-size: .875rem; color: var(--ink-soft); }
+
+.state-badge {
+  display: inline-block;
+  margin: 0 0 .6rem;
+  padding: .2rem .6rem;
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+  border: 1px solid currentColor;
+}
+
+/* Colour AND border AND shape differ, so the distinction survives greyscale. */
+.state-present     { color: var(--present);     background: var(--present-bg);     border-radius: 999px; }
+.state-feed-silent { color: var(--feed-silent); background: var(--feed-silent-bg); border-radius: 0; border-style: dashed; }
+.state-no-field    { color: var(--no-field);    background: var(--no-field-bg);    border-radius: 0; border-width: 2px; }
+.state-open-question { color: var(--open);      background: var(--open-bg);        border-radius: 0; border-style: dotted; border-width: 2px; }
+
+.axis {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-left-width: 4px;
+  padding: 1rem 1.25rem;
+  margin-bottom: .85rem;
+}
+
+.axis-present       { border-left-color: var(--present); }
+.axis-feed-silent   { border-left-color: var(--feed-silent); border-left-style: dashed; }
+.axis-no-field      { border-left-color: var(--no-field); border-left-width: 7px; }
+.axis-open-question { border-left-color: var(--open); border-left-style: dotted; border-left-width: 7px; }
+
+.axis-source { margin: 0 0 .5rem; font-size: .8rem; color: var(--ink-soft); }
+.axis-statement { margin: 0; max-width: 46rem; }
+.axis-note { margin: .6rem 0 0; font-size: .875rem; color: var(--ink-soft); }
+.axis-register { margin: .6rem 0 0; font-size: .8rem; color: var(--ink-soft); }
+.axis-register code { font-size: .8rem; background: var(--page); padding: .05rem .3rem; border: 1px solid var(--rule); }
+
+/* --- the map: points only, no backdrop ------------------------------------ */
+
+.map { max-width: 100%; height: auto; display: block; background: var(--panel); }
+.map-frame { fill: none; stroke: var(--rule); }
+.map-bounds rect { fill: none; stroke: var(--ink-soft); stroke-dasharray: 4 3; }
+.map-points circle { fill: var(--present); fill-opacity: .72; stroke: var(--panel); stroke-width: .6; }
+.map-north line, .map-scale line { stroke: var(--ink); stroke-width: 1.4; }
+.map-north polygon { fill: var(--ink); }
+.map-label { font-size: 12px; fill: var(--ink); text-anchor: middle; }
+.map-label-left { text-anchor: start; }
+.map-coord { font-size: 11px; fill: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.map-coord-right { text-anchor: end; }
+
+@media (max-width: 40rem) {
+  .pair, .key-item { grid-template-columns: 1fr; gap: .1rem; }
+}

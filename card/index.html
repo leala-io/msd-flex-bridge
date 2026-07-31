@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Service description card</title>
+  <link rel="stylesheet" href="card.css">
+</head>
+<body>
+  <main>
+    <header class="head">
+      <h1>Service description card</h1>
+      <p class="subtitle">What a description layer carries, and what a discovery format cannot.</p>
+      <p class="intro">Every value below is read from a description document lifted out of a published, openly licensed feed, or from the residual register produced alongside it. Nothing is computed, completed or guessed. The axes that stay empty are the point of this card, not a shortfall in it.</p>
+    </header>
+
+    <section class="freshness">
+      <h2>Freshness</h2>
+      <p class="freshness-date"><span class="freshness-label">The feed’s own date</span> <time datetime="2026-02-15T00:00:00Z">2026-02-15T00:00:00Z</time></p>
+      <p class="note">This is the date the feed states about itself, carried through unchanged. No ground truth is compared against it in this card, so no second date is shown; where one exists, both dates belong here. Staleness is a property of published open data, not something to hide.</p>
+    </section>
+
+    <section class="service">
+      <h2>The service</h2>
+      <dl class="values">
+        <div class="pair"><dt>Operator</dt><dd>瑞穂町</dd></div>
+        <div class="pair"><dt>Service</dt><dd>チョイソコみずほまち</dd></div>
+        <div class="pair"><dt>Service type</dt><dd>on_demand</dd></div>
+        <div class="pair"><dt>Mode</dt><dd>bus</dd></div>
+        <div class="pair"><dt>Provider country</dt><dd>JP</dd></div>
+        <div class="pair"><dt>Provider languages</dt><dd>ja</dd></div>
+      </dl>
+      <p class="note">Names are shown exactly as the feed carries them, byte for byte, and are not transliterated.</p>
+    </section>
+
+    <section class="state-key">
+      <h2>How to read the three states</h2>
+      <div class="key-item">
+        <span class="state-badge state-present">Present</span>
+        <p>The feed carries it and the document carries it.</p>
+      </div>
+      <div class="key-item">
+        <span class="state-badge state-feed-silent">The feed does not say</span>
+        <p>The description model has a field for it. This publisher’s feed leaves it empty. A statement about one feed.</p>
+      </div>
+      <div class="key-item">
+        <span class="state-badge state-no-field">The model has no field</span>
+        <p>Nothing could carry it, whatever the feed said. A statement about the description model, and one that runs against this project’s own argument.</p>
+      </div>
+      <div class="key-item">
+        <span class="state-badge state-open-question">Open question</span>
+        <p>Required by the legal norm, absent from the feed, and with no field in the model — but reached by comparing a norm with a schema, not by a build that needed a field and found none. It is recorded here as a question, not as a confirmed gap.</p>
+      </div>
+      <p class="note">The second and the third are different statements and are never shown alike. Merging them would hide the only thing this card exists to show.</p>
+    </section>
+
+    <section class="axes">
+      <h2>Description axes</h2>
+      <p class="note">Nine axes, taken from the intersection of four independent sources plus the axes only the legal norm adds. The set is fixed in advance and is not reduced to what this feed happens to fill.</p>
+      <section class="axis axis-present" data-axis="service_area" data-state="present">
+        <h3>Service area</h3>
+        <p class="axis-source">Required by: all four sources</p>
+        <p class="state-badge state-present">Present</p>
+        <dl class="values">
+        <div class="pair"><dt>Service area kind</dt><dd>stops</dd></div>
+        <div class="pair"><dt>Stops carrying coordinates</dt><dd>120</dd></div>
+        </dl>
+      </section>
+      <section class="axis axis-present" data-axis="operating_hours" data-state="present">
+        <h3>Operating hours</h3>
+        <p class="axis-source">Required by: all four sources</p>
+        <p class="state-badge state-present">Present</p>
+        <dl class="values">
+        <div class="pair"><dt>Pattern 1 · Days</dt><dd>tu fr sa</dd></div>
+        <div class="pair"><dt>Pattern 1 · From</dt><dd>09:00</dd></div>
+        <div class="pair"><dt>Pattern 1 · Until</dt><dd>17:00</dd></div>
+        <div class="pair"><dt>Pattern 2 · Days</dt><dd>mo we sa</dd></div>
+        <div class="pair"><dt>Pattern 2 · From</dt><dd>09:00</dd></div>
+        <div class="pair"><dt>Pattern 2 · Until</dt><dd>17:00</dd></div>
+        <div class="pair"><dt>Dated exceptions</dt><dd>48</dd></div>
+        </dl>
+      </section>
+      <section class="axis axis-present" data-axis="booking_rules" data-state="present">
+        <h3>Booking rules</h3>
+        <p class="axis-source">Required by: all four sources</p>
+        <p class="state-badge state-present">Present</p>
+        <dl class="values">
+        <div class="pair"><dt>Booking channels</dt><dd>phone</dd></div>
+        <div class="pair"><dt>Minimum advance notice, in minutes</dt><dd>30</dd></div>
+        </dl>
+      </section>
+      <section class="axis axis-present" data-axis="response_time" data-state="present">
+        <h3>Response time</h3>
+        <p class="axis-source">Required by: legal norm</p>
+        <p class="state-badge state-present">Present</p>
+        <dl class="values">
+        <div class="pair"><dt>Minimum advance notice, in minutes</dt><dd>30</dd></div>
+        </dl>
+        <p class="axis-note">The same field the booking axis reads; the norm counts it as a separate axis.</p>
+      </section>
+      <section class="axis axis-feed-silent" data-axis="fares" data-state="feed_silent">
+        <h3>Fares</h3>
+        <p class="axis-source">Required by: three of four sources</p>
+        <p class="state-badge state-feed-silent">The feed does not say</p>
+        <p class="axis-statement">MSD can express fares: fare_structures is defined in the schema. This feed carries no fare information — no fare_attributes.txt, fare_rules.txt or fare product files — so the key is absent rather than empty.</p>
+        <p class="axis-register">Residual register entry: <code>fares</code> · <code>field_exists</code></p>
+      </section>
+      <section class="axis axis-feed-silent" data-axis="capacity" data-state="feed_silent">
+        <h3>Capacity</h3>
+        <p class="axis-source">Required by: legal norm</p>
+        <p class="state-badge state-feed-silent">The feed does not say</p>
+        <p class="axis-statement">MSD can express the fleet: vehicle types, seat and wheelchair capacities, propulsion and counts. This feed describes none of it, so the key is absent — and no accessibility assertion is derived, because an absent wheelchair_boarding in GTFS is not the same statement as MSD false.</p>
+        <p class="axis-register">Residual register entry: <code>vehicles</code> · <code>field_exists</code></p>
+      </section>
+      <section class="axis axis-feed-silent" data-axis="payment_methods" data-state="feed_silent">
+        <h3>Payment methods</h3>
+        <p class="axis-source">Required by: user-facing checklist</p>
+        <p class="state-badge state-feed-silent">The feed does not say</p>
+        <p class="axis-statement">MSD can express accepted payment methods, within a fare structure. This feed states none, and carries no fare structure to hold them, so the key is absent.</p>
+        <p class="axis-register">Residual register entry: <code>payment_methods</code> · <code>field_exists</code></p>
+      </section>
+      <section class="axis axis-no-field" data-axis="rider_eligibility" data-state="no_field">
+        <h3>Rider eligibility</h3>
+        <p class="axis-source">Required by: legal norm (implicit), user research</p>
+        <p class="state-badge state-no-field">The model has no field</p>
+        <p class="axis-statement">The feed does not carry rider eligibility conditions — who may use the service, and under what circumstances. GTFS-Flex has no field for them and MSD v0.1.0 has no key for them, so nothing is asserted about eligibility either way.</p>
+        <p class="axis-register">Residual register entry: <code>rider_eligibility</code> · <code>documented_candidate</code></p>
+      </section>
+      <section class="axis axis-open-question" data-axis="trip_purpose" data-state="open_question">
+        <h3>Trip purpose</h3>
+        <p class="axis-source">Required by: legal norm only</p>
+        <p class="state-badge state-open-question">Open question</p>
+        <p class="axis-statement">The legal norm names this axis; the feed is silent about it; and the description model has no key for it. Unlike the gaps above, this one comes from comparing a norm with a schema rather than from a lift that needed a field and found none — so it is carried here as an open question and is deliberately absent from the residual register.</p>
+      </section>
+      <p class="note"><span class="freshness-label">Day codes</span> mo Monday · tu Tuesday · we Wednesday · th Thursday · fr Friday · sa Saturday · su Sunday</p>
+    </section>
+
+    <section class="area">
+      <h2>Service area</h2>
+      <p class="note">Points, extent and scale come from the coordinates the document carries. There is no backdrop: a basemap would need tiles fetched at runtime, and this repository makes no network calls. What the area has to show — where it is, how far it reaches, how densely it is served — is carried by the points themselves.</p>
+<svg class="map" viewBox="0 0 760 520" width="760" height="520"
+     xmlns="http://www.w3.org/2000/svg" role="img"
+     aria-label="Service area">
+  <rect class="map-frame" x="0.5" y="0.5" width="759" height="519"/>
+
+  <g class="map-bounds" aria-label="Bounding box">
+    <rect x="223.06" y="44" width="313.87" height="432"/>
+    <text class="map-coord" x="223.06" y="36">35.79363°N</text>
+    <text class="map-coord" x="223.06" y="492">35.74723°N</text>
+    <text class="map-coord map-coord-right" x="536.94" y="36">139.36645°E</text>
+    <text class="map-coord" x="223.06" y="506">139.3249°E</text>
+  </g>
+
+  <g class="map-points" aria-label="Stops">
+    <circle cx="515.86" cy="309.44" r="3.1"><title>殿ケ谷会館</title></circle>
+    <circle cx="509.14" cy="282.44" r="3.1"><title>玉林寺公園</title></circle>
+    <circle cx="505.06" cy="337.74" r="3.1"><title>下砂橋</title></circle>
+    <circle cx="462" cy="375.63" r="3.1"><title>菜の花クリニック</title></circle>
+    <circle cx="469.25" cy="386.06" r="3.1"><title>アドマンズ</title></circle>
+    <circle cx="497.35" cy="299.2" r="3.1"><title>寄り合いハウスいこい</title></circle>
+    <circle cx="492.52" cy="318.47" r="3.1"><title>殿ケ谷ポケットパーク</title></circle>
+    <circle cx="479.83" cy="332.16" r="3.1"><title>ＧＲガレージ多摩</title></circle>
+    <circle cx="479.68" cy="338.49" r="3.1"><title>ジョイフル本田</title></circle>
+    <circle cx="465.17" cy="343.14" r="3.1"><title>トヨタＳ＆Ｄ西東京瑞穂店</title></circle>
+    <circle cx="500.9" cy="246.22" r="3.1"><title>多世代交流センターMIZCUL</title></circle>
+    <circle cx="516.92" cy="263.91" r="3.1"><title>くぬぎ公園</title></circle>
+    <circle cx="506.34" cy="274.99" r="3.1"><title>福正寺</title></circle>
+    <circle cx="477.79" cy="290.26" r="3.1"><title>東砂町</title></circle>
+    <circle cx="472.2" cy="308.51" r="3.1"><title>石畑地区スポーツ広場</title></circle>
+    <circle cx="454.22" cy="306.37" r="3.1"><title>石畑会館</title></circle>
+    <circle cx="448.86" cy="329.73" r="3.1"><title>古川工務店</title></circle>
+    <circle cx="442.81" cy="339.14" r="3.1"><title>武蔵</title></circle>
+    <circle cx="485.19" cy="273.03" r="3.1"><title>石畑下集会所</title></circle>
+    <circle cx="462" cy="270.71" r="3.1"><title>石畑中央会館</title></circle>
+    <circle cx="449.08" cy="277.41" r="3.1"><title>吉野橋</title></circle>
+    <circle cx="447.65" cy="302.08" r="3.1"><title>石畑診療所</title></circle>
+    <circle cx="468.57" cy="259.07" r="3.1"><title>石畑上集会所</title></circle>
+    <circle cx="467.36" cy="223.78" r="3.1"><title>ふれあいセンター</title></circle>
+    <circle cx="461.77" cy="229.28" r="3.1"><title>保健センター</title></circle>
+    <circle cx="451.27" cy="220.99" r="3.1"><title>スカイホール</title></circle>
+    <circle cx="442.06" cy="200.32" r="3.1"><title>大正電設</title></circle>
+    <circle cx="434.13" cy="202.93" r="3.1"><title>栗原医科歯科医院・矯正歯科</title></circle>
+    <circle cx="423.7" cy="224.43" r="3.1"><title>第２分団詰所</title></circle>
+    <circle cx="405.12" cy="203.95" r="3.1"><title>狭山池公園</title></circle>
+    <circle cx="375.43" cy="159.63" r="3.1"><title>地域活動支援センターひまわり・瑞穂町福祉作業所さくら</title></circle>
+    <circle cx="442.89" cy="244.27" r="3.1"><title>瑞穂町役場</title></circle>
+    <circle cx="438.88" cy="250.97" r="3.1"><title>青梅信用金庫　瑞穂支店</title></circle>
+    <circle cx="422.72" cy="238.31" r="3.1"><title>岩永歯科医院</title></circle>
+    <circle cx="403.83" cy="236.17" r="3.1"><title>円福寺</title></circle>
+    <circle cx="396.81" cy="210.66" r="3.1"><title>瑞穂武道館</title></circle>
+    <circle cx="378.6" cy="212.7" r="3.1"><title>みずほ病院</title></circle>
+    <circle cx="363.57" cy="183.19" r="3.1"><title>良友園</title></circle>
+    <circle cx="358.28" cy="199.67" r="3.1"><title>ふれっしゅはうす</title></circle>
+    <circle cx="347.1" cy="221.83" r="3.1"><title>オリンピック</title></circle>
+    <circle cx="341.59" cy="189.43" r="3.1"><title>瑞穂熟年塾農場</title></circle>
+    <circle cx="329.73" cy="215.12" r="3.1"><title>さくら公園</title></circle>
+    <circle cx="336.53" cy="223.88" r="3.1"><title>箱根ケ崎西会館</title></circle>
+    <circle cx="390.39" cy="254.04" r="3.1"><title>箱根ケ崎駅東口</title></circle>
+    <circle cx="383.51" cy="253.67" r="3.1"><title>箱根ケ崎駅西口</title></circle>
+    <circle cx="421.36" cy="250.5" r="3.1"><title>箱根ケ崎歯科医院</title></circle>
+    <circle cx="414.41" cy="250.22" r="3.1"><title>多摩信用金庫　瑞穂支店</title></circle>
+    <circle cx="431.56" cy="262.05" r="3.1"><title>JAにしたま　瑞穂支店</title></circle>
+    <circle cx="413.96" cy="283.09" r="3.1"><title>西武信用金庫　瑞穂支店</title></circle>
+    <circle cx="411.01" cy="291" r="3.1"><title>瑞穂郵便局</title></circle>
+    <circle cx="397.71" cy="265.12" r="3.1"><title>高水医院</title></circle>
+    <circle cx="359.19" cy="285.42" r="3.1"><title>みずほエコパーク</title></circle>
+    <circle cx="327.99" cy="243.99" r="3.1"><title>東松原</title></circle>
+    <circle cx="331.62" cy="256.09" r="3.1"><title>松原ひがし公園</title></circle>
+    <circle cx="306.61" cy="251.16" r="3.1"><title>松原町町内会集会所</title></circle>
+    <circle cx="319.83" cy="267.82" r="3.1"><title>水井装備</title></circle>
+    <circle cx="295.05" cy="248.83" r="3.1"><title>松原中央公園</title></circle>
+    <circle cx="294.07" cy="272.38" r="3.1"><title>高水商店</title></circle>
+    <circle cx="296.79" cy="284.11" r="3.1"><title>町営第２グランド</title></circle>
+    <circle cx="308.42" cy="206.47" r="3.1"><title>シモダディスカウントセンター</title></circle>
+    <circle cx="285.69" cy="197.99" r="3.1"><title>東善院</title></circle>
+    <circle cx="289.54" cy="225.46" r="3.1"><title>丸野医院</title></circle>
+    <circle cx="273" cy="194.36" r="3.1"><title>新井クリニック</title></circle>
+    <circle cx="276.62" cy="203.67" r="3.1"><title>下野公園</title></circle>
+    <circle cx="276.02" cy="225.37" r="3.1"><title>西武信用金庫　長岡支店</title></circle>
+    <circle cx="268.01" cy="179.19" r="3.1"><title>ＪＡにしたま長岡キャッシュコーナー</title></circle>
+    <circle cx="249.88" cy="196.32" r="3.1"><title>長岡南会館</title></circle>
+    <circle cx="305.63" cy="213.26" r="3.1"><title>東長岡住宅</title></circle>
+    <circle cx="243.23" cy="178.63" r="3.1"><title>長岡四丁目</title></circle>
+    <circle cx="232.43" cy="184.68" r="3.1"><title>かすが公園</title></circle>
+    <circle cx="223.06" cy="177.42" r="3.1"><title>かすが公園西緑道</title></circle>
+    <circle cx="315" cy="164.29" r="3.1"><title>長岡コミュニティセンター</title></circle>
+    <circle cx="262.5" cy="151.07" r="3.1"><title>長岡会館</title></circle>
+    <circle cx="240.51" cy="137.29" r="3.1"><title>幸永不動産</title></circle>
+    <circle cx="302.23" cy="144.55" r="3.1"><title>中垣園芸</title></circle>
+    <circle cx="286.59" cy="111.5" r="3.1"><title>フラワープラム</title></circle>
+    <circle cx="260.23" cy="107.22" r="3.1"><title>けんちの苑</title></circle>
+    <circle cx="486.7" cy="75.84" r="3.1"><title>シルバー人材センター</title></circle>
+    <circle cx="453.24" cy="56.1" r="3.1"><title>二本木公園北</title></circle>
+    <circle cx="459.36" cy="66.25" r="3.1"><title>スーパーナカムラ</title></circle>
+    <circle cx="451.8" cy="68.58" r="3.1"><title>元狭山コミュニティセンター</title></circle>
+    <circle cx="459.28" cy="75.1" r="3.1"><title>JAにしたま　元狭山支店</title></circle>
+    <circle cx="420" cy="49.96" r="3.1"><title>元狭山広域防災広場</title></circle>
+    <circle cx="417.88" cy="68.77" r="3.1"><title>元狭山スポーツ広場</title></circle>
+    <circle cx="412.44" cy="44" r="3.1"><title>ドラッグセイムス　瑞穂二本木店</title></circle>
+    <circle cx="535.88" cy="76.12" r="3.1"><title>不老の郷</title></circle>
+    <circle cx="536.94" cy="102" r="3.1"><title>栗原園芸</title></circle>
+    <circle cx="506.34" cy="76.77" r="3.1"><title>たまご工房うえの</title></circle>
+    <circle cx="512.31" cy="101.17" r="3.1"><title>まき工房ころぼっくる</title></circle>
+    <circle cx="519.71" cy="125" r="3.1"><title>高根下公園</title></circle>
+    <circle cx="509.89" cy="131.7" r="3.1"><title>高根町会館</title></circle>
+    <circle cx="491.61" cy="141.11" r="3.1"><title>高根町</title></circle>
+    <circle cx="477.79" cy="145.3" r="3.1"><title>瑞穂ケーブルテレビ</title></circle>
+    <circle cx="442.43" cy="148.56" r="3.1"><title>富士山公園</title></circle>
+    <circle cx="430.05" cy="163.92" r="3.1"><title>けやき館</title></circle>
+    <circle cx="415.16" cy="196.04" r="3.1"><title>さやま花多来里の郷</title></circle>
+    <circle cx="386.31" cy="155.91" r="3.1"><title>瑞穂斎場</title></circle>
+    <circle cx="326.25" cy="55.17" r="3.1"><title>竜泉寺</title></circle>
+    <circle cx="314.24" cy="74.35" r="3.1"><title>みずほ園</title></circle>
+    <circle cx="384.95" cy="119.04" r="3.1"><title>つつじ公園</title></circle>
+    <circle cx="406.33" cy="88.6" r="3.1"><title>松山町北</title></circle>
+    <circle cx="411.61" cy="105.17" r="3.1"><title>松山公園</title></circle>
+    <circle cx="334.03" cy="340.72" r="3.1"><title>武蔵野コミュニティセンター</title></circle>
+    <circle cx="323.76" cy="335.6" r="3.1"><title>むさしの公園</title></circle>
+    <circle cx="309.41" cy="346.49" r="3.1"><title>なかよし１号公園</title></circle>
+    <circle cx="315.9" cy="356.27" r="3.1"><title>さかえ町</title></circle>
+    <circle cx="320.36" cy="365.3" r="3.1"><title>みずほさかえ公園</title></circle>
+    <circle cx="308.58" cy="363.16" r="3.1"><title>きたはらファミリー歯科</title></circle>
+    <circle cx="349.9" cy="361.67" r="3.1"><title>富士見公園</title></circle>
+    <circle cx="348.54" cy="376.01" r="3.1"><title>つくし公園</title></circle>
+    <circle cx="354.05" cy="382.52" r="3.1"><title>トヨタＳ＆Ｄ　Ｕ－Ｃａｒ横田ベースサイド店</title></circle>
+    <circle cx="337.73" cy="377.68" r="3.1"><title>むさしの会館</title></circle>
+    <circle cx="335.02" cy="305.25" r="3.1"><title>南平ひばり公園東</title></circle>
+    <circle cx="327.23" cy="293.24" r="3.1"><title>南平北</title></circle>
+    <circle cx="317.11" cy="292.4" r="3.1"><title>山岸歯科医院</title></circle>
+    <circle cx="315.83" cy="304.13" r="3.1"><title>南平西</title></circle>
+    <circle cx="323.31" cy="320.14" r="3.1"><title>武蔵野防災会館</title></circle>
+    <circle cx="233.34" cy="476" r="3.1"><title>福生病院</title></circle>
+    <circle cx="301.83" cy="305.42" r="3.1"><title>フレッシュランド西多摩　よつ葉の湯</title></circle>
+    <circle cx="370.42" cy="230.52" r="3.1"><title>稲荷ヶ丘公園</title></circle>
+  </g>
+
+  <g class="map-north" aria-label="North">
+    <line x1="716" y1="78" x2="716" y2="38"/>
+    <polygon points="716,32 711,43 721,43"/>
+    <text class="map-label" x="716" y="92">N</text>
+  </g>
+
+  <g class="map-scale" aria-label="Scale bar">
+    <line x1="44" y1="502" x2="211.27" y2="502"/>
+    <line x1="44" y1="497" x2="44" y2="507"/>
+    <line x1="211.27" y1="497" x2="211.27" y2="507"/>
+    <text class="map-label map-label-left" x="44" y="492">2 km</text>
+  </g>
+</svg>
+      <p class="note">The scale bar and the bounding box are drawing aids computed from the coordinates. They are not values the feed states.</p>
+    </section>
+
+    <section class="provenance">
+      <h2>Where this comes from</h2>
+      <p class="note">The document is lifted from the published feed by this repository’s bridge; the residual register is produced in the same run and records what neither the feed nor the model could carry. The card reads those two and nothing else. In particular it does not read the diagnostics, which record what the source said and what the lift decided — those are not a description of the service and are never shown here as one.</p>
+    </section>
+  </main>
+</body>
+</html>
