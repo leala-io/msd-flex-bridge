@@ -260,3 +260,160 @@ result.
 **The claim under test was zero notices on foreign-derived material. That is not what happened:
 the generated feed carries 16.** None is an ERROR, and the largest group is inherited unchanged
 from the original — but the number is 16, not 0, and it is recorded here as such.
+
+## Classification of every difference
+
+The frame is the seven losses declared in advance and the four cause classes. **Only
+format asymmetry says anything about the description layer's adequacy**; registry narrowness,
+exporter design decision and structural constraint of the target format are properties of the
+export direction or of GTFS, and are not adequacy findings.
+
+Machine-readable form: `test/fixtures/expected/mizuho.roundtrip.json`, which carries every
+difference and every unpaired row with both sides' values.
+
+### Totals
+
+| | |
+|---|---|
+| files compared | 12 original → 11 generated |
+| files on one side only | 1 (`translations.txt`, original) |
+| rows paired | 123 |
+| rows unpaired | 226 original / 226 generated |
+| field differences on paired rows | 11 |
+
+### Files
+
+| # | Difference | Declared | Class |
+|---|---|---|---|
+| F1 | `translations.txt` present only in the original — 126 rows of romanised labels, not emitted | **V1** | format asymmetry |
+
+### Field differences on paired rows
+
+| # | File · key | Difference | Declared | Class |
+|---|---|---|---|---|
+| D1 | `agency.txt` · `mizuhomachi` | `agency_phone` `050-2030-2630` → **column absent** | outside | format asymmetry |
+| D2 | `routes.txt` · `mizuhomachi_route` | `route_short_name` `瑞穂町デマンド` → `""` | outside | format asymmetry + exporter decision |
+| D3 | `routes.txt` · `mizuhomachi_route` | `route_type` `715` → `3` | **V3** | registry narrowness |
+| D4 | `routes.txt` · `mizuhomachi_route` | `route_desc` `瑞穂町チョイソコみずほまちデマンドサービス` → **column absent** | outside | format asymmetry |
+| D5 | `routes.txt` · `mizuhomachi_route` | `route_color` `008080` → **column absent** | **V2** | format asymmetry |
+| D6 | `routes.txt` · `mizuhomachi_route` | `route_text_color` `FFFFFF` → **column absent** | **V2** | format asymmetry |
+| D7 | `feed_info.txt` · `#1` | `feed_start_date` `20241001` → `20260215` | **V5** | format asymmetry + exporter decision |
+| D8 | `feed_info.txt` · `#1` | `feed_end_date` `20260930` → `20270215` | **V5** | format asymmetry + exporter decision |
+| D9 | `feed_info.txt` · `#1` | `feed_version` `20260215` → `msd-0.1.0-20260215` | outside | exporter design decision |
+| D10 | `feed_info.txt` · `#1` | `feed_contact_email` `koutuu@town.mizuho.tokyo.jp` → **column absent** | outside | exporter design decision |
+| D11 | `feed_info.txt` · `#1` | `feed_contact_url` **column absent** → `https://www.town.mizuho.tokyo.jp/` | outside | exporter design decision |
+
+**D10 is deliberately not filed as format asymmetry.** The document *does* carry the address, as
+`provider.contact_email`; the exporter simply does not emit it and emits `feed_contact_url` from
+`provider.url` instead. Filing it as format asymmetry would blame the description layer for a
+choice the export direction made.
+
+### Column asymmetries on files whose rows could not be paired
+
+| # | File | Difference | Declared | Class |
+|---|---|---|---|---|
+| D12 | `trips.txt` | `trip_headsign` `瑞穂町全域` — column only in the original | **V7** | format asymmetry |
+| D13 | `trips.txt` | `direction_id` `0` — column only in the original | **V7** | format asymmetry |
+| D14 | `stop_times.txt` | `timepoint` `1` — column only in the original | **V7** | format asymmetry |
+| D15 | `stop_times.txt` | `stop_id`, `location_id` — columns only in the generated feed, both empty on every row | outside | exporter design decision |
+| D16 | `booking_rules.txt` | `phone_number` `050-2030-2630` — column only in the original | outside | format asymmetry |
+| D17 | `booking_rules.txt` | `prior_notice_start_day`, `prior_notice_start_time` — columns only in the generated feed, both empty | outside | exporter design decision |
+
+### Rows that could not be paired
+
+All 452 unpaired rows come from regenerated identifiers. The diff reports them as present on one
+side only because it refuses to invent a mapping between them; the values are in the snapshot.
+
+| # | File | Difference | Declared | Class |
+|---|---|---|---|---|
+| D18 | `trips.txt` (2+2) | `trip_id` `east_trip`/`west_trip` → `mizuhomachi_route-t0`/`-t1`; `service_id` likewise | **V6** | exporter design decision |
+| D19 | `calendar.txt` (2+2) | `service_id` `east_service`/`west_service` → `mizuhomachi_route-oh0`/`-oh1` | **V6** | exporter design decision |
+| D20 | `calendar.txt` | `start_date`/`end_date` `20241001`/`20260930` → `20260215`/`20270215` | **V5** | format asymmetry + exporter decision |
+| D21 | `calendar_dates.txt` (96+96) | `service_id` regenerated; the `(date, exception_type)` sets are **identical**, 48 per service on both sides | **V6**, anticipated | exporter design decision |
+| D22 | `stop_times.txt` (4+4) | `trip_id` regenerated | **V6** | exporter design decision |
+| D23 | `stop_times.txt` | `pickup_type`/`drop_off_type` `2`/`1` and `1`/`2` → `2`/`2` on every row | **V4** | structural constraint |
+| D24 | `stop_times.txt` | `pickup_booking_rule_id`/`drop_off_booking_rule_id` — set on one side of each row in the original, set on both in the generated feed | outside, follows D23 and D26 | exporter design decision |
+| D25 | `stop_times.txt` | `location_group_id` `mizuhomachi_group` → `mizuhomachi_route-area` | outside, follows D27 | exporter design decision |
+| D26 | `booking_rules.txt` (1+1) | `booking_rule_id` `general` → `br-default` | outside | exporter design decision |
+| D27 | `location_groups.txt` (1+1) | `location_group_id` `mizuhomachi_group` → `mizuhomachi_route-area` | outside | exporter design decision |
+| D28 | `location_groups.txt` | `location_group_name` `瑞穂町全乗降場` → `チョイソコみずほまち service area` | outside | format asymmetry + exporter decision |
+| D29 | `location_group_stops.txt` (120+120) | unpaired **solely** because `location_group_id` changed; the `stop_id` set is identical | outside, follows D27 | exporter design decision |
+| D30 | `booking_rules.txt` | `message` — the feed's free-text booking instructions → `""` | outside | format asymmetry |
+
+**D26 and D27 are outside V6, which names service and trip identifiers.** Booking-rule and
+location-group identifiers are regenerated too, and that was not predicted. D29 is the largest
+single block of unpaired rows in the report — 240 of 452 — and it is entirely an artefact of D27.
+
+### The seven, one by one
+
+| # | Declared loss | Occurred? |
+|---|---|---|
+| V1 | translations file not emitted | **yes** — F1, 126 rows |
+| V2 | route colour and text colour not emitted | **yes** — D5, D6 |
+| V3 | route type collapses to the ordinary bus value | **yes** — D3, `715` → `3` |
+| V4 | pickup and drop-off types both set to 2 | **yes** — D23 |
+| V5 | calendar range derived from the document date plus one year | **yes** — D7, D8, D20 |
+| V6 | service and trip identifiers regenerated | **yes** — D18, D19, D21, D22 |
+| V7 | headsign, direction, timepoint, location type not emitted | **partly — see below** |
+
+### A declared loss that did not occur, and why the exception matters
+
+**V7's fourth element, `location_type`, did not occur as predicted.** The column is emitted, and
+it matches the original on all 120 stops. The prediction was wrong on its face and is recorded as
+a failed prediction.
+
+It would be a mistake to read that as the value surviving. It did not: the MSD document carries no
+`location_type` anywhere — an MSD stop holds identity, name and coordinates only, which residual
+entry `stop_metadata` records — and the exporter writes the constant `0` for every stop it emits.
+The two sides agree because the original happens to be all zeros. A feed with a station or an
+entrance would disagree, and the roundtrip would then report a difference that this feed cannot
+surface.
+
+This is the clearest instance in the package of a match that means less than it looks like, and it
+is why `test/roundtrip.test.js` asserts the constant rather than leaving the point in prose.
+
+### Differences outside the seven — documented candidate or new gap
+
+Adequacy-relevant differences only. The exporter-design ones above say nothing about the
+description layer and are excluded here.
+
+| # | Field | Already in the residual register? |
+|---|---|---|
+| D1 | `agency_phone` | yes — `provider_telephone`, undocumented gap |
+| D4 | `route_desc` | yes — `service_description`, undocumented gap |
+| D16 | `booking_rules.phone_number` | yes — `booking_phone_number`, documented candidate |
+| D30 | `booking_rules.message` | yes — `booking_instructions_free_text`, undocumented gap |
+| D28 | `location_group_name` | yes — `location_group_name`, undocumented gap |
+| D2 | `route_short_name` | **no — new gap, surfaced by the roundtrip** |
+
+`route_short_name` is the one adequacy-relevant loss the register does not carry. `docs/mapping.md`
+records the precedence — `route_long_name` preferred, `route_short_name` a fallback — but nothing
+records that the discarded alternative is unrepresentable once the preferred one exists. The value
+is preserved in `diagnostics.source.routes`, so nothing is lost silently; what is missing is a
+register entry.
+
+### What matched, stated because it is evidence too
+
+- **`stops.txt` is byte-identical between the two feeds** — all 120 rows, including the nine stop
+  names carrying U+3000 IDEOGRAPHIC SPACE and the one carrying full-width Latin characters. Names
+  are carried verbatim through both directions.
+- **The empty `booking_url` survives as empty**, with the column present on both sides. This is the
+  case decision 4 exists to protect, and it holds.
+- The `(date, exception_type)` set of `calendar_dates.txt` is identical, 96 rows on each side. The
+  anticipated fan-out — the document merges exceptions on consensus across merged calendars while
+  the export emits one service per operating-hours entry — is 1:1 here rather than an expansion,
+  because the merge produced exactly two entries.
+- The seven weekday flags match for both services; `booking_type`, `prior_notice_duration_min` and
+  `info_url` match; the operating window `09:00:00`–`17:00:00` matches; `agency_id`, `agency_name`,
+  `agency_url`, `agency_timezone`, `agency_lang`, `route_id` and `route_long_name` match.
+- The `stop_id` set of `location_group_stops.txt` is identical — all 120 memberships survive; only
+  the group's identifier changed.
+
+## Provenance, stated with the results
+
+The two directions do not rest on the same kind of artefact. The ingestion side reads a schema
+vendored at a **released, citable tag** with a DOI. The export side is vendored from a **default-branch
+commit**, because no released commit carries the exporter in pure form. Both are reproducible and
+hash-pinned, and the drift check covers both — but they are not citable in the same way, and any
+statement resting on the return trip inherits the weaker provenance. `docs/dependency.md` records
+the difference in full.
