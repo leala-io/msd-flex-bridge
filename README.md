@@ -13,6 +13,17 @@ per-channel booking metadata — is as much the point as the lift itself.
 It targets the MSD **schema v0.1.0** (as published in release v0.1.1), consumed read-only
 from the vendored upstream artefacts under `vendor/msd/`.
 
+## Where this sits
+
+Three specifications are easy to confuse, so it is worth saying which one this bridge
+reads. **GTFS-Flex**, the static description of flexible and demand-responsive service,
+was adopted into the core GTFS specification in 2024; that is the format read here.
+**GOFS**, the General On-Demand Feed Specification, is stewarded by the same organisation
+(MobilityData) and addresses a different layer — real-time, point-to-point
+demand-responsive service. An earlier draft extension, **GTFS-OnDemand**, is no longer
+recommended by its steward and is not addressed here. This bridge reads the first and
+produces a service description document from it.
+
 ## Usage
 
 ```
