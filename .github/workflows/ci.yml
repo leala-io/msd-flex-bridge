@@ -10,7 +10,7 @@ on:
 # has not changed.
 #
 # `npm ci` reaches the registry; nothing else does. The vendor drift check, the
-# fixture assertions and the compliance grep are offline by construction, and
+# fixture assertions and the terminology check are offline by construction, and
 # the core makes no network call at runtime.
 jobs:
   build:
@@ -43,26 +43,11 @@ jobs:
       - name: Fixture assertions
         run: npm run test:fixture
 
-      # Gate 4 — public terminology and framing, over tracked files only,
-      # excluding vendor/. The forbidden terms are carried as hashes; the
-      # clear-text list is untracked by design.
-      - name: Compliance gate
-        run: node scripts/check-compliance.mjs
-
-      # The blocklist is generated from a term list that is deliberately absent
-      # here. Out of date is a failure; absent source is not — it is simply
-      # unverifiable in CI, and says so rather than passing quietly.
-      - name: Blocklist currency
-        run: |
-          set +e
-          node scripts/gen-blocklist.mjs --check
-          status=$?
-          set -e
-          case $status in
-            0) echo "blocklist verified current against the term list" ;;
-            3) echo "::notice::term list absent in CI (untracked by design) — blocklist currency is UNVERIFIABLE here, not verified" ;;
-            *) echo "::error::blocklist is out of date with respect to the term list — run: npm run blocklist"; exit $status ;;
-          esac
+      # Gate 4 — the schema-versus-release version relationship, over tracked
+      # files only, excluding vendor/. The pattern is in clear text: it names a
+      # mistake, not a protected term.
+      - name: Terminology check
+        run: node scripts/check-terminology.mjs
 
       # Gates 5 and 6 — the fixture snapshot and determinism gates — plus the
       # validation gate and the fidelity tests that no gate would otherwise

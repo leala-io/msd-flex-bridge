@@ -9,9 +9,9 @@ dist/
 *.log
 .DS_Store
 
-# Compliance term list — the clear-text source of scripts/compliance-blocklist.json.
-# Deliberately untracked: publishing a readable list of forbidden terms would be the
-# disclosure the gate exists to prevent. Regenerate with `npm run blocklist`.
+# The term list now lives in .git/hooks/terms.txt, read by the local pre-commit
+# guard — inside .git/, so never tracked. This entry stays as a backstop against
+# a stray copy being restored into the repository root out of habit.
 compliance-terms.txt
 
 # Local Claude Code config / guardrails — not for the public repo
