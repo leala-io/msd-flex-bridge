@@ -23,6 +23,10 @@ file alongside LICENSE (AGPL-3.0, this repository's code).
    under LICENSE-CODE (AGPL-3.0). The two pins differ in strength and the reason
    is recorded in docs/dependency.md.
 
+   The exporter's country-to-timezone table is extended by this repository. The
+   extension is bridge code (src/core/country-timezone.js, AGPL-3.0) injected at
+   run time; not one vendored byte is modified.
+
 4. Bundled sample feeds — CC BY 4.0 (per-fixture attribution)
    Sample GTFS-Flex feeds bundled as test fixtures are licensed CC BY 4.0, each
    with its own attribution file recording publisher, licence, retrieval date,

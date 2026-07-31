@@ -705,3 +705,59 @@ Findings 1 and 2 are recorded for the build report; neither is a defect to fix a
 Finding 3 is a consequence of the multi-route generalisation. P1's behaviour in its presence is settled
 (§`routes.txt`), so it blocks nothing in P1.3; what remains open is the modelling gap itself, which is a
 matter for the build report and for a later package.
+
+---
+
+## The export direction — the country-to-timezone table, extended locally
+
+Everything above describes the ingest direction, GTFS-Flex → MSD. This section records the one
+place where the **export** direction, MSD → GTFS-Flex, needed a local addition. It is here rather
+than in a document of its own because `docs/mapping.md` is the specification, and a reader
+checking what this repository asserts should not have to know which file to open.
+
+**The precondition.** GTFS requires `agency_timezone`. MSD carries no timezone field, so the
+vendored exporter (`vendor/msd-engine/`) derives one from `provider.country` through an explicit
+table, and **aborts on a country the table does not carry** rather than guessing. That refusal is
+correct and is kept: a wrong timezone shifts every operating window in the generated feed
+silently, and nothing downstream would notice.
+
+**The addition.** Upstream's table maps two countries. The reference case's `provider.country` is
+`JP`, which is not one of them, so the export direction could not run at all. One entry is added:
+
+| country | timezone | basis |
+|---|---|---|
+| `JP` | `Asia/Tokyo` | Japan observes a single zone (UTC+09:00) nationwide, with no daylight saving. |
+
+**This is a documented assumption, not something the feed says.** The feed asserts a country; it
+does not assert a timezone. The mapping from one to the other is an assumption this repository
+makes on the export side, and it is only safe because the country in question has exactly one
+zone — the same constraint upstream's own table states for itself. A country with more than one
+zone cannot be resolved from the country code and must keep aborting.
+
+**Upstream is untouched.** The addition is bridge code (`src/core/country-timezone.js`) and stays
+bridge code. No file under `vendor/` is modified, no issue or pull request is opened upstream, and
+no registry value is proposed.
+
+### The route taken, and what made it available
+
+Two routes were open. **Injection was taken** — the preferred one — because inspection showed it
+was actually available, which was not certain in advance:
+
+- The table itself, `COUNTRY_TZ` in the vendored `core/convert.js`, is a module-local `const` and
+  is **not** reachable from outside. On that fact alone the fallback route would have been forced.
+- But `countryToTimezone` — the only function that reads the table — **is** exported, and the
+  vendored adapter calls it as `core.countryToTimezone(…)`: a property lookup on the required
+  module object, performed at call time, not a value captured at import.
+- So replacing that one property on the module object before the exporter runs is sufficient.
+  `src/export.js` does exactly that, wrapping upstream's resolver so upstream's answer wins
+  wherever it has one and the bridge answers only where it does not.
+
+**The fallback was therefore not needed:** no derived copy of `convert.js` exists, there is one
+copy of each vendored file, both are byte-identical to upstream, and the drift check covers them
+unchanged. Had the resolver been captured at import instead of resolved at call time, the
+documented derived copy would have been the only route left, and it would have been recorded here
+with its pristine twin.
+
+`test/export.test.js` holds all of this: the reference feed exports without aborting, an unmapped
+country still aborts, the extension never overrides an upstream answer, and the vendored source
+still carries upstream's own two-country table and no addition of ours.
