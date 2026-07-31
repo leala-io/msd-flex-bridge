@@ -22,6 +22,7 @@ export const REFUSAL_CODES = [
   'unsupported_route_type',
   'multi_group_route',
   'divergent_booking_rules',
+  'exception_only_calendar',
   'not_flex',
   'mixed_route_kinds',
   'unrecognised',
@@ -215,6 +216,38 @@ export function detectKind(feed) {
         },
       );
     }
+  }
+
+  // ------------------------- fence edge (c): service days only as exceptions
+  // Last, deliberately. Everything above establishes that the feed IS of the
+  // accepted kind and otherwise conforming; only then is it worth saying that
+  // its service days exist solely as dated exceptions.
+  //
+  // Such a feed used to be accepted and lifted into a document with almost no
+  // operating hours: schema-valid, because operating hours are not required, and
+  // nearly empty in substance. That is precisely the failure the fence exists to
+  // prevent, so it is refused like the other six shapes rather than emitted.
+  const calendarPresent = hasFile(feed, 'calendar.txt');
+  const calendarRows = rowsOf(feed, 'calendar.txt');
+  const exceptions = rowsOf(feed, 'calendar_dates.txt');
+
+  if (calendarRows.length === 0 && exceptions.length > 0) {
+    const state = calendarPresent ? 'is present but carries no data rows' : 'is absent';
+    return refuse(
+      'exception_only_calendar',
+      `calendar.txt ${state}, so the feed states its service days only through the ${exceptions.length} dated exception(s) in calendar_dates.txt; a description document built from it would carry no weekly operating pattern at all, and this bridge refuses rather than emit a document that looks complete.`,
+      {
+        file: 'calendar.txt',
+        present: calendarPresent,
+        rows: calendarRows.length,
+        exception_file: 'calendar_dates.txt',
+        exception_rows: exceptions.length,
+        // Which services the exceptions speak about, and which the routes
+        // actually use: a reader can see at once whether they even agree.
+        exception_service_ids: [...new Set(exceptions.map((r) => r.service_id ?? ''))].sort(),
+        route_service_ids: [...new Set(linked.flatMap((r) => r.service_ids))].sort(),
+      },
+    );
   }
 
   return { accepted: true, kind: 'location_group', reason: null, routes: linked };

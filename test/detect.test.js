@@ -264,10 +264,73 @@ test('empty and non-GTFS input is refused as unrecognised', async () => {
   assert.equal(noRoutes.reason.evidence.rows, 0);
 });
 
+/* ------------------------------------------ fence edge (c): exception-only */
+
+test('a feed whose calendar carries no data rows is refused as exception-only', async () => {
+  const result = await classify(loadDir('exception-only'));
+
+  assert.equal(result.accepted, false);
+  assert.equal(result.kind, null);
+  assert.equal(result.reason.code, 'exception_only_calendar');
+  assert.match(result.reason.message, /present but carries no data rows/);
+  assert.match(result.reason.message, /no weekly operating pattern/);
+  assert.deepEqual(result.reason.evidence, {
+    file: 'calendar.txt',
+    present: true,
+    rows: 0,
+    exception_file: 'calendar_dates.txt',
+    exception_rows: 6,
+    exception_service_ids: ['weekdays'],
+    route_service_ids: ['weekdays'],
+  });
+});
+
+test('the same feed with calendar.txt removed entirely is refused the same way', async () => {
+  const files = loadDir('exception-only');
+  delete files['calendar.txt'];
+
+  const result = await classify(files);
+
+  assert.equal(result.reason.code, 'exception_only_calendar');
+  assert.match(result.reason.message, /calendar\.txt is absent/);
+  assert.equal(result.reason.evidence.present, false,
+    'the evidence must say which of the two shapes fired');
+  assert.equal(result.reason.evidence.rows, 0);
+});
+
+test('the message names what a stranger has to act on', async () => {
+  const { reason } = await classify(loadDir('exception-only'));
+
+  // Someone who has never read this repository must be able to act on it:
+  // where the service days are, what the document would lack, and what the
+  // bridge did about it.
+  assert.match(reason.message, /calendar_dates\.txt/, 'names where the service days are');
+  assert.match(reason.message, /would carry no weekly operating pattern/, 'names the consequence');
+  assert.match(reason.message, /refuses rather than emit a document that looks complete/,
+    'names what the bridge did, and why');
+});
+
+test('the new edge does not swallow the normal case: calendar plus exceptions is accepted', async () => {
+  // The negative test the edge exists to survive. This fixture carries a weekly
+  // calendar AND dated exceptions — the ordinary shape, and the one the bundled
+  // feed has too.
+  const result = await classify(loadDir('partial-exception'));
+
+  assert.equal(result.accepted, true);
+  assert.equal(result.kind, 'location_group');
+  assert.equal(result.reason, null);
+});
+
+test('a feed with a weekly calendar and no exceptions at all is still accepted', async () => {
+  const result = await classify(loadDir('valid-minimal'));
+
+  assert.equal(result.accepted, true, 'the edge requires exceptions to be present, not merely absent rows');
+});
+
 /* ------------------------------------------------------- refusal contract */
 
 test('every refusal is a structured value with a reason and evidence', async () => {
-  const cases = ['geojson-zone', 'plain-gtfs', 'unsupported-route-type'];
+  const cases = ['geojson-zone', 'plain-gtfs', 'unsupported-route-type', 'exception-only'];
   for (const dir of cases) {
     const result = await classify(loadDir(dir));
     assert.equal(result.accepted, false, dir);

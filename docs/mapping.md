@@ -143,11 +143,29 @@ document and `src/core/detect.js`; the two must agree.
 | refused | `unsupported_route_type` | A `route_type` outside `{3, 715}` — fence edge (b). |
 | refused | `multi_group_route` | One route referencing more than one location group. |
 | refused | `divergent_booking_rules` | Several routes whose booking-rule union or `info_url` differ (Finding 3). |
+| refused | `exception_only_calendar` | `calendar.txt` absent, or present with no data rows, while `calendar_dates.txt` carries at least one row — fence edge (c). |
 | refused | `unrecognised` | Not a GTFS feed at all: no readable files, or `agency.txt`/`routes.txt` absent, or `routes.txt` carrying no data rows. |
 
 `mixed_route_kinds` is deliberately distinct from `not_flex`. Such a feed **is** flex, in part — saying
 it is "not flex" would misdescribe it to the publisher, who can see the flex route in their own data.
 The distinction is about what the reader is told, not about what is refused: both are refused whole.
+
+**Fence edge (c) — why an exception-only calendar is refused rather than flagged.** A feed may state
+its service days entirely through dated exceptions, with no weekly calendar at all. Until this edge
+existed such a feed was accepted, and it lifted into a document with almost no operating hours:
+schema-valid, because operating hours are not a required property, and nearly empty in substance.
+A document that is valid and nearly empty is exactly the failure the fence exists to prevent, and it
+is the more dangerous kind because nothing about it looks wrong. The other seven codes refuse rather
+than emit a partial picture; this one is consistent with them.
+
+The check runs **last**, after everything that establishes the feed is of the accepted kind. That
+ordering is deliberate: it is only worth telling a publisher that their service days are exception-only
+once the feed is otherwise one this bridge could have lifted. The evidence carries both the service
+identifiers the exceptions reference and those the routes actually use, so a reader can see at once
+whether the two even agree.
+
+A weekly calendar **with** dated exceptions is the ordinary shape and stays accepted — that is the
+case the bundled feed has, and a test asserts the edge does not swallow it.
 
 #### Lift-scoped refusals
 

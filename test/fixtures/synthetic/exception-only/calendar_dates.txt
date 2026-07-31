@@ -1,0 +1,7 @@
+service_id,date,exception_type
+weekdays,20260112,1
+weekdays,20260119,1
+weekdays,20260126,1
+weekdays,20260202,1
+weekdays,20260209,1
+weekdays,20260216,1
