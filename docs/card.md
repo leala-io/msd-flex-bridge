@@ -14,9 +14,18 @@ render produces.
 
 ## What it is for
 
-**Evidence, not illustration.** The card shows a fixed set of description axes that a legal norm
-requires, filled from a real, openly licensed feed published by someone else — and the axes that
-stay empty because a discovery format does not carry them.
+**Evidence, not illustration.** The card shows a fixed set of description axes, filled from a real,
+openly licensed feed published by someone else — and the axes that stay empty because a discovery
+format does not carry them.
+
+**The axes are grounded, not asserted.** [`card-grounding.md`](card-grounding.md) names all three
+sources with title, publisher, URL or DOI and retrieval date, and says which axes each supports. It
+also carries the distinction that is easy to get wrong: the legal norm among them is a
+non-discrimination **review** standard, not a description obligation. It names six criteria along
+which a service's comparability is reviewed; the axes are description axes because whoever performs
+that review needs the parameters described. For two of the nine — capacity constraints and trip
+purpose restrictions — a description layer cannot supply what the review would need, and both are
+carried as open questions.
 
 **The empty axes are the point.** Five of the nine carry no value. The axis set is decided in
 advance and is deliberately *not* reduced to what this feed happens to fill; a card showing only
@@ -42,11 +51,16 @@ noticing. `field_exists` means the model could hold it; `documented_candidate` a
 `undocumented_gap` both mean it has no field today. A coverage value the card has no treatment for
 stops the build rather than falling into an existing state.
 
-**Trip purpose is a fourth treatment and not a fourth state.** The norm names the axis, the feed is
-silent, and the model has no key — but that was reached by comparing a norm with a schema, not by a
-lift that needed a field and found none. It is shown as an **open question** and is deliberately
-absent from the residual register, because writing it in would put a claim there that no build
-produced.
+**Two axes get a fourth treatment, which is not a fourth state.** Capacity and trip purpose are
+shown as **open questions**. In both, the norm names the axis, the feed is silent, and the model has
+no key for the parameter a review would need — but that was reached by comparing a norm with a
+schema, not by a lift that needed a field and found none. Both are deliberately absent from the
+residual register, because writing them in would put a claim there that no build produced.
+
+Capacity was previously mis-attributed: the card answered it with the register's fleet entry —
+vehicle types, seat and wheelchair capacities — while the criterion is about rationing, which is a
+different question and one the model has no key for at all. That entry is no longer shown under this
+axis.
 
 ## What the card reads, and what it does not
 

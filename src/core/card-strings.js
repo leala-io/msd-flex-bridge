@@ -63,9 +63,10 @@ export const en = {
 
   stateOpenQuestion: 'Open question',
   stateOpenQuestionHint:
-    'Required by the legal norm, absent from the feed, and with no field in the model — but '
-    + 'reached by comparing a norm with a schema, not by a build that needed a field and found '
-    + 'none. It is recorded here as a question, not as a confirmed gap.',
+    'Named by the legal norm as an axis along which a service is reviewed, absent from the feed, '
+    + 'and with no key in the model for the parameter the review would need — but reached by '
+    + 'comparing a norm with a schema, not by a build that needed a field and found none. It is '
+    + 'recorded here as a question, not as a confirmed gap.',
 
   /* --- sections ----------------------------------------------------------- */
 
@@ -99,11 +100,20 @@ export const en = {
 
   axesHeading: 'Description axes',
   axesNote:
-    'Nine axes, taken from the intersection of four independent sources plus the axes only the '
-    + 'legal norm adds. The set is fixed in advance and is not reduced to what this feed happens '
-    + 'to fill.',
+    'Nine axes, taken from the intersection of three publicly citable sources. The set is fixed in '
+    + 'advance and is not reduced to what this feed happens to fill.',
+  axesFraming:
+    'The legal norm does not oblige anyone to describe these things. It names six criteria along '
+    + 'which a service’s comparability is reviewed — service area, response time, fares, trip '
+    + 'purpose restrictions, hours and days of service, and capacity constraints. Whoever performs '
+    + 'that review has to have the parameters described to them, and that is what makes these '
+    + 'description axes. For two of the nine, a description layer cannot supply what the review '
+    + 'would need.',
+  axesSourcesLink: 'The three sources, what each one is, and which axes each supports:',
+  axesSourcesLinkText: 'docs/card-grounding.md',
+  axesSourcesHref: '../docs/card-grounding.md',
   axisColumn: 'Axis',
-  sourceColumn: 'Required by',
+  sourceColumn: 'Grounded in',
   stateColumn: 'State',
 
   mapHeading: 'Service area',

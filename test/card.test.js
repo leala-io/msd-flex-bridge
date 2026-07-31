@@ -131,6 +131,70 @@ test('trip purpose is an open question, distinct from the confirmed gaps', () =>
     'it must not be written into the register: no build needed the field and found none');
 });
 
+/* ------------- the norm is a review standard, not a description duty ------- */
+
+test('the card names six review criteria, not seven, and says they are reviewed', () => {
+  // Reservation handling is not a seventh criterion: it belongs to response time.
+  assert.match(html, /It names six criteria along which a service’s comparability is reviewed/);
+  for (const criterion of [
+    'service area', 'response time', 'fares', 'trip purpose restrictions',
+    'hours and days of service', 'capacity constraints',
+  ]) {
+    assert.ok(html.includes(criterion), `the criterion "${criterion}" is named`);
+  }
+
+  // The norm does not oblige anyone to describe anything, and the card must not
+  // say that it does — a reader can now follow the link and check.
+  assert.match(html, /The legal norm does not oblige anyone to describe these things/);
+  assert.match(html, /Grounded in/, 'the column says where an axis comes from, not who requires it');
+  assert.ok(!html.includes('Required by'));
+});
+
+test('the axis section links to the grounding file', () => {
+  assert.match(html, /<a href="\.\.\/docs\/card-grounding\.md">docs\/card-grounding\.md<\/a>/);
+});
+
+test('capacity asks about rationing, and is not answered with the fleet entry', () => {
+  const capacity = treatmentOf(html, 'capacity');
+  assert.equal(capacity.state, 'open_question',
+    'the model has no key for rationing; the criterion is not a fleet description');
+
+  // The regression this test exists for: the fleet entry answers a different
+  // question, and showing it here made the card say the norm asks for it.
+  const fleet = lifted.residuals.find((e) => e.category === 'vehicles');
+  assert.ok(fleet, 'the register still carries the fleet entry');
+  assert.ok(!html.includes(fleet.statement),
+    'the fleet entry must not appear under capacity — it answers a different question');
+  assert.match(html, /forbids rationing the service: waiting lists, trip caps, refusals/);
+});
+
+test('both open questions carry their own note, not a shared one', () => {
+  const sectionOf = (axisId) => html.match(
+    new RegExp(`data-axis="${axisId}"[\\s\\S]*?</section>`),
+  )[0];
+
+  const capacity = sectionOf('capacity');
+  const tripPurpose = sectionOf('trip_purpose');
+
+  assert.match(capacity, /capacity-constraints criterion forbids rationing/);
+  assert.match(tripPurpose, /forbids prioritising some trip purposes over others/);
+  assert.match(tripPurpose, /does not ask for purpose to be described/);
+  assert.notEqual(capacity, tripPurpose, 'two axes, two reasons, not one boilerplate');
+});
+
+test('the grounding claims on each axis say what the source does', () => {
+  // Every axis states where it comes from, and no axis claims the norm requires
+  // a description.
+  for (const axis of AXES) {
+    const section = html.match(new RegExp(`data-axis="${axis.id}"[\\s\\S]*?</section>`))[0];
+    assert.match(section, /class="axis-source">Grounded in: /, `${axis.id} states its grounding`);
+  }
+  // Payment methods and rider eligibility are not among the six criteria and
+  // must not be attributed to the norm.
+  assert.ok(html.includes('not one of the six criteria'));
+  assert.ok(html.includes('in the passenger-guide template, as fare media'));
+});
+
 /* ---------------------------- freshness: a date, not a machine timestamp --- */
 
 test('the freshness date is written out, with the exact stored value kept beside it', () => {

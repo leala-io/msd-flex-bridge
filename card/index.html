@@ -53,17 +53,19 @@
       </div>
       <div class="key-item">
         <span class="state-badge state-open-question">Open question</span>
-        <p>Required by the legal norm, absent from the feed, and with no field in the model — but reached by comparing a norm with a schema, not by a build that needed a field and found none. It is recorded here as a question, not as a confirmed gap.</p>
+        <p>Named by the legal norm as an axis along which a service is reviewed, absent from the feed, and with no key in the model for the parameter the review would need — but reached by comparing a norm with a schema, not by a build that needed a field and found none. It is recorded here as a question, not as a confirmed gap.</p>
       </div>
       <p class="note">The second and the third are different statements and are never shown alike. Merging them would hide the only thing this card exists to show.</p>
     </section>
 
     <section class="axes">
       <h2>Description axes</h2>
-      <p class="note">Nine axes, taken from the intersection of four independent sources plus the axes only the legal norm adds. The set is fixed in advance and is not reduced to what this feed happens to fill.</p>
+      <p class="note">Nine axes, taken from the intersection of three publicly citable sources. The set is fixed in advance and is not reduced to what this feed happens to fill.</p>
+      <p class="note">The legal norm does not oblige anyone to describe these things. It names six criteria along which a service’s comparability is reviewed — service area, response time, fares, trip purpose restrictions, hours and days of service, and capacity constraints. Whoever performs that review has to have the parameters described to them, and that is what makes these description axes. For two of the nine, a description layer cannot supply what the review would need.</p>
+      <p class="note">The three sources, what each one is, and which axes each supports: <a href="../docs/card-grounding.md">docs/card-grounding.md</a></p>
       <section class="axis axis-present" data-axis="service_area" data-state="present">
         <h3>Service area</h3>
-        <p class="axis-source">Required by: all four sources</p>
+        <p class="axis-source">Grounded in: reviewed under the norm’s service-area criterion · in the passenger-guide template</p>
         <p class="state-badge state-present">Present</p>
         <dl class="values">
         <div class="pair"><dt>Service area kind</dt><dd>stops</dd></div>
@@ -72,7 +74,7 @@
       </section>
       <section class="axis axis-present" data-axis="operating_hours" data-state="present">
         <h3>Operating hours</h3>
-        <p class="axis-source">Required by: all four sources</p>
+        <p class="axis-source">Grounded in: reviewed under the norm’s hours-and-days-of-service criterion · in the passenger-guide template</p>
         <p class="state-badge state-present">Present</p>
         <dl class="values">
         <div class="pair"><dt>Pattern 1 · Days</dt><dd>tu fr sa</dd></div>
@@ -86,7 +88,7 @@
       </section>
       <section class="axis axis-present" data-axis="booking_rules" data-state="present">
         <h3>Booking rules</h3>
-        <p class="axis-source">Required by: all four sources</p>
+        <p class="axis-source">Grounded in: part of the norm’s response-time criterion, which covers reservation handling · in the passenger-guide template</p>
         <p class="state-badge state-present">Present</p>
         <dl class="values">
         <div class="pair"><dt>Booking channels</dt><dd>phone</dd></div>
@@ -95,7 +97,7 @@
       </section>
       <section class="axis axis-present" data-axis="response_time" data-state="present">
         <h3>Response time</h3>
-        <p class="axis-source">Required by: legal norm</p>
+        <p class="axis-source">Grounded in: reviewed under the norm’s response-time criterion</p>
         <p class="state-badge state-present">Present</p>
         <dl class="values">
         <div class="pair"><dt>Minimum advance notice, in minutes</dt><dd>30</dd></div>
@@ -104,37 +106,36 @@
       </section>
       <section class="axis axis-feed-silent" data-axis="fares" data-state="feed_silent">
         <h3>Fares</h3>
-        <p class="axis-source">Required by: three of four sources</p>
+        <p class="axis-source">Grounded in: reviewed under the norm’s fares criterion · in the passenger-guide template</p>
         <p class="state-badge state-feed-silent">The feed does not say</p>
         <p class="axis-statement">MSD can express fares: fare_structures is defined in the schema. This feed carries no fare information — no fare_attributes.txt, fare_rules.txt or fare product files — so the key is absent rather than empty.</p>
         <p class="axis-register">Residual register entry: <code>fares</code> · <code>field_exists</code></p>
       </section>
-      <section class="axis axis-feed-silent" data-axis="capacity" data-state="feed_silent">
+      <section class="axis axis-open-question" data-axis="capacity" data-state="open_question">
         <h3>Capacity</h3>
-        <p class="axis-source">Required by: legal norm</p>
-        <p class="state-badge state-feed-silent">The feed does not say</p>
-        <p class="axis-statement">MSD can express the fleet: vehicle types, seat and wheelchair capacities, propulsion and counts. This feed describes none of it, so the key is absent — and no accessibility assertion is derived, because an absent wheelchair_boarding in GTFS is not the same statement as MSD false.</p>
-        <p class="axis-register">Residual register entry: <code>vehicles</code> · <code>field_exists</code></p>
+        <p class="axis-source">Grounded in: reviewed under the norm’s capacity-constraints criterion, which forbids rationing rather than asking for a fleet description</p>
+        <p class="state-badge state-open-question">Open question</p>
+        <p class="axis-statement">The norm’s capacity-constraints criterion forbids rationing the service: waiting lists, trip caps, refusals for lack of space. Reviewing that needs those parameters described, and the description model has no key for any of them. The model can describe a fleet — vehicle types, seats, wheelchair spaces — but that answers a different question from the one the criterion asks, which is why this axis does not show that entry. Like trip purpose, it was reached by comparing a norm with a schema rather than by a lift that needed a field and found none, so it is carried here as an open question and is deliberately absent from the residual register.</p>
       </section>
       <section class="axis axis-feed-silent" data-axis="payment_methods" data-state="feed_silent">
         <h3>Payment methods</h3>
-        <p class="axis-source">Required by: user-facing checklist</p>
+        <p class="axis-source">Grounded in: in the passenger-guide template, as fare media</p>
         <p class="state-badge state-feed-silent">The feed does not say</p>
         <p class="axis-statement">MSD can express accepted payment methods, within a fare structure. This feed states none, and carries no fare structure to hold them, so the key is absent.</p>
         <p class="axis-register">Residual register entry: <code>payment_methods</code> · <code>field_exists</code></p>
       </section>
       <section class="axis axis-no-field" data-axis="rider_eligibility" data-state="no_field">
         <h3>Rider eligibility</h3>
-        <p class="axis-source">Required by: legal norm (implicit), user research</p>
+        <p class="axis-source">Grounded in: in the passenger-guide template · not one of the six criteria</p>
         <p class="state-badge state-no-field">The model has no field</p>
         <p class="axis-statement">The feed does not carry rider eligibility conditions — who may use the service, and under what circumstances. GTFS-Flex has no field for them and MSD v0.1.0 has no key for them, so nothing is asserted about eligibility either way.</p>
         <p class="axis-register">Residual register entry: <code>rider_eligibility</code> · <code>documented_candidate</code></p>
       </section>
       <section class="axis axis-open-question" data-axis="trip_purpose" data-state="open_question">
         <h3>Trip purpose</h3>
-        <p class="axis-source">Required by: legal norm only</p>
+        <p class="axis-source">Grounded in: reviewed under the norm’s trip-purpose-restrictions criterion, which forbids prioritising by purpose rather than asking for purpose to be described</p>
         <p class="state-badge state-open-question">Open question</p>
-        <p class="axis-statement">The legal norm names this axis; the feed is silent about it; and the description model has no key for it. Unlike the gaps above, this one comes from comparing a norm with a schema rather than from a lift that needed a field and found none — so it is carried here as an open question and is deliberately absent from the residual register.</p>
+        <p class="axis-statement">The norm’s trip-purpose-restrictions criterion forbids prioritising some trip purposes over others; it does not ask for purpose to be described. Reviewing it needs any such restriction described, and the description model has no key for one — the feed is silent as well. Like capacity, it was reached by comparing a norm with a schema rather than by a lift that needed a field and found none, so it is carried here as an open question and is deliberately absent from the residual register.</p>
       </section>
       <p class="note"><span class="freshness-label">Day codes</span> mo Monday · tu Tuesday · we Wednesday · th Thursday · fr Friday · sa Saturday · su Sunday</p>
     </section>

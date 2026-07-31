@@ -1,11 +1,11 @@
 /**
  * card.js — the service card (P3/K)
  *
- * Evidence, not illustration. The card shows a fixed set of description axes
- * that a legal norm requires, filled from a real published feed — and the axes
- * that stay empty because a discovery format does not carry them. The axis set
- * is decided in advance and is **not** reduced to what this feed happens to
- * fill: the empty axes carry the argument.
+ * Evidence, not illustration. The card shows a fixed set of description axes,
+ * filled from a real published feed — and the axes that stay empty because a
+ * discovery format does not carry them. The axis set is decided in advance and
+ * is **not** reduced to what this feed happens to fill: the empty axes carry the
+ * argument.
  *
  * Pure: no host imports, no wall clock, no randomness. Two renders of one
  * document are byte-identical.
@@ -83,20 +83,29 @@ export function stateFromRegister(entry) {
 /**
  * The nine axes, fixed in advance.
  *
- * `requiredBy` records which of the independent sources asks for the axis. Only
- * publicly citable groundings are named: the two public sources and the
- * peer-reviewed user research. Axes are never dropped for being empty.
+ * `groundedIn` records what each source actually does about the axis, which is
+ * not the same as requiring it to be described. **The legal norm is a
+ * non-discrimination review standard, not a description obligation:** it names
+ * six criteria along which a service's comparability is reviewed — service area,
+ * response time, fares, trip purpose restrictions, hours and days of service,
+ * and capacity constraints. Whoever performs that review needs the parameters
+ * described to them, which is what makes them description axes here. Saying the
+ * norm "requires" the description would misstate the source a reader is now
+ * invited to follow.
+ *
+ * Only publicly citable groundings are named, each one checked against its own
+ * text; see docs/card-grounding.md. Axes are never dropped for being empty.
  */
 const AXES = [
-  { id: 'service_area', requiredBy: 'all four sources' },
-  { id: 'operating_hours', requiredBy: 'all four sources' },
-  { id: 'booking_rules', requiredBy: 'all four sources' },
-  { id: 'response_time', requiredBy: 'legal norm' },
-  { id: 'fares', requiredBy: 'three of four sources', register: 'fares' },
-  { id: 'capacity', requiredBy: 'legal norm', register: 'vehicles' },
-  { id: 'payment_methods', requiredBy: 'user-facing checklist', register: 'payment_methods' },
-  { id: 'rider_eligibility', requiredBy: 'legal norm (implicit), user research', register: 'rider_eligibility' },
-  { id: 'trip_purpose', requiredBy: 'legal norm only', openQuestion: true },
+  { id: 'service_area', groundedIn: 'reviewed under the norm’s service-area criterion · in the passenger-guide template' },
+  { id: 'operating_hours', groundedIn: 'reviewed under the norm’s hours-and-days-of-service criterion · in the passenger-guide template' },
+  { id: 'booking_rules', groundedIn: 'part of the norm’s response-time criterion, which covers reservation handling · in the passenger-guide template' },
+  { id: 'response_time', groundedIn: 'reviewed under the norm’s response-time criterion' },
+  { id: 'fares', groundedIn: 'reviewed under the norm’s fares criterion · in the passenger-guide template', register: 'fares' },
+  { id: 'capacity', groundedIn: 'reviewed under the norm’s capacity-constraints criterion, which forbids rationing rather than asking for a fleet description', openQuestion: 'capacity' },
+  { id: 'payment_methods', groundedIn: 'in the passenger-guide template, as fare media', register: 'payment_methods' },
+  { id: 'rider_eligibility', groundedIn: 'in the passenger-guide template · not one of the six criteria', register: 'rider_eligibility' },
+  { id: 'trip_purpose', groundedIn: 'reviewed under the norm’s trip-purpose-restrictions criterion, which forbids prioritising by purpose rather than asking for purpose to be described', openQuestion: 'trip_purpose' },
 ];
 
 const AXIS_LABELS = {
@@ -112,18 +121,35 @@ const AXIS_LABELS = {
 };
 
 /**
- * Why trip purpose is on the card and why it is not a fifth confirmed gap.
+ * The two axes where the description layer cannot supply what the review needs.
  *
- * The norm requires the axis, the feed is silent, and the model has no field —
- * but that was reached by comparing a norm with a schema, not by a build that
- * needed a field and found none. The register therefore has no entry for it, and
- * inventing one would put a claim into the register that no build produced.
+ * Both were reached by comparing a norm with a schema, not by a build that
+ * needed a field and found none. The register therefore has no entry for either,
+ * and writing one would put a claim there that no build produced.
+ *
+ * Capacity is the one that was wrong before. The card showed the register's
+ * fleet entry — vehicle types, seat and wheelchair capacities — which answers a
+ * different question from the one the criterion asks. The criterion is about
+ * rationing, and the model has no key for that at all.
  */
-const TRIP_PURPOSE_NOTE =
-  'The legal norm names this axis; the feed is silent about it; and the description model has no '
-  + 'key for it. Unlike the gaps above, this one comes from comparing a norm with a schema rather '
-  + 'than from a lift that needed a field and found none — so it is carried here as an open '
-  + 'question and is deliberately absent from the residual register.';
+const OPEN_QUESTION_NOTES = {
+  capacity:
+    'The norm’s capacity-constraints criterion forbids rationing the service: waiting lists, '
+    + 'trip caps, refusals for lack of space. Reviewing that needs those parameters described, and '
+    + 'the description model has no key for any of them. The model can describe a fleet — vehicle '
+    + 'types, seats, wheelchair spaces — but that answers a different question from the one the '
+    + 'criterion asks, which is why this axis does not show that entry. Like trip purpose, it was '
+    + 'reached by comparing a norm with a schema rather than by a lift that needed a field and '
+    + 'found none, so it is carried here as an open question and is deliberately absent from the '
+    + 'residual register.',
+  trip_purpose:
+    'The norm’s trip-purpose-restrictions criterion forbids prioritising some trip purposes over '
+    + 'others; it does not ask for purpose to be described. Reviewing it needs any such restriction '
+    + 'described, and the description model has no key for one — the feed is silent as well. Like '
+    + 'capacity, it was reached by comparing a norm with a schema rather than by a lift that needed '
+    + 'a field and found none, so it is carried here as an open question and is deliberately absent '
+    + 'from the residual register.',
+};
 
 /* ------------------------------------------------- values from the document */
 
@@ -218,12 +244,16 @@ function renderAxis(axis, doc, register, strings) {
   const label = AXIS_LABELS[axis.id];
 
   if (axis.openQuestion) {
+    const note = OPEN_QUESTION_NOTES[axis.openQuestion];
+    if (note === undefined) {
+      throw new Error(`the axis "${axis.id}" is an open question with no note explaining why`);
+    }
     return [
       `      <section class="axis axis-open-question" data-axis="${esc(axis.id)}" data-state="open_question">`,
       `        <h3>${esc(label)}</h3>`,
-      `        <p class="axis-source">${esc(strings.sourceColumn)}: ${esc(axis.requiredBy)}</p>`,
+      `        <p class="axis-source">${esc(strings.sourceColumn)}: ${esc(axis.groundedIn)}</p>`,
       `        <p class="state-badge state-open-question">${esc(strings.stateOpenQuestion)}</p>`,
-      `        <p class="axis-statement">${esc(TRIP_PURPOSE_NOTE)}</p>`,
+      `        <p class="axis-statement">${esc(note)}</p>`,
       '      </section>',
     ].join('\n');
   }
@@ -236,7 +266,7 @@ function renderAxis(axis, doc, register, strings) {
     return [
       `      <section class="axis axis-present" data-axis="${esc(axis.id)}" data-state="present">`,
       `        <h3>${esc(label)}</h3>`,
-      `        <p class="axis-source">${esc(strings.sourceColumn)}: ${esc(axis.requiredBy)}</p>`,
+      `        <p class="axis-source">${esc(strings.sourceColumn)}: ${esc(axis.groundedIn)}</p>`,
       `        <p class="state-badge state-present">${esc(strings.statePresent)}</p>`,
       '        <dl class="values">',
       ...values.map((v) => row(v.label, v.value)),
@@ -262,7 +292,7 @@ function renderAxis(axis, doc, register, strings) {
   return [
     `      <section class="axis axis-${state.replace('_', '-')}" data-axis="${esc(axis.id)}" data-state="${state}">`,
     `        <h3>${esc(label)}</h3>`,
-    `        <p class="axis-source">${esc(strings.sourceColumn)}: ${esc(axis.requiredBy)}</p>`,
+    `        <p class="axis-source">${esc(strings.sourceColumn)}: ${esc(axis.groundedIn)}</p>`,
     `        <p class="state-badge ${stateClass}">${esc(stateLabel)}</p>`,
     `        <p class="axis-statement">${esc(entry.statement)}</p>`,
     `        <p class="axis-register">${esc(strings.registerLabel)}: <code>${esc(entry.category)}</code> · <code>${esc(entry.model_coverage)}</code></p>`,
@@ -365,6 +395,8 @@ export function renderCard({ msd, residuals, strings }) {
     '    <section class="axes">',
     `      <h2>${esc(strings.axesHeading)}</h2>`,
     `      <p class="note">${esc(strings.axesNote)}</p>`,
+    `      <p class="note">${esc(strings.axesFraming)}</p>`,
+    `      <p class="note">${esc(strings.axesSourcesLink)} <a href="${esc(strings.axesSourcesHref)}">${esc(strings.axesSourcesLinkText)}</a></p>`,
     ...AXES.map((axis) => renderAxis(axis, msd, residuals, strings)),
     `      <p class="note"><span class="freshness-label">${esc(strings.daysLegendLabel)}</span> ${esc(strings.daysLegend)}</p>`,
     '    </section>',
