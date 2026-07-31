@@ -74,6 +74,16 @@ jobs:
           node scripts/write-snapshots.mjs
           git diff --exit-code -- test/fixtures/expected/
 
+      # The committed card must be reproducible from the committed sources, for
+      # the same reason the snapshots must be. This checks the FILE, not the
+      # rendering: no step here opens a browser or measures a colour, and none
+      # would notice an unreadable page. That check is human and is written down
+      # as one in docs/card.md, where it is the condition for pushing.
+      - name: Card is reproducible
+        run: |
+          node scripts/build-card.mjs
+          git diff --exit-code -- card/
+
       # Not a gate — evidence. Writes the two feeds the validator then reads:
       # the bundled feed unpacked verbatim, and the feed the vendored exporter
       # produces from the lifted document. Offline and deterministic.
