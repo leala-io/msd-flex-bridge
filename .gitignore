@@ -17,3 +17,9 @@ compliance-terms.txt
 # Local Claude Code config / guardrails — not for the public repo
 .claude/
 CLAUDE.md
+
+# Roundtrip artefacts — regenerate with `npm run roundtrip`
+build/
+
+# Canonical GTFS validator JAR — fetched by pinned version, never committed
+*.jar

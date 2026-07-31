@@ -10,25 +10,33 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 
 import { liftFlexToMsd } from '../src/core/lift.js';
 import { serialise } from '../src/core/serialise.js';
+import { runRoundtrip } from './roundtrip.mjs';
 
 const FIXTURE = 'test/fixtures/mizuho/Mizuho_Area-20260202.zip';
 const OUT = 'test/fixtures/expected';
 
-const { msd, residuals, diagnostics, refusal } = await liftFlexToMsd(
-  new Uint8Array(readFileSync(FIXTURE)),
-);
+const bytes = new Uint8Array(readFileSync(FIXTURE));
+
+const { msd, residuals, diagnostics, refusal } = await liftFlexToMsd(bytes);
 
 if (refusal !== null) {
   console.error(`the bundled fixture was refused: ${refusal.code} — ${refusal.message}`);
   process.exit(1);
 }
 
+// The roundtrip report is a snapshot for the same reason the others are: it is
+// the record of what the comparison found, and regenerating it must reproduce
+// it byte for byte or the chain is not deterministic.
+const { report } = await runRoundtrip(bytes);
+
 mkdirSync(OUT, { recursive: true });
 writeFileSync(`${OUT}/mizuho.msd.json`, serialise(msd));
 writeFileSync(`${OUT}/mizuho.residuals.json`, serialise(residuals));
 writeFileSync(`${OUT}/mizuho.diagnostics.json`, serialise(diagnostics));
+writeFileSync(`${OUT}/mizuho.roundtrip.json`, serialise(report));
 
 console.log(`written to ${OUT}/`);
 console.log(`  mizuho.msd.json          ${msd.services.length} service(s), ${msd.services[0].service_area.stops.length} stops`);
 console.log(`  mizuho.residuals.json    ${residuals.length} entries`);
 console.log(`  mizuho.diagnostics.json  ${Object.keys(diagnostics).length} top-level keys`);
+console.log(`  mizuho.roundtrip.json    ${report.totals.fieldDifferences} field difference(s), ${report.totals.rowsOnlyOriginal}/${report.totals.rowsOnlyGenerated} unpaired row(s)`);

@@ -1,0 +1,3780 @@
+{
+  "files": {
+    "matched": [
+      "agency.txt",
+      "booking_rules.txt",
+      "calendar.txt",
+      "calendar_dates.txt",
+      "feed_info.txt",
+      "location_group_stops.txt",
+      "location_groups.txt",
+      "routes.txt",
+      "stop_times.txt",
+      "stops.txt",
+      "trips.txt"
+    ],
+    "onlyOriginal": [
+      {
+        "file": "translations.txt",
+        "rows": 126
+      }
+    ],
+    "onlyGenerated": []
+  },
+  "perFile": {
+    "agency.txt": {
+      "comparedAs": "keyed",
+      "columns": {
+        "onlyOriginal": [
+          "agency_phone"
+        ],
+        "onlyGenerated": []
+      },
+      "rows": {
+        "matched": 1,
+        "onlyOriginal": [],
+        "onlyGenerated": []
+      },
+      "differences": [
+        {
+          "file": "agency.txt",
+          "key": "mizuhomachi",
+          "column": "agency_phone",
+          "kind": "column_absent_in_generated",
+          "original": "050-2030-2630",
+          "generated": null
+        }
+      ]
+    },
+    "booking_rules.txt": {
+      "comparedAs": "keyed",
+      "columns": {
+        "onlyOriginal": [
+          "phone_number"
+        ],
+        "onlyGenerated": [
+          "prior_notice_start_day",
+          "prior_notice_start_time"
+        ]
+      },
+      "rows": {
+        "matched": 0,
+        "onlyOriginal": [
+          {
+            "key": "general",
+            "row": {
+              "booking_rule_id": "general",
+              "booking_type": "1",
+              "prior_notice_duration_min": "30",
+              "message": "ご利用の30分前までに予約が必要で、電話予約は8:30から16:30まで、オンライン予約は24時間受付",
+              "phone_number": "050-2030-2630",
+              "info_url": "https://www.town.mizuho.tokyo.jp/",
+              "booking_url": ""
+            }
+          }
+        ],
+        "onlyGenerated": [
+          {
+            "key": "br-default",
+            "row": {
+              "booking_rule_id": "br-default",
+              "booking_type": "1",
+              "prior_notice_duration_min": "30",
+              "prior_notice_start_day": "",
+              "prior_notice_start_time": "",
+              "message": "",
+              "info_url": "https://www.town.mizuho.tokyo.jp/",
+              "booking_url": ""
+            }
+          }
+        ]
+      },
+      "differences": []
+    },
+    "calendar.txt": {
+      "comparedAs": "keyed",
+      "columns": {
+        "onlyOriginal": [],
+        "onlyGenerated": []
+      },
+      "rows": {
+        "matched": 0,
+        "onlyOriginal": [
+          {
+            "key": "east_service",
+            "row": {
+              "service_id": "east_service",
+              "monday": "0",
+              "tuesday": "1",
+              "wednesday": "0",
+              "thursday": "0",
+              "friday": "1",
+              "saturday": "1",
+              "sunday": "0",
+              "start_date": "20241001",
+              "end_date": "20260930"
+            }
+          },
+          {
+            "key": "west_service",
+            "row": {
+              "service_id": "west_service",
+              "monday": "1",
+              "tuesday": "0",
+              "wednesday": "1",
+              "thursday": "0",
+              "friday": "0",
+              "saturday": "1",
+              "sunday": "0",
+              "start_date": "20241001",
+              "end_date": "20260930"
+            }
+          }
+        ],
+        "onlyGenerated": [
+          {
+            "key": "mizuhomachi_route-oh0",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "monday": "0",
+              "tuesday": "1",
+              "wednesday": "0",
+              "thursday": "0",
+              "friday": "1",
+              "saturday": "1",
+              "sunday": "0",
+              "start_date": "20260215",
+              "end_date": "20270215"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "monday": "1",
+              "tuesday": "0",
+              "wednesday": "1",
+              "thursday": "0",
+              "friday": "0",
+              "saturday": "1",
+              "sunday": "0",
+              "start_date": "20260215",
+              "end_date": "20270215"
+            }
+          }
+        ]
+      },
+      "differences": []
+    },
+    "calendar_dates.txt": {
+      "comparedAs": "keyed",
+      "columns": {
+        "onlyOriginal": [],
+        "onlyGenerated": []
+      },
+      "rows": {
+        "matched": 0,
+        "onlyOriginal": [
+          {
+            "key": "east_service\u001f20241014",
+            "row": {
+              "service_id": "east_service",
+              "date": "20241014",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20241103",
+            "row": {
+              "service_id": "east_service",
+              "date": "20241103",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20241104",
+            "row": {
+              "service_id": "east_service",
+              "date": "20241104",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20241123",
+            "row": {
+              "service_id": "east_service",
+              "date": "20241123",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20241229",
+            "row": {
+              "service_id": "east_service",
+              "date": "20241229",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20241230",
+            "row": {
+              "service_id": "east_service",
+              "date": "20241230",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20241231",
+            "row": {
+              "service_id": "east_service",
+              "date": "20241231",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20250101",
+            "row": {
+              "service_id": "east_service",
+              "date": "20250101",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20250102",
+            "row": {
+              "service_id": "east_service",
+              "date": "20250102",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20250103",
+            "row": {
+              "service_id": "east_service",
+              "date": "20250103",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20250113",
+            "row": {
+              "service_id": "east_service",
+              "date": "20250113",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20250211",
+            "row": {
+              "service_id": "east_service",
+              "date": "20250211",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20250223",
+            "row": {
+              "service_id": "east_service",
+              "date": "20250223",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20250224",
+            "row": {
+              "service_id": "east_service",
+              "date": "20250224",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20250320",
+            "row": {
+              "service_id": "east_service",
+              "date": "20250320",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20250429",
+            "row": {
+              "service_id": "east_service",
+              "date": "20250429",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20250503",
+            "row": {
+              "service_id": "east_service",
+              "date": "20250503",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20250504",
+            "row": {
+              "service_id": "east_service",
+              "date": "20250504",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20250505",
+            "row": {
+              "service_id": "east_service",
+              "date": "20250505",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20250506",
+            "row": {
+              "service_id": "east_service",
+              "date": "20250506",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20250721",
+            "row": {
+              "service_id": "east_service",
+              "date": "20250721",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20250811",
+            "row": {
+              "service_id": "east_service",
+              "date": "20250811",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20250915",
+            "row": {
+              "service_id": "east_service",
+              "date": "20250915",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20250923",
+            "row": {
+              "service_id": "east_service",
+              "date": "20250923",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20251013",
+            "row": {
+              "service_id": "east_service",
+              "date": "20251013",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20251103",
+            "row": {
+              "service_id": "east_service",
+              "date": "20251103",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20251123",
+            "row": {
+              "service_id": "east_service",
+              "date": "20251123",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20251124",
+            "row": {
+              "service_id": "east_service",
+              "date": "20251124",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20251229",
+            "row": {
+              "service_id": "east_service",
+              "date": "20251229",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20251230",
+            "row": {
+              "service_id": "east_service",
+              "date": "20251230",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20251231",
+            "row": {
+              "service_id": "east_service",
+              "date": "20251231",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20260101",
+            "row": {
+              "service_id": "east_service",
+              "date": "20260101",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20260102",
+            "row": {
+              "service_id": "east_service",
+              "date": "20260102",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20260103",
+            "row": {
+              "service_id": "east_service",
+              "date": "20260103",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20260112",
+            "row": {
+              "service_id": "east_service",
+              "date": "20260112",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20260211",
+            "row": {
+              "service_id": "east_service",
+              "date": "20260211",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20260223",
+            "row": {
+              "service_id": "east_service",
+              "date": "20260223",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20260320",
+            "row": {
+              "service_id": "east_service",
+              "date": "20260320",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20260429",
+            "row": {
+              "service_id": "east_service",
+              "date": "20260429",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20260503",
+            "row": {
+              "service_id": "east_service",
+              "date": "20260503",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20260504",
+            "row": {
+              "service_id": "east_service",
+              "date": "20260504",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20260505",
+            "row": {
+              "service_id": "east_service",
+              "date": "20260505",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20260506",
+            "row": {
+              "service_id": "east_service",
+              "date": "20260506",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20260720",
+            "row": {
+              "service_id": "east_service",
+              "date": "20260720",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20260811",
+            "row": {
+              "service_id": "east_service",
+              "date": "20260811",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20260921",
+            "row": {
+              "service_id": "east_service",
+              "date": "20260921",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20260922",
+            "row": {
+              "service_id": "east_service",
+              "date": "20260922",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "east_service\u001f20260923",
+            "row": {
+              "service_id": "east_service",
+              "date": "20260923",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20241014",
+            "row": {
+              "service_id": "west_service",
+              "date": "20241014",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20241103",
+            "row": {
+              "service_id": "west_service",
+              "date": "20241103",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20241104",
+            "row": {
+              "service_id": "west_service",
+              "date": "20241104",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20241123",
+            "row": {
+              "service_id": "west_service",
+              "date": "20241123",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20241229",
+            "row": {
+              "service_id": "west_service",
+              "date": "20241229",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20241230",
+            "row": {
+              "service_id": "west_service",
+              "date": "20241230",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20241231",
+            "row": {
+              "service_id": "west_service",
+              "date": "20241231",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20250101",
+            "row": {
+              "service_id": "west_service",
+              "date": "20250101",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20250102",
+            "row": {
+              "service_id": "west_service",
+              "date": "20250102",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20250103",
+            "row": {
+              "service_id": "west_service",
+              "date": "20250103",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20250113",
+            "row": {
+              "service_id": "west_service",
+              "date": "20250113",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20250211",
+            "row": {
+              "service_id": "west_service",
+              "date": "20250211",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20250223",
+            "row": {
+              "service_id": "west_service",
+              "date": "20250223",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20250224",
+            "row": {
+              "service_id": "west_service",
+              "date": "20250224",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20250320",
+            "row": {
+              "service_id": "west_service",
+              "date": "20250320",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20250429",
+            "row": {
+              "service_id": "west_service",
+              "date": "20250429",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20250503",
+            "row": {
+              "service_id": "west_service",
+              "date": "20250503",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20250504",
+            "row": {
+              "service_id": "west_service",
+              "date": "20250504",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20250505",
+            "row": {
+              "service_id": "west_service",
+              "date": "20250505",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20250506",
+            "row": {
+              "service_id": "west_service",
+              "date": "20250506",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20250721",
+            "row": {
+              "service_id": "west_service",
+              "date": "20250721",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20250811",
+            "row": {
+              "service_id": "west_service",
+              "date": "20250811",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20250915",
+            "row": {
+              "service_id": "west_service",
+              "date": "20250915",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20250923",
+            "row": {
+              "service_id": "west_service",
+              "date": "20250923",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20251013",
+            "row": {
+              "service_id": "west_service",
+              "date": "20251013",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20251103",
+            "row": {
+              "service_id": "west_service",
+              "date": "20251103",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20251123",
+            "row": {
+              "service_id": "west_service",
+              "date": "20251123",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20251124",
+            "row": {
+              "service_id": "west_service",
+              "date": "20251124",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20251229",
+            "row": {
+              "service_id": "west_service",
+              "date": "20251229",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20251230",
+            "row": {
+              "service_id": "west_service",
+              "date": "20251230",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20251231",
+            "row": {
+              "service_id": "west_service",
+              "date": "20251231",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20260101",
+            "row": {
+              "service_id": "west_service",
+              "date": "20260101",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20260102",
+            "row": {
+              "service_id": "west_service",
+              "date": "20260102",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20260103",
+            "row": {
+              "service_id": "west_service",
+              "date": "20260103",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20260112",
+            "row": {
+              "service_id": "west_service",
+              "date": "20260112",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20260211",
+            "row": {
+              "service_id": "west_service",
+              "date": "20260211",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20260223",
+            "row": {
+              "service_id": "west_service",
+              "date": "20260223",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20260320",
+            "row": {
+              "service_id": "west_service",
+              "date": "20260320",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20260429",
+            "row": {
+              "service_id": "west_service",
+              "date": "20260429",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20260503",
+            "row": {
+              "service_id": "west_service",
+              "date": "20260503",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20260504",
+            "row": {
+              "service_id": "west_service",
+              "date": "20260504",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20260505",
+            "row": {
+              "service_id": "west_service",
+              "date": "20260505",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20260506",
+            "row": {
+              "service_id": "west_service",
+              "date": "20260506",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20260720",
+            "row": {
+              "service_id": "west_service",
+              "date": "20260720",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20260811",
+            "row": {
+              "service_id": "west_service",
+              "date": "20260811",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20260921",
+            "row": {
+              "service_id": "west_service",
+              "date": "20260921",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20260922",
+            "row": {
+              "service_id": "west_service",
+              "date": "20260922",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "west_service\u001f20260923",
+            "row": {
+              "service_id": "west_service",
+              "date": "20260923",
+              "exception_type": "2"
+            }
+          }
+        ],
+        "onlyGenerated": [
+          {
+            "key": "mizuhomachi_route-oh0\u001f20241014",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20241014",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20241103",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20241103",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20241104",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20241104",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20241123",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20241123",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20241229",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20241229",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20241230",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20241230",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20241231",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20241231",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20250101",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20250101",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20250102",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20250102",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20250103",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20250103",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20250113",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20250113",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20250211",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20250211",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20250223",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20250223",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20250224",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20250224",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20250320",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20250320",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20250429",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20250429",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20250503",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20250503",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20250504",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20250504",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20250505",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20250505",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20250506",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20250506",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20250721",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20250721",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20250811",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20250811",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20250915",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20250915",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20250923",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20250923",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20251013",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20251013",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20251103",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20251103",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20251123",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20251123",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20251124",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20251124",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20251229",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20251229",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20251230",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20251230",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20251231",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20251231",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20260101",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20260101",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20260102",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20260102",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20260103",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20260103",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20260112",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20260112",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20260211",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20260211",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20260223",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20260223",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20260320",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20260320",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20260429",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20260429",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20260503",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20260503",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20260504",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20260504",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20260505",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20260505",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20260506",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20260506",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20260720",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20260720",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20260811",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20260811",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20260921",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20260921",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20260922",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20260922",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh0\u001f20260923",
+            "row": {
+              "service_id": "mizuhomachi_route-oh0",
+              "date": "20260923",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20241014",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20241014",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20241103",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20241103",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20241104",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20241104",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20241123",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20241123",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20241229",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20241229",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20241230",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20241230",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20241231",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20241231",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20250101",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20250101",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20250102",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20250102",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20250103",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20250103",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20250113",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20250113",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20250211",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20250211",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20250223",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20250223",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20250224",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20250224",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20250320",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20250320",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20250429",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20250429",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20250503",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20250503",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20250504",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20250504",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20250505",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20250505",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20250506",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20250506",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20250721",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20250721",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20250811",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20250811",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20250915",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20250915",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20250923",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20250923",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20251013",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20251013",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20251103",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20251103",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20251123",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20251123",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20251124",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20251124",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20251229",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20251229",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20251230",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20251230",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20251231",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20251231",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20260101",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20260101",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20260102",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20260102",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20260103",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20260103",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20260112",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20260112",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20260211",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20260211",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20260223",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20260223",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20260320",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20260320",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20260429",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20260429",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20260503",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20260503",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20260504",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20260504",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20260505",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20260505",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20260506",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20260506",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20260720",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20260720",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20260811",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20260811",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20260921",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20260921",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20260922",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20260922",
+              "exception_type": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-oh1\u001f20260923",
+            "row": {
+              "service_id": "mizuhomachi_route-oh1",
+              "date": "20260923",
+              "exception_type": "2"
+            }
+          }
+        ]
+      },
+      "differences": []
+    },
+    "feed_info.txt": {
+      "comparedAs": "single-row",
+      "columns": {
+        "onlyOriginal": [
+          "feed_contact_email"
+        ],
+        "onlyGenerated": [
+          "feed_contact_url"
+        ]
+      },
+      "rows": {
+        "matched": 1,
+        "onlyOriginal": [],
+        "onlyGenerated": []
+      },
+      "differences": [
+        {
+          "file": "feed_info.txt",
+          "key": "#1",
+          "column": "feed_start_date",
+          "kind": "value_differs",
+          "original": "20241001",
+          "generated": "20260215"
+        },
+        {
+          "file": "feed_info.txt",
+          "key": "#1",
+          "column": "feed_end_date",
+          "kind": "value_differs",
+          "original": "20260930",
+          "generated": "20270215"
+        },
+        {
+          "file": "feed_info.txt",
+          "key": "#1",
+          "column": "feed_version",
+          "kind": "value_differs",
+          "original": "20260215",
+          "generated": "msd-0.1.0-20260215"
+        },
+        {
+          "file": "feed_info.txt",
+          "key": "#1",
+          "column": "feed_contact_email",
+          "kind": "column_absent_in_generated",
+          "original": "koutuu@town.mizuho.tokyo.jp",
+          "generated": null
+        },
+        {
+          "file": "feed_info.txt",
+          "key": "#1",
+          "column": "feed_contact_url",
+          "kind": "column_absent_in_original",
+          "original": null,
+          "generated": "https://www.town.mizuho.tokyo.jp/"
+        }
+      ]
+    },
+    "location_group_stops.txt": {
+      "comparedAs": "keyed",
+      "columns": {
+        "onlyOriginal": [],
+        "onlyGenerated": []
+      },
+      "rows": {
+        "matched": 0,
+        "onlyOriginal": [
+          {
+            "key": "mizuhomachi_group\u001f1",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "1"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f2",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f3",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "3"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f4",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "4"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f5",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "5"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f6",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "6"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f7",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "7"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f8",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "8"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f9",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "9"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f10",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "10"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f11",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "11"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f12",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "12"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f13",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "13"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f14",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "14"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f15",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "15"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f16",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "16"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f17",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "17"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f18",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "18"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f19",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "19"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f20",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "20"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f21",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "21"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f22",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "22"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f23",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "23"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f24",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "24"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f25",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "25"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f26",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "26"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f27",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "27"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f28",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "28"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f29",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "29"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f30",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "30"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f31",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "31"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f32",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "32"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f33",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "33"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f34",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "34"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f35",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "35"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f36",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "36"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f37",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "37"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f38",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "38"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f39",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "39"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f40",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "40"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f41",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "41"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f42",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "42"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f43",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "43"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f44",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "44"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f45",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "45"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f46",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "46"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f47",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "47"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f48",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "48"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f49",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "49"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f50",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "50"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f51",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "51"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f52",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "52"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f53",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "53"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f54",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "54"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f55",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "55"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f56",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "56"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f57",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "57"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f58",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "58"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f59",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "59"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f60",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "60"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f61",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "61"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f62",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "62"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f63",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "63"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f64",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "64"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f65",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "65"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f66",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "66"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f67",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "67"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f68",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "68"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f69",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "69"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f70",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "70"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f71",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "71"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f72",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "72"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f73",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "73"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f74",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "74"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f75",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "75"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f76",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "76"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f77",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "77"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f78",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "78"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f79",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "79"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f80",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "80"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f81",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "81"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f82",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "82"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f83",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "83"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f84",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "84"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f85",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "85"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f86",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "86"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f87",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "87"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f88",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "88"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f89",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "89"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f90",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "90"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f91",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "91"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f92",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "92"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f93",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "93"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f94",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "94"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f95",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "95"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f96",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "96"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f97",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "97"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f98",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "98"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f99",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "99"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f100",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "100"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f101",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "101"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f102",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "102"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f103",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "103"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f104",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "104"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f105",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "105"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f106",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "106"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f107",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "107"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f108",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "108"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f109",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "109"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f110",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "110"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f111",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "111"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f112",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "112"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f113",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "113"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f114",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "114"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f115",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "115"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f116",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "116"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f117",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "117"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f118",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "118"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f119",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "119"
+            }
+          },
+          {
+            "key": "mizuhomachi_group\u001f120",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "stop_id": "120"
+            }
+          }
+        ],
+        "onlyGenerated": [
+          {
+            "key": "mizuhomachi_route-area\u001f1",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "1"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f2",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "2"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f3",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "3"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f4",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "4"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f5",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "5"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f6",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "6"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f7",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "7"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f8",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "8"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f9",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "9"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f10",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "10"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f11",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "11"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f12",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "12"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f13",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "13"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f14",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "14"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f15",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "15"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f16",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "16"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f17",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "17"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f18",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "18"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f19",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "19"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f20",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "20"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f21",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "21"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f22",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "22"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f23",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "23"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f24",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "24"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f25",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "25"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f26",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "26"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f27",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "27"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f28",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "28"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f29",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "29"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f30",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "30"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f31",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "31"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f32",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "32"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f33",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "33"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f34",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "34"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f35",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "35"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f36",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "36"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f37",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "37"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f38",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "38"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f39",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "39"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f40",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "40"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f41",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "41"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f42",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "42"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f43",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "43"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f44",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "44"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f45",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "45"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f46",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "46"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f47",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "47"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f48",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "48"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f49",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "49"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f50",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "50"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f51",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "51"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f52",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "52"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f53",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "53"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f54",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "54"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f55",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "55"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f56",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "56"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f57",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "57"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f58",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "58"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f59",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "59"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f60",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "60"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f61",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "61"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f62",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "62"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f63",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "63"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f64",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "64"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f65",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "65"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f66",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "66"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f67",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "67"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f68",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "68"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f69",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "69"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f70",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "70"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f71",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "71"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f72",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "72"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f73",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "73"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f74",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "74"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f75",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "75"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f76",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "76"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f77",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "77"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f78",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "78"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f79",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "79"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f80",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "80"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f81",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "81"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f82",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "82"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f83",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "83"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f84",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "84"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f85",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "85"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f86",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "86"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f87",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "87"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f88",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "88"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f89",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "89"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f90",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "90"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f91",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "91"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f92",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "92"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f93",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "93"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f94",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "94"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f95",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "95"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f96",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "96"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f97",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "97"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f98",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "98"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f99",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "99"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f100",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "100"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f101",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "101"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f102",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "102"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f103",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "103"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f104",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "104"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f105",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "105"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f106",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "106"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f107",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "107"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f108",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "108"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f109",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "109"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f110",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "110"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f111",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "111"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f112",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "112"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f113",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "113"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f114",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "114"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f115",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "115"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f116",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "116"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f117",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "117"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f118",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "118"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f119",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "119"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-area\u001f120",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "stop_id": "120"
+            }
+          }
+        ]
+      },
+      "differences": []
+    },
+    "location_groups.txt": {
+      "comparedAs": "keyed",
+      "columns": {
+        "onlyOriginal": [],
+        "onlyGenerated": []
+      },
+      "rows": {
+        "matched": 0,
+        "onlyOriginal": [
+          {
+            "key": "mizuhomachi_group",
+            "row": {
+              "location_group_id": "mizuhomachi_group",
+              "location_group_name": "瑞穂町全乗降場"
+            }
+          }
+        ],
+        "onlyGenerated": [
+          {
+            "key": "mizuhomachi_route-area",
+            "row": {
+              "location_group_id": "mizuhomachi_route-area",
+              "location_group_name": "チョイソコみずほまち service area"
+            }
+          }
+        ]
+      },
+      "differences": []
+    },
+    "routes.txt": {
+      "comparedAs": "keyed",
+      "columns": {
+        "onlyOriginal": [
+          "route_desc",
+          "route_color",
+          "route_text_color"
+        ],
+        "onlyGenerated": []
+      },
+      "rows": {
+        "matched": 1,
+        "onlyOriginal": [],
+        "onlyGenerated": []
+      },
+      "differences": [
+        {
+          "file": "routes.txt",
+          "key": "mizuhomachi_route",
+          "column": "route_short_name",
+          "kind": "value_differs",
+          "original": "瑞穂町デマンド",
+          "generated": ""
+        },
+        {
+          "file": "routes.txt",
+          "key": "mizuhomachi_route",
+          "column": "route_type",
+          "kind": "value_differs",
+          "original": "715",
+          "generated": "3"
+        },
+        {
+          "file": "routes.txt",
+          "key": "mizuhomachi_route",
+          "column": "route_desc",
+          "kind": "column_absent_in_generated",
+          "original": "瑞穂町チョイソコみずほまちデマンドサービス",
+          "generated": null
+        },
+        {
+          "file": "routes.txt",
+          "key": "mizuhomachi_route",
+          "column": "route_color",
+          "kind": "column_absent_in_generated",
+          "original": "008080",
+          "generated": null
+        },
+        {
+          "file": "routes.txt",
+          "key": "mizuhomachi_route",
+          "column": "route_text_color",
+          "kind": "column_absent_in_generated",
+          "original": "FFFFFF",
+          "generated": null
+        }
+      ]
+    },
+    "stop_times.txt": {
+      "comparedAs": "sequence",
+      "columns": {
+        "onlyOriginal": [
+          "timepoint"
+        ],
+        "onlyGenerated": [
+          "stop_id",
+          "location_id"
+        ]
+      },
+      "rows": {
+        "matched": 0,
+        "onlyOriginal": [
+          {
+            "key": "east_trip#1",
+            "row": {
+              "trip_id": "east_trip",
+              "location_group_id": "mizuhomachi_group",
+              "stop_sequence": "1",
+              "start_pickup_drop_off_window": "09:00:00",
+              "end_pickup_drop_off_window": "17:00:00",
+              "pickup_type": "2",
+              "drop_off_type": "1",
+              "pickup_booking_rule_id": "general",
+              "drop_off_booking_rule_id": "",
+              "timepoint": "1"
+            }
+          },
+          {
+            "key": "east_trip#2",
+            "row": {
+              "trip_id": "east_trip",
+              "location_group_id": "mizuhomachi_group",
+              "stop_sequence": "2",
+              "start_pickup_drop_off_window": "09:00:00",
+              "end_pickup_drop_off_window": "17:00:00",
+              "pickup_type": "1",
+              "drop_off_type": "2",
+              "pickup_booking_rule_id": "",
+              "drop_off_booking_rule_id": "general",
+              "timepoint": "1"
+            }
+          },
+          {
+            "key": "west_trip#1",
+            "row": {
+              "trip_id": "west_trip",
+              "location_group_id": "mizuhomachi_group",
+              "stop_sequence": "1",
+              "start_pickup_drop_off_window": "09:00:00",
+              "end_pickup_drop_off_window": "17:00:00",
+              "pickup_type": "2",
+              "drop_off_type": "1",
+              "pickup_booking_rule_id": "general",
+              "drop_off_booking_rule_id": "",
+              "timepoint": "1"
+            }
+          },
+          {
+            "key": "west_trip#2",
+            "row": {
+              "trip_id": "west_trip",
+              "location_group_id": "mizuhomachi_group",
+              "stop_sequence": "2",
+              "start_pickup_drop_off_window": "09:00:00",
+              "end_pickup_drop_off_window": "17:00:00",
+              "pickup_type": "1",
+              "drop_off_type": "2",
+              "pickup_booking_rule_id": "",
+              "drop_off_booking_rule_id": "general",
+              "timepoint": "1"
+            }
+          }
+        ],
+        "onlyGenerated": [
+          {
+            "key": "mizuhomachi_route-t0#1",
+            "row": {
+              "trip_id": "mizuhomachi_route-t0",
+              "stop_sequence": "1",
+              "stop_id": "",
+              "location_id": "",
+              "location_group_id": "mizuhomachi_route-area",
+              "start_pickup_drop_off_window": "09:00:00",
+              "end_pickup_drop_off_window": "17:00:00",
+              "pickup_type": "2",
+              "drop_off_type": "2",
+              "pickup_booking_rule_id": "br-default",
+              "drop_off_booking_rule_id": "br-default"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-t0#2",
+            "row": {
+              "trip_id": "mizuhomachi_route-t0",
+              "stop_sequence": "2",
+              "stop_id": "",
+              "location_id": "",
+              "location_group_id": "mizuhomachi_route-area",
+              "start_pickup_drop_off_window": "09:00:00",
+              "end_pickup_drop_off_window": "17:00:00",
+              "pickup_type": "2",
+              "drop_off_type": "2",
+              "pickup_booking_rule_id": "br-default",
+              "drop_off_booking_rule_id": "br-default"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-t1#1",
+            "row": {
+              "trip_id": "mizuhomachi_route-t1",
+              "stop_sequence": "1",
+              "stop_id": "",
+              "location_id": "",
+              "location_group_id": "mizuhomachi_route-area",
+              "start_pickup_drop_off_window": "09:00:00",
+              "end_pickup_drop_off_window": "17:00:00",
+              "pickup_type": "2",
+              "drop_off_type": "2",
+              "pickup_booking_rule_id": "br-default",
+              "drop_off_booking_rule_id": "br-default"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-t1#2",
+            "row": {
+              "trip_id": "mizuhomachi_route-t1",
+              "stop_sequence": "2",
+              "stop_id": "",
+              "location_id": "",
+              "location_group_id": "mizuhomachi_route-area",
+              "start_pickup_drop_off_window": "09:00:00",
+              "end_pickup_drop_off_window": "17:00:00",
+              "pickup_type": "2",
+              "drop_off_type": "2",
+              "pickup_booking_rule_id": "br-default",
+              "drop_off_booking_rule_id": "br-default"
+            }
+          }
+        ]
+      },
+      "differences": []
+    },
+    "stops.txt": {
+      "comparedAs": "keyed",
+      "columns": {
+        "onlyOriginal": [],
+        "onlyGenerated": []
+      },
+      "rows": {
+        "matched": 120,
+        "onlyOriginal": [],
+        "onlyGenerated": []
+      },
+      "differences": []
+    },
+    "trips.txt": {
+      "comparedAs": "keyed",
+      "columns": {
+        "onlyOriginal": [
+          "trip_headsign",
+          "direction_id"
+        ],
+        "onlyGenerated": []
+      },
+      "rows": {
+        "matched": 0,
+        "onlyOriginal": [
+          {
+            "key": "east_trip",
+            "row": {
+              "route_id": "mizuhomachi_route",
+              "service_id": "east_service",
+              "trip_id": "east_trip",
+              "trip_headsign": "瑞穂町全域",
+              "direction_id": "0"
+            }
+          },
+          {
+            "key": "west_trip",
+            "row": {
+              "route_id": "mizuhomachi_route",
+              "service_id": "west_service",
+              "trip_id": "west_trip",
+              "trip_headsign": "瑞穂町全域",
+              "direction_id": "0"
+            }
+          }
+        ],
+        "onlyGenerated": [
+          {
+            "key": "mizuhomachi_route-t0",
+            "row": {
+              "route_id": "mizuhomachi_route",
+              "service_id": "mizuhomachi_route-oh0",
+              "trip_id": "mizuhomachi_route-t0"
+            }
+          },
+          {
+            "key": "mizuhomachi_route-t1",
+            "row": {
+              "route_id": "mizuhomachi_route",
+              "service_id": "mizuhomachi_route-oh1",
+              "trip_id": "mizuhomachi_route-t1"
+            }
+          }
+        ]
+      },
+      "differences": []
+    }
+  },
+  "totals": {
+    "filesOnlyOriginal": 1,
+    "filesOnlyGenerated": 0,
+    "rowsMatched": 123,
+    "rowsOnlyOriginal": 226,
+    "rowsOnlyGenerated": 226,
+    "fieldDifferences": 11
+  }
+}

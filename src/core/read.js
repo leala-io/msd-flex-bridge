@@ -85,6 +85,22 @@ function parseCsv(text, name, diagnostics) {
   return { header, rows };
 }
 
+/**
+ * Parse one CSV text with exactly the reader's own settings.
+ *
+ * Exported so the roundtrip diff parses both sides the way this reader parses
+ * a feed. Two parsers with two configurations would drift, and a diff whose
+ * parsing differs from the reader's would compare something the bridge never
+ * saw. Parse errors are not surfaced here — the caller of a diff is comparing
+ * two feeds, not judging one.
+ *
+ * @param {string} text
+ * @returns {{header: string[], rows: Array<Record<string,string>>}}
+ */
+export function parseCsvText(text) {
+  return parseCsv(stripBom(text), '<input>', []);
+}
+
 /** Normalise a zip entry name to its last path segment (no path module here). */
 function baseName(entryName) {
   const parts = entryName.split('/');

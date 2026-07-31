@@ -14,6 +14,7 @@
     "test": "node --test \"test/*.test.js\"",
     "test:fixture": "node test/feed-assert.mjs test/fixtures/mizuho/Mizuho_Area-20260202.zip",
     "snapshot": "node scripts/write-snapshots.mjs",
+    "roundtrip": "node scripts/roundtrip.mjs",
     "check:purity": "node scripts/check-purity.mjs",
     "check:vendor": "node scripts/check-vendor-drift.mjs",
     "check:terminology": "node scripts/check-terminology.mjs"
