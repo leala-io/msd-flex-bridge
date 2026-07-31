@@ -131,6 +131,39 @@ test('trip purpose is an open question, distinct from the confirmed gaps', () =>
     'it must not be written into the register: no build needed the field and found none');
 });
 
+test('the state key says how many states there are, and the number is right', () => {
+  // The count drifted once already: capacity moved to a fourth treatment while
+  // the heading and the closing sentence still described three. This asserts the
+  // three places that have to agree, so it cannot drift again in any direction.
+  const NUMBER_WORDS = {
+    two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10,
+  };
+
+  const key = html.match(/<section class="state-key">([\s\S]*?)<\/section>/)[1];
+  const heading = key.match(/<h2>([^<]*)<\/h2>/)[1];
+
+  const word = heading.match(/\b(two|three|four|five|six|seven|eight|nine|ten)\b/i);
+  assert.ok(word, `the heading "${heading}" must say how many states there are`);
+  const claimed = NUMBER_WORDS[word[1].toLowerCase()];
+
+  const listed = (key.match(/class="key-item"/g) ?? []).length;
+  const rendered = new Set(
+    [...html.matchAll(/data-state="([a-z_]+)"/g)].map((m) => m[1]),
+  ).size;
+
+  assert.equal(listed, claimed,
+    `the heading says ${claimed} but the key lists ${listed}`);
+  assert.equal(rendered, claimed,
+    `the heading says ${claimed} but ${rendered} distinct treatments are rendered on the axes`);
+});
+
+test('the closing sentence makes the point about all four, not about two of three', () => {
+  assert.match(html, /No two of the four are ever shown alike/);
+  assert.match(html, /merging any pair of them would hide the thing this card exists to show/);
+  // The three-way phrasing the capacity change made false.
+  assert.ok(!html.includes('The second and the third are different statements'));
+});
+
 /* ------------- the norm is a review standard, not a description duty ------- */
 
 test('the card names six review criteria, not seven, and says they are reviewed', () => {

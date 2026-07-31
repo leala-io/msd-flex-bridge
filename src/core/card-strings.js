@@ -43,10 +43,12 @@ export const en = {
 
   /* --- the three states, and the qualifier that is not a fourth state ----- */
 
-  stateHeading: 'How to read the three states',
+  stateHeading: 'How to read the four states',
   stateNote:
-    'The second and the third are different statements and are never shown alike. Merging them '
-    + 'would hide the only thing this card exists to show.',
+    'No two of the four are ever shown alike. Each says something different — about this service, '
+    + 'about one publisher’s feed, about the description model, or about a question a norm '
+    + 'comparison raised and no build has answered — and merging any pair of them would hide the '
+    + 'thing this card exists to show.',
 
   statePresent: 'Present',
   statePresentHint: 'The feed carries it and the document carries it.',
