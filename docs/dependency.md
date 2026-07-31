@@ -1,9 +1,26 @@
-# Vendored dependency — `leala-io/msd`
+# Vendored dependencies — `leala-io/msd`
 
-This repository consumes the MSD data model (schema, registry code lists, and the
-validation core) from `leala-io/msd`. The artefacts are **vendored**: copied verbatim
-into `vendor/msd/` and pinned by commit. This file is the single decision record for that
-dependency (there is no general decisions log).
+This repository consumes material from `leala-io/msd` in two places, under **two separate
+pins**. The artefacts are **vendored**: copied verbatim and pinned by commit. This file is
+the single decision record for both (there is no general decisions log).
+
+| Pin | Directory | What | Provenance |
+|---|---|---|---|
+| 1 — schema pin | `vendor/msd/` | schema, 14 registry code lists, validation core | released tag `v0.1.1`, commit `0e79571f` |
+| 2 — exporter pin | `vendor/msd-engine/` | the export direction's minimal closure, 2 files | default branch, commit `d4ae0764` |
+
+**The two pins are not equally strong, and the difference is deliberate.** The schema is the
+citable released artefact: a tag, a release, a Zenodo DOI. The exporter is a working tool that
+gained its pure, browser-portable form *after* that release — at the tagged commit
+`engine/core/convert.js` does not exist at all, and the adapter reaches its helpers through
+`engine/core/msd.js`, which pulls in `fs`, `path` and `child_process`. Pinning the exporter to
+the tag would therefore mean vendoring host-dependent code; pinning it to a branch commit means
+weaker provenance, because a branch moves. The second is the lesser problem, and it is recorded
+here rather than smoothed over.
+
+---
+
+# Pin 1 — schema, registry and validation core (`vendor/msd/`)
 
 ## Form: vendored, and why the alternatives were ruled out
 
@@ -99,9 +116,131 @@ hash table above:
 Never edit a vendored file in place. If upstream changed something, the change arrives by re-vendoring
 a new commit, not by hand-editing under `vendor/msd/`.
 
-## Drift check
+---
 
-`scripts/check-vendor-drift.mjs` (CI gate, offline, no network) parses the table above, recomputes the
-sha256 and byte size of each listed file, and fails on any mismatch. It also fails if the set of vendored
-files on disk does not exactly match the table — a file added to or removed from `vendor/msd/` (other than
-the two repo-owned files named above) is drift. This enforces that vendored files remain unmodified.
+# Pin 2 — the exporter closure (`vendor/msd-engine/`)
+
+The export direction (MSD document → GTFS-Flex feed) is not re-implemented here. Its upstream
+form is vendored, so that a roundtrip compares this repository's lift against upstream's own
+exporter rather than against a second implementation written to agree with it.
+
+## Why this pin is weaker than pin 1, and why it is still the right one
+
+The schema is the citable released artefact. The exporter is a working tool whose pure form
+post-dates the release:
+
+- At the pinned tag `0e79571f`, `engine/core/convert.js` **does not exist**. The conversion
+  helpers — country-to-timezone mapping, window conversion, day-flag conversion, date
+  formatting, CSV assembly — lived in `engine/core/msd.js`, which requires `fs`, `path` and
+  `child_process`, and the adapter reached them through that module.
+- On the default branch, commit `aaa80c79` (2026-06-10) split those helpers into
+  `engine/core/convert.js` with no requires at all, and repointed the adapter at it.
+
+So there is no released commit at which this closure is pure. Pinning to a branch commit is the
+weaker provenance — a branch moves, and this commit carries no tag, no release and no DOI — but
+it is the only pin under which no host-dependent upstream file has to be vendored. Recorded as
+such rather than smoothed over; the roundtrip's provenance statement has to say this out loud.
+
+## Pinned commit
+
+```
+d4ae0764383391c6f32dbee91d18b4188e05aec1
+```
+
+The `msd` default branch at retrieval. `vendor/msd-engine/COMMIT` records the same SHA. No tag,
+no release: that is the point of the paragraph above.
+
+## Retrieval date
+
+2026-07-31. Cloned read-only into a temporary directory, copied, and the clone deleted. No
+working copy of upstream is kept inside this repository.
+
+## The closure, and why it is exactly these two files
+
+Determined by reading the entry module and following every `require`, not by copying a
+directory:
+
+- `engine/adapters/gtfs-flex/index.js` is the entry module — it takes a validated MSD document
+  and returns the feed files, and it is where the abort on an unmapped country is raised. Its
+  only `require` is `../../core/convert`.
+- `engine/core/convert.js` has no `require` at all.
+
+The closure is therefore closed at two files. Everything else under `engine/` —
+`core/msd.js`, `cli.js`, `scripts/check-gtfs-report.js` — is outside it and is **not** vendored.
+`core/msd.js` in particular is the host-dependent module the closure deliberately does not reach.
+
+| Upstream path | Local path | sha256 | bytes |
+|---|---|---|---|
+| `engine/core/convert.js` | `vendor/msd-engine/core/convert.js` | `0f3afa91027615f153debca81ee1fd5bc4f571894ac0b587495bc2e0d7a4c1a0` | 3464 |
+| `engine/adapters/gtfs-flex/index.js` | `vendor/msd-engine/adapters/gtfs-flex/index.js` | `591f42dfe59b58906fa172bf6b52f2afc83d756d36b3861a52958ae496ae1332` | 9781 |
+
+Per-file last-modifying commit on the branch, recorded because a branch pin alone does not say
+when a file last changed:
+
+| Local path | last modified at | date |
+|---|---|---|
+| `vendor/msd-engine/core/convert.js` | `aaa80c793378730e593c8f6487e91abbdeace525` | 2026-06-10 |
+| `vendor/msd-engine/adapters/gtfs-flex/index.js` | `0a078e7a76f9c9cfa885a582bbef8c6bdc11086b` | 2026-06-10 |
+
+The upstream directory shape is preserved (`core/`, `adapters/gtfs-flex/`) because the adapter's
+`require('../../core/convert')` resolves through it. Flattening the layout would mean editing a
+vendored file.
+
+## Purity and wall-clock scan — per file
+
+**Vendored paths are excluded from the purity gate by design.** A wall-clock call inside a
+vendored exporter would therefore be invisible until the determinism gate failed on a roundtrip,
+and it would then look like a bridge defect. The closure was scanned explicitly, with the same
+analyser the purity gate uses (`analyse` from `scripts/check-purity.mjs`), even though no gate
+demands it:
+
+| File | host imports | wall clock / randomness | verdict |
+|---|---|---|---|
+| `vendor/msd-engine/core/convert.js` | none (no `require` at all) | none | pure |
+| `vendor/msd-engine/adapters/gtfs-flex/index.js` | none (`require('../../core/convert')` only) | none | pure |
+
+Neither file reads `Date.now()`, `new Date()`, `performance.now()`, `Math.random()` or
+`crypto.randomUUID()`. The exporter's one date-like input, the GTFS calendar range, is derived
+from the document's `last_updated` — not from the system clock — so identical input still
+produces byte-identical output. `test/export.test.js` re-runs this scan on every test run so a
+future re-vendor cannot introduce a clock silently.
+
+## Repo-owned files under `vendor/msd-engine/`
+
+Three files here are **not** vendored artefacts and are outside the hash table above:
+
+- `vendor/msd-engine/COMMIT` — the pinned commit SHA, this repository's own pin record.
+- `vendor/msd-engine/engine.mjs` — an ESM shim that loads the two CommonJS files through
+  `createRequire`. This repository's own code (AGPL-3.0), Node-only by construction, and kept
+  out of `src/core/**` so the pure core stays browser-portable. It exports the `convert` module
+  *object*, not only its functions, which is what makes the country-table extension injectable
+  (see `docs/mapping.md`).
+- `vendor/msd-engine/package.json` — the same `{"type": "commonjs"}` scope marker pin 1 needs,
+  for the same reason and with the same justification: the root `package.json` declares
+  `"type": "module"`, which would make Node parse these CommonJS files as ESM and fail on the
+  first `require(...)`, even through `createRequire`. **Yes, the marker was needed again** — the
+  question is answered here so the next reader does not have to rediscover it.
+
+## Update path for the exporter pin
+
+1. Clone `leala-io/msd` read-only and check out the new branch commit.
+2. **Re-derive the closure — do not assume it is still two files.** Read
+   `engine/adapters/gtfs-flex/index.js` and follow every `require`.
+3. Scan each file of the new closure for host imports and for wall-clock or randomness calls,
+   and replace the per-file table above. A host-dependent closure is a stop-and-report, not
+   something to work around by vendoring the dependency.
+4. Recompute `shasum -a 256` and byte sizes; replace the hash table and `vendor/msd-engine/COMMIT`.
+5. Re-run the drift check and `npm test`.
+
+---
+
+# Drift check — both pins
+
+`scripts/check-vendor-drift.mjs` (CI gate, offline, no network) parses **both** hash tables above,
+recomputes the sha256 and byte size of each of the 18 listed files, and fails on any mismatch. It
+also fails if the set of files on disk under `vendor/` does not exactly match the two tables — a
+file added to or removed from either pin's directory, other than the six repo-owned files named
+above, is drift. This enforces that vendored files remain unmodified.
+
+The check covers `vendor/` as a whole, not `vendor/msd/`, precisely so that a second pin cannot be
+added later without being covered by it.

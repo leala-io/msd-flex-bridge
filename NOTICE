@@ -15,9 +15,13 @@ file alongside LICENSE (AGPL-3.0, this repository's code).
    (release v0.1.1). These are specification artefacts, distributed upstream under
    LICENSE-SPEC (Creative Commons Attribution-ShareAlike 4.0 International).
 
-3. Vendored validation core — AGPL-3.0 (verbatim, unmodified)
-   vendor/msd/core.js, copied byte-for-byte from the same upstream commit. This is
-   code, distributed upstream under LICENSE-CODE (AGPL-3.0).
+3. Vendored upstream code — AGPL-3.0 (verbatim, unmodified)
+   vendor/msd/core.js, the validation core, copied byte-for-byte from the same
+   upstream commit; and vendor/msd-engine/, the export direction's two-file
+   closure, copied byte-for-byte from the leala-io/msd default branch at commit
+   d4ae0764383391c6f32dbee91d18b4188e05aec1. Both are code, distributed upstream
+   under LICENSE-CODE (AGPL-3.0). The two pins differ in strength and the reason
+   is recorded in docs/dependency.md.
 
 4. Bundled sample feeds — CC BY 4.0 (per-fixture attribution)
    Sample GTFS-Flex feeds bundled as test fixtures are licensed CC BY 4.0, each
@@ -26,11 +30,11 @@ file alongside LICENSE (AGPL-3.0, this repository's code).
 
 Integrity of vendored material
 ------------------------------
-The files under vendor/msd/ listed in regimes 2 and 3 are unmodified copies of the
-upstream artefacts at the pinned commit. Per-file sha256 hashes and byte sizes are
+The files under vendor/ listed in regimes 2 and 3 are unmodified copies of the
+upstream artefacts at their pinned commits. Per-file sha256 hashes and byte sizes are
 recorded in docs/dependency.md, and the drift check (scripts/check-vendor-drift.mjs,
-a CI gate) recomputes and enforces them offline on every build. Any modification to a
-vendored file fails the build.
+a CI gate) recomputes and enforces them offline on every build, across both pins. Any
+modification to a vendored file fails the build.
 
 Citation anchor
 ---------------

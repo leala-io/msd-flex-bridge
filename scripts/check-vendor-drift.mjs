@@ -1,14 +1,18 @@
 #!/usr/bin/env node
 // Vendor drift check — offline, no network.
 //
-// Parses the hash table in docs/dependency.md, recomputes the sha256 and byte
-// size of every listed file under vendor/msd/, and fails on any mismatch. Also
-// fails if the set of vendored files on disk does not exactly match the table
-// (a file added to or removed from vendor/msd/ — other than the two repo-owned
-// files COMMIT and core.mjs — is drift).
+// Parses the hash tables in docs/dependency.md, recomputes the sha256 and byte
+// size of every listed file under vendor/, and fails on any mismatch. Also fails
+// if the set of vendored files on disk does not exactly match the tables (a file
+// added to or removed from vendor/ — other than the repo-owned files listed
+// below — is drift).
 //
 // This is the guard that keeps the vendored artefacts byte-identical to upstream
-// at the pinned commit. A mismatch is a hard failure, never a warning.
+// at the pinned commits. A mismatch is a hard failure, never a warning.
+//
+// There are two pins, in two directories, and the check covers both: vendor/msd/
+// (the schema, registry and validation core, at the released tag) and
+// vendor/msd-engine/ (the exporter closure, at a default-branch commit).
 
 import { createHash } from 'node:crypto';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
@@ -17,9 +21,9 @@ import { dirname, join, relative, resolve } from 'node:path';
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const depDoc = join(repoRoot, 'docs', 'dependency.md');
-const vendorDir = join(repoRoot, 'vendor', 'msd');
+const vendorDir = join(repoRoot, 'vendor');
 
-// Files under vendor/msd/ that are this repository's own, not vendored artefacts.
+// Files under vendor/ that are this repository's own, not vendored artefacts.
 const REPO_OWNED = new Set([
   'vendor/msd/COMMIT',
   'vendor/msd/core.mjs',
@@ -29,6 +33,10 @@ const REPO_OWNED = new Set([
   // createRequire. This one-key file restores CommonJS semantics for that
   // directory without touching a single vendored byte. See docs/dependency.md.
   'vendor/msd/package.json',
+  // The same three roles again for the second pin, the exporter closure.
+  'vendor/msd-engine/COMMIT',
+  'vendor/msd-engine/engine.mjs',
+  'vendor/msd-engine/package.json',
 ]);
 
 const fail = (msg) => {
@@ -41,7 +49,7 @@ const md = readFileSync(depDoc, 'utf8');
 const expected = new Map(); // localPath -> { sha256, bytes }
 for (const line of md.split('\n')) {
   const m = line.match(
-    /\|\s*`([^`]+)`\s*\|\s*`(vendor\/msd\/[^`]+)`\s*\|\s*`([0-9a-f]{64})`\s*\|\s*(\d+)\s*\|/,
+    /\|\s*`([^`]+)`\s*\|\s*`(vendor\/[^`]+)`\s*\|\s*`([0-9a-f]{64})`\s*\|\s*(\d+)\s*\|/,
   );
   if (m) expected.set(m[2], { sha256: m[3], bytes: Number(m[4]) });
 }
@@ -77,4 +85,4 @@ for (const [rel, want] of expected) {
   checked += 1;
 }
 
-console.log(`vendor-drift: OK — ${checked} vendored file(s) match docs/dependency.md`);
+console.log(`vendor-drift: OK — ${checked} vendored file(s) across 2 pin(s) match docs/dependency.md`);
