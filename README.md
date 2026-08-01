@@ -13,6 +13,18 @@ per-channel booking metadata — is as much the point as the lift itself.
 It targets the MSD **schema v0.1.0** (as published in release v0.1.1), consumed read-only
 from the vendored upstream artefacts under `vendor/msd/`.
 
+## The standard this writes into
+
+**MSD — Mobility Service Description** is a declarative description of a service that no
+timetable describes: who provides it, where and when it runs, on what booking rules, at what
+fares, with what vehicles, under what settlement arrangement. It is a single file the provider
+publishes itself — no booking system, no API and no platform has to stand behind it, and where
+such systems do exist the document points at them. It describes a service; it does not book,
+meter or settle one. The specification lives at
+[`github.com/leala-io/msd`](https://github.com/leala-io/msd), and the archived release carries
+the DOI [`10.5281/zenodo.20598627`](https://doi.org/10.5281/zenodo.20598627) — that is the
+citable artefact, and the schema consumed here is pinned at that release.
+
 ## Where this sits
 
 Three specifications are easy to confuse, so it is worth saying which one this bridge
@@ -49,6 +61,20 @@ Exit codes: `0` the document validates · `1` it was produced but does not valid
 evidence · `3` the input could not be read, or the command line was not understood.
 
 A refusal writes nothing at all — not a partial document, not an empty file.
+
+## What to open
+
+[`card/index.html`](card/index.html) is a static service card, generated from a lifted document
+and its residual report. It shows nine description axes in four states — present, the feed does
+not say, the model has no field, and open question — and the axes that stay empty are the point:
+"the feed does not say" and "the model has no field" are different claims, one about a single
+publisher's feed and one about the description model, and the card never shows them alike. It
+opens from the file system and makes no network request.
+
+[`docs/roundtrip.md`](docs/roundtrip.md) takes the lifted document back out into the source
+format and compares it against the original feed, file by file and field by field, with every
+difference classified. The normalisation decisions were fixed in writing before the comparison
+was written, and the file records what each of them could hide.
 
 ## Status
 
