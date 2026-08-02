@@ -49,6 +49,7 @@ change, and nothing else belongs beside it.
 ## Practical
 
 - Conventional commit prefixes: `feat:`, `fix:`, `docs:`, `test:`, `ci:`, `chore:`, `build:`.
+- Changes go through a branch; `main` receives work only by merge, using `--no-ff`. This includes documentation-only changes.
 - Run the full suite and the gates before opening anything:
 
 ```
