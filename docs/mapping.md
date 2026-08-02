@@ -298,6 +298,8 @@ whole feed if any route fails it (see §"Non-negotiable rules", fence).
 `trips.txt` carries no rider-facing content that MSD models; it is consumed to connect calendars and
 stop_time windows to the service its route produced. Nothing from it is written into the MSD file.
 
+- **Duration fields.** `safe_duration_factor` and `safe_duration_offset` are `trips.txt` columns, covered by the catch-all row above and captured verbatim to `diagnostics`. They are the one rider-facing quantity in this file, and they are still not written out: MSD `routing_hints` carries `travel_time_factor`, but nothing in the feed states the two are the same quantity, so writing one from the other would be invention. `mean_duration_factor` and `mean_duration_offset` do not exist in GTFS.
+
 ### `calendar.txt` → `services[i].operating_hours.default[]` (with per-service merge)
 
 | Source field | MSD target | Transformation | Disposition |
@@ -425,7 +427,6 @@ read from the feed. The presence of `locations.geojson` would **refuse** the fee
 | `location_id` | — | Would indicate the GeoJSON-zone kind; its presence is a **refusal** trigger, not a mapping. | **not represented** (out of fence) — unambiguous. |
 | `stop_id` | — | Present where a flex row also names a discrete stop; the service area is built from `location_group_stops`, not from here. Captured to `diagnostics`. | **diagnostic only** — unambiguous. |
 | `arrival_time`, `departure_time` | — | Scheduled times; a location-group flex row carries a pickup **window**, not a timetable. Captured to `diagnostics`. | **not represented (a)** — unambiguous. |
-| `safe_duration_factor`, `safe_duration_offset` (`trips.txt`) | — | Flex trip-duration modelling; MSD `routing_hints` carries `travel_time_factor` but not these per-window parameters, and nothing in the feed says they are the same quantity. Captured to `diagnostics`; **not** written to `routing_hints` (invention). | **not represented (a)** — unambiguous. |
 | `stop_headsign`, `timepoint`, `shape_dist_traveled`, `continuous_pickup`, `continuous_drop_off`, other columns | — | No MSD target; captured verbatim to `diagnostics` (`stop_headsign` under the names-verbatim rule). | **not represented (a/b)** — unambiguous. |
 
 - **Observed `pickup_type` / `drop_off_type` pattern.** This document previously annotated the row
