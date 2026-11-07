@@ -395,7 +395,8 @@ register entry.
 ### What matched, stated because it is evidence too
 
 - **`stops.txt` is byte-identical between the two feeds** — all 120 rows, including the nine stop
-  names carrying U+3000 IDEOGRAPHIC SPACE and the one carrying full-width Latin characters. Names
+  names carrying U+3000 IDEOGRAPHIC SPACE and the seven carrying full-width letters or digits
+  (four with full-width Latin letters, three with full-width digits only). Names
   are carried verbatim through both directions.
 - **The empty `booking_url` survives as empty**, with the column present on both sides. This is the
   case decision 4 exists to protect, and it holds.
