@@ -4,14 +4,15 @@ This document is the **directional inverse** of the upstream adapter mapping. Up
 `engine/adapters/gtfs-flex/README.md` (at commit `0e79571fb7e3a66a8e351261318c853f9f8f051c`)
 documents the **MSD → GTFS-Flex** direction in a spec-verified table with three deviations and a
 loss list. The bridge goes the other way — **GTFS-Flex → MSD** — so the mapping here is derived by
-inverting that table and reconciling it with the MSD schema v0.1.0 (release v0.1.1), Conventions
+inverting that table and reconciling it with the MSD schema v0.1.0 (pinned at release v0.1.1 when
+this was derived; release v0.1.2 changes only description texts), Conventions
 C1/C2, and the project rules that cannot be derived from either side — the `last_updated` cascade, the
 calendar merge, omission over invention, names verbatim and the two-edge fence. Those five are stated
 in full in §"Non-negotiable rules applied in this direction" below.
 
 **Status:** derivation for review. No lift code exists yet. This is a document.
 
-The MSD target is **schema v0.1.0** (as published in release v0.1.1). Emitted `msd_version` is the
+The MSD target is **schema v0.1.0** (as published in release v0.1.2). Emitted `msd_version` is the
 string `"0.1.0"`.
 
 ---

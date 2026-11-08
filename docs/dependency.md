@@ -6,16 +6,18 @@ the single decision record for both (there is no general decisions log).
 
 | Pin | Directory | What | Provenance |
 |---|---|---|---|
-| 1 — schema pin | `vendor/msd/` | schema, 14 registry code lists, validation core | released tag `v0.1.1`, commit `0e79571f` |
+| 1 — schema pin | `vendor/msd/` | schema, 14 registry code lists, validation core | released tag `v0.1.2`, commit `bbaccab7` |
 | 2 — exporter pin | `vendor/msd-engine/` | the export direction's minimal closure, 2 files | released tag `v0.1.2`, commit `bbaccab7` |
 
-**Both pins rest on released, citable artefacts, at two different releases.** The schema pin
-sits at release v0.1.1. The exporter gained its pure, browser-portable form *after* that release
-— at the v0.1.1 commit `engine/core/convert.js` does not exist at all, and the adapter reaches its
-helpers through `engine/core/msd.js`, which pulls in `fs`, `path` and `child_process`. The exporter
-was therefore first pinned to a default-branch commit, the weaker provenance, and moved to release
-v0.1.2 on 2026-11-08, once that release carried the same two files byte for byte. The history is
-recorded under pin 2 rather than smoothed over.
+**Both pins rest on the same released, citable artefact, release v0.1.2, and neither started
+there.** The schema pin was first taken at release v0.1.1 and moved to v0.1.2 on 2026-11-08;
+between the two releases the 14 registry code lists and the validation core are byte-identical,
+and the schema differs only in three `description` texts. The exporter gained its pure,
+browser-portable form *after* release v0.1.1 — at the v0.1.1 commit `engine/core/convert.js` does
+not exist at all, and the adapter reaches its helpers through `engine/core/msd.js`, which pulls in
+`fs`, `path` and `child_process`. The exporter was therefore first pinned to a default-branch
+commit, the weaker provenance, and moved to release v0.1.2 on 2026-11-08, once that release
+carried the same two files byte for byte. The history of each pin is recorded under that pin.
 
 ---
 
@@ -36,21 +38,31 @@ recorded under pin 2 rather than smoothed over.
 ## Pinned commit
 
 ```
-0e79571fb7e3a66a8e351261318c853f9f8f051c
+bbaccab79b96a4af1df75f5a0029646cf7c24871
 ```
 
-Published as release **v0.1.1**. The pin is the **commit**, never the tag: `v0.1.1` is an
-annotated tag object (`d844d512d5e50139991f409e87f5b760099eff96`) and tags are movable, so the
+Published as release **v0.1.2**. The pin is the **commit**, never the tag: `v0.1.2` is an
+annotated tag object (`d11d9c3e036cad18abf86a6dd583467fd7ada836`) and tags are movable, so the
 tag object's SHA differs from the commit it points at. `vendor/msd/COMMIT` records the same
-commit SHA.
+commit SHA, which is also the commit of pin 2.
 
 The schema itself is version **v0.1.0** (`schema/v0.1.0/msd.schema.json`, `$id …/schema/v0.1.0/…`);
-the release that publishes it is v0.1.1. These are different version numbers for different things.
+the releases that publish it are v0.1.1 and v0.1.2. These are different version numbers for
+different things.
 
 ## Retrieval date
 
-2026-07-30. Cloned read-only into a temporary directory, checked out at the commit above, copied,
-and the clone deleted. No working copy of upstream is kept inside this repository.
+2026-07-30 (first pin, release v0.1.1, commit `0e79571fb7e3a66a8e351261318c853f9f8f051c`). Cloned
+read-only into a temporary directory, checked out at that commit, copied, and the clone deleted. No
+working copy of upstream is kept inside this repository.
+
+Re-pinned 2026-11-08 to release v0.1.2. All 16 files were hash-compared between the two releases.
+The 14 registry code lists and `validator/core.js` are byte-identical and were not copied again.
+Only `schema/v0.1.0/msd.schema.json` differs, in three `description` strings: references to the
+concept paper's Appendix D.1 are dropped or replaced by §3.3. With every `description` removed,
+the two schema files parse to the same JSON, so no keyword, type, constraint, enum or `$id`
+changed and validation behaves identically. The schema file was copied from the new commit and
+its row in the table below replaced.
 
 ## Vendored files
 
@@ -59,7 +71,7 @@ cleanup. Hashes computed with `shasum -a 256`.
 
 | Upstream path | Local path | sha256 | bytes |
 |---|---|---|---|
-| `schema/v0.1.0/msd.schema.json` | `vendor/msd/schema/v0.1.0/msd.schema.json` | `2d23f44e2c5a57761daa434b80424ffb35f502e882f81085190c9b36261a4d92` | 15844 |
+| `schema/v0.1.0/msd.schema.json` | `vendor/msd/schema/v0.1.0/msd.schema.json` | `094952c344a55e951cafe7d627a1c295ae9fad2eae59870d004952c903ab3bf4` | 15813 |
 | `registry/v0.1.0/booking_channel.json` | `vendor/msd/registry/v0.1.0/booking_channel.json` | `bfb2a6c9a587f6db8a1238e3f7954e4343ae60a23111651799faf3ead4a83414` | 407 |
 | `registry/v0.1.0/booking_confirmation.json` | `vendor/msd/registry/v0.1.0/booking_confirmation.json` | `5eb261cc746f51b2fa080a49ec61ac0d8133a4a55a60250945f4ec24bb393cd5` | 365 |
 | `registry/v0.1.0/commission_type.json` | `vendor/msd/registry/v0.1.0/commission_type.json` | `305984e11f37b05410f39569d5c014e54db8b7a860bb39cd80cabae06996f748` | 335 |
@@ -127,9 +139,9 @@ exporter rather than against a second implementation written to agree with it.
 
 The exporter is a working tool whose pure form post-dates release v0.1.1:
 
-- At the pinned tag `0e79571f`, `engine/core/convert.js` **does not exist**. The conversion
-  helpers — country-to-timezone mapping, window conversion, day-flag conversion, date
-  formatting, CSV assembly — lived in `engine/core/msd.js`, which requires `fs`, `path` and
+- At release v0.1.1 (commit `0e79571f`, the first schema pin), `engine/core/convert.js`
+  **does not exist**. The conversion helpers — country-to-timezone mapping, window conversion,
+  day-flag conversion, date formatting, CSV assembly — lived in `engine/core/msd.js`, which requires `fs`, `path` and
   `child_process`, and the adapter reached them through that module.
 - On the default branch, commit `aaa80c79` (2026-06-10) split those helpers into
   `engine/core/convert.js` with no requires at all, and repointed the adapter at it.

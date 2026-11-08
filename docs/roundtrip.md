@@ -412,10 +412,11 @@ register entry.
 
 ## Provenance, stated with the results
 
-The two directions rest on two different releases. The ingestion side reads a schema vendored at
-**release v0.1.1**, a released, citable tag with a DOI. The export side was vendored from a
-**default-branch commit** (`d4ae0764`), because at the time no released commit carried the exporter
-in pure form, and the results above were produced under that pin. Release v0.1.2 carries the same
-two exporter files byte for byte, and since 2026-11-08 the export pin points at that release; not
-one vendored byte changed, so the results stand as reported. Both pins are reproducible and
-hash-pinned, and the drift check covers both. `docs/dependency.md` records the history in full.
+The results above were produced under two different pins. The ingestion side read a schema
+vendored at **release v0.1.1**, a released, citable tag with a DOI. The export side was vendored
+from a **default-branch commit** (`d4ae0764`), because at the time no released commit carried the
+exporter in pure form. Since 2026-11-08 both pins point at release v0.1.2. The two exporter files,
+the 14 registry code lists and the validation core are byte-identical at that release; the schema
+differs from its v0.1.1 copy only in three `description` texts, which take no part in validation.
+The results therefore stand as reported. Both pins are reproducible and hash-pinned, and the drift
+check covers both. `docs/dependency.md` records the history in full.
