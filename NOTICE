@@ -18,10 +18,11 @@ file alongside LICENSE (AGPL-3.0, this repository's code).
 3. Vendored upstream code — AGPL-3.0 (verbatim, unmodified)
    vendor/msd/core.js, the validation core, copied byte-for-byte from the same
    upstream commit; and vendor/msd-engine/, the export direction's two-file
-   closure, copied byte-for-byte from the leala-io/msd default branch at commit
-   d4ae0764383391c6f32dbee91d18b4188e05aec1. Both are code, distributed upstream
-   under LICENSE-CODE (AGPL-3.0). The two pins differ in strength and the reason
-   is recorded in docs/dependency.md.
+   closure, byte-identical to leala-io/msd at commit
+   bbaccab79b96a4af1df75f5a0029646cf7c24871 (release v0.1.2; first vendored from
+   default-branch commit d4ae0764383391c6f32dbee91d18b4188e05aec1). Both are code,
+   distributed upstream under LICENSE-CODE (AGPL-3.0). Both pins and their history
+   are recorded in docs/dependency.md.
 
    The exporter's country-to-timezone table is extended by this repository. The
    extension is bridge code (src/core/country-timezone.js, AGPL-3.0) injected at
