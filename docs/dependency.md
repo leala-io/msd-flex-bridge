@@ -7,16 +7,15 @@ the single decision record for both (there is no general decisions log).
 | Pin | Directory | What | Provenance |
 |---|---|---|---|
 | 1 — schema pin | `vendor/msd/` | schema, 14 registry code lists, validation core | released tag `v0.1.1`, commit `0e79571f` |
-| 2 — exporter pin | `vendor/msd-engine/` | the export direction's minimal closure, 2 files | default branch, commit `d4ae0764` |
+| 2 — exporter pin | `vendor/msd-engine/` | the export direction's minimal closure, 2 files | released tag `v0.1.2`, commit `bbaccab7` |
 
-**The two pins are not equally strong, and the difference is deliberate.** The schema is the
-citable released artefact: a tag, a release, a Zenodo DOI. The exporter is a working tool that
-gained its pure, browser-portable form *after* that release — at the tagged commit
-`engine/core/convert.js` does not exist at all, and the adapter reaches its helpers through
-`engine/core/msd.js`, which pulls in `fs`, `path` and `child_process`. Pinning the exporter to
-the tag would therefore mean vendoring host-dependent code; pinning it to a branch commit means
-weaker provenance, because a branch moves. The second is the lesser problem, and it is recorded
-here rather than smoothed over.
+**Both pins rest on released, citable artefacts, at two different releases.** The schema pin
+sits at release v0.1.1. The exporter gained its pure, browser-portable form *after* that release
+— at the v0.1.1 commit `engine/core/convert.js` does not exist at all, and the adapter reaches its
+helpers through `engine/core/msd.js`, which pulls in `fs`, `path` and `child_process`. The exporter
+was therefore first pinned to a default-branch commit, the weaker provenance, and moved to release
+v0.1.2 on 2026-11-08, once that release carried the same two files byte for byte. The history is
+recorded under pin 2 rather than smoothed over.
 
 ---
 
@@ -124,10 +123,9 @@ The export direction (MSD document → GTFS-Flex feed) is not re-implemented her
 form is vendored, so that a roundtrip compares this repository's lift against upstream's own
 exporter rather than against a second implementation written to agree with it.
 
-## Why this pin is weaker than pin 1, and why it is still the right one
+## History of this pin
 
-The schema is the citable released artefact. The exporter is a working tool whose pure form
-post-dates the release:
+The exporter is a working tool whose pure form post-dates release v0.1.1:
 
 - At the pinned tag `0e79571f`, `engine/core/convert.js` **does not exist**. The conversion
   helpers — country-to-timezone mapping, window conversion, day-flag conversion, date
@@ -136,24 +134,36 @@ post-dates the release:
 - On the default branch, commit `aaa80c79` (2026-06-10) split those helpers into
   `engine/core/convert.js` with no requires at all, and repointed the adapter at it.
 
-So there is no released commit at which this closure is pure. Pinning to a branch commit is the
-weaker provenance — a branch moves, and this commit carries no tag, no release and no DOI — but
-it is the only pin under which no host-dependent upstream file has to be vendored. Recorded as
-such rather than smoothed over; the roundtrip's provenance statement has to say this out loud.
+Until release v0.1.2 there was no released commit at which this closure is pure. The closure
+was therefore first vendored on 2026-07-31 from default-branch commit
+`d4ae0764383391c6f32dbee91d18b4188e05aec1`: the weaker provenance, because a branch moves and that
+commit carries no tag, no release and no DOI, but the only pin under which no host-dependent
+upstream file had to be vendored. The roundtrip results in `docs/roundtrip.md` were produced
+under that pin.
+
+Release v0.1.2 (2026-10-24) carries both files byte-identical to the vendored copies (sha256
+verified against the table below). On 2026-11-08 the pin moved to that release. Not one vendored
+byte changed: the hash table, the closure and the purity verdict are the same as before, and the
+roundtrip results stand unchanged.
 
 ## Pinned commit
 
 ```
-d4ae0764383391c6f32dbee91d18b4188e05aec1
+bbaccab79b96a4af1df75f5a0029646cf7c24871
 ```
 
-The `msd` default branch at retrieval. `vendor/msd-engine/COMMIT` records the same SHA. No tag,
-no release: that is the point of the paragraph above.
+Published as release **v0.1.2**. As for pin 1, the pin is the **commit**, never the tag: `v0.1.2`
+is an annotated tag object (`d11d9c3e036cad18abf86a6dd583467fd7ada836`) whose SHA differs from the
+commit it points at. `vendor/msd-engine/COMMIT` records the same commit SHA.
 
 ## Retrieval date
 
-2026-07-31. Cloned read-only into a temporary directory, copied, and the clone deleted. No
-working copy of upstream is kept inside this repository.
+2026-07-31 (first pin, `d4ae0764`). Cloned read-only into a temporary directory, copied, and the
+clone deleted. No working copy of upstream is kept inside this repository.
+
+Re-pinned 2026-11-08 to release v0.1.2: the closure re-derived at commit `bbaccab7` (still the
+same two files, the adapter's only `require` is `../../core/convert`, `convert.js` has none) and
+both files hash-compared against the table below; no file was copied, because none differed.
 
 ## The closure, and why it is exactly these two files
 
@@ -174,8 +184,8 @@ The closure is therefore closed at two files. Everything else under `engine/` �
 | `engine/core/convert.js` | `vendor/msd-engine/core/convert.js` | `0f3afa91027615f153debca81ee1fd5bc4f571894ac0b587495bc2e0d7a4c1a0` | 3464 |
 | `engine/adapters/gtfs-flex/index.js` | `vendor/msd-engine/adapters/gtfs-flex/index.js` | `591f42dfe59b58906fa172bf6b52f2afc83d756d36b3861a52958ae496ae1332` | 9781 |
 
-Per-file last-modifying commit on the branch, recorded because a branch pin alone does not say
-when a file last changed:
+Per-file last-modifying commit upstream, recorded because a pin alone does not say when a file
+last changed (identical at `d4ae0764` and at `v0.1.2`):
 
 | Local path | last modified at | date |
 |---|---|---|
@@ -223,7 +233,8 @@ Three files here are **not** vendored artefacts and are outside the hash table a
 
 ## Update path for the exporter pin
 
-1. Clone `leala-io/msd` read-only and check out the new branch commit.
+1. Clone `leala-io/msd` read-only and check out the new commit, preferably the commit of a
+   released tag.
 2. **Re-derive the closure — do not assume it is still two files.** Read
    `engine/adapters/gtfs-flex/index.js` and follow every `require`.
 3. Scan each file of the new closure for host imports and for wall-clock or randomness calls,

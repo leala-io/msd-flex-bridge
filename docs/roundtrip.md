@@ -412,9 +412,10 @@ register entry.
 
 ## Provenance, stated with the results
 
-The two directions do not rest on the same kind of artefact. The ingestion side reads a schema
-vendored at a **released, citable tag** with a DOI. The export side is vendored from a **default-branch
-commit**, because no released commit carries the exporter in pure form. Both are reproducible and
-hash-pinned, and the drift check covers both — but they are not citable in the same way, and any
-statement resting on the return trip inherits the weaker provenance. `docs/dependency.md` records
-the difference in full.
+The two directions rest on two different releases. The ingestion side reads a schema vendored at
+**release v0.1.1**, a released, citable tag with a DOI. The export side was vendored from a
+**default-branch commit** (`d4ae0764`), because at the time no released commit carried the exporter
+in pure form, and the results above were produced under that pin. Release v0.1.2 carries the same
+two exporter files byte for byte, and since 2026-11-08 the export pin points at that release; not
+one vendored byte changed, so the results stand as reported. Both pins are reproducible and
+hash-pinned, and the drift check covers both. `docs/dependency.md` records the history in full.

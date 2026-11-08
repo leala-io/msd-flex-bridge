@@ -12,7 +12,7 @@
 //
 // There are two pins, in two directories, and the check covers both: vendor/msd/
 // (the schema, registry and validation core, at the released tag) and
-// vendor/msd-engine/ (the exporter closure, at a default-branch commit).
+// vendor/msd-engine/ (the exporter closure, at the released tag v0.1.2).
 
 import { createHash } from 'node:crypto';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
