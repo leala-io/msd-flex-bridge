@@ -186,7 +186,7 @@ if (options.diagnostics !== null) writeFileSync(options.diagnostics, serialise(d
 const result = validateDocument(msd, loadValidator());
 
 if (result.valid) {
-  err(`msd-flex-bridge: PASS — validates against MSD schema v0.1.0 (release v0.1.1)`);
+  err(`msd-flex-bridge: PASS — validates against MSD schema v0.1.0 (release v0.1.2)`);
   err(`  services: ${msd.services.length}  ·  residuals: ${residuals.length}`);
   if (options.out !== null) err(`  document: ${options.out}`);
   if (options.residuals !== null) err(`  residuals: ${options.residuals}`);

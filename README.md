@@ -10,7 +10,7 @@ layer) and refuses anything outside that shape with a stated reason rather than 
 wrongly. Enumerating what a source cannot say — eligibility, fares, payment, vehicles,
 per-channel booking metadata — is as much the point as the lift itself.
 
-It targets the MSD **schema v0.1.0** (as published in release v0.1.1), consumed read-only
+It targets the MSD **schema v0.1.0** (as published in release v0.1.2), consumed read-only
 from the vendored upstream artefacts under `vendor/msd/`.
 
 ## The standard this writes into
@@ -21,8 +21,8 @@ fares, with what vehicles, under what settlement arrangement. It is a single fil
 publishes itself — no booking system, no API and no platform has to stand behind it, and where
 such systems do exist the document points at them. It describes a service; it does not book,
 meter or settle one. The specification lives at
-[`github.com/leala-io/msd`](https://github.com/leala-io/msd), and the archived release carries
-the DOI [`10.5281/zenodo.20598627`](https://doi.org/10.5281/zenodo.20598627) — that is the
+[`github.com/leala-io/msd`](https://github.com/leala-io/msd), and the archived release v0.1.2 carries
+the DOI [`10.5281/zenodo.23617023`](https://doi.org/10.5281/zenodo.23617023) — that is the
 citable artefact, and the schema consumed here is pinned at that release.
 
 ## Where this sits

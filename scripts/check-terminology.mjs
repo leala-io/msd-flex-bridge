@@ -3,8 +3,8 @@
  * check-terminology.mjs — terminology check over tracked files
  *
  * Fails the build when a tracked file states the version relationship wrongly.
- * The schema is v0.1.0; the release that publishes it is v0.1.1. Attaching the
- * release number to the word "schema" conflates two different version numbers
+ * The schema is v0.1.0; the releases that publish it are v0.1.1 and v0.1.2.
+ * Attaching a release number to the word "schema" conflates two different version numbers
  * for two different things, and it has happened three times in this project.
  *
  * The pattern is stated in clear text on purpose: it describes a mistake, not a
@@ -36,8 +36,8 @@ import { extname } from 'node:path';
 const PATTERNS = [
   {
     name: 'schema/release version confusion',
-    re: /v0\.1\.1\s+schema/gi,
-    hint: 'the schema is v0.1.0; v0.1.1 is the release that publishes it',
+    re: /v0\.1\.[12]\s+schema/gi,
+    hint: 'the schema is v0.1.0; v0.1.1 and v0.1.2 are releases that publish it',
   },
 ];
 

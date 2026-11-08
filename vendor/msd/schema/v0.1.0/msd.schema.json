@@ -129,13 +129,13 @@
 
     "service_area": {
       "type": "object",
-      "description": "Concept Paper §3.3/§3.4 and Appendix D.1. A service area is defined either by zones (GeoJSON polygons) or by a list of named stops.",
+      "description": "Concept Paper §3.3/§3.4. A service area is defined either by zones (GeoJSON polygons) or by a list of named stops.",
       "required": ["type"],
       "properties": {
         "type": {
           "type": "string",
           "enum": ["zones", "stops"],
-          "description": "Spatial model: 'zones' (GeoJSON polygons, §3.3) or 'stops' (named stop list, Appendix D.1). This is a structural discriminator, not an extensible code list."
+          "description": "Spatial model: 'zones' (GeoJSON polygons, §3.3) or 'stops' (named stop list, §3.3). This is a structural discriminator, not an extensible code list."
         },
         "zones": {
           "type": "array",
@@ -175,7 +175,7 @@
 
     "stop": {
       "type": "object",
-      "description": "Concept Paper Appendix D.1. A named stop within a stops-based service area.",
+      "description": "Concept Paper §3.3. A named stop within a stops-based service area.",
       "required": ["stop_id"],
       "properties": {
         "stop_id": { "type": "string" },
