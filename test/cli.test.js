@@ -32,7 +32,7 @@ test('lifting the bundled archive: exit 0, document on stdout, messages on stder
   assert.equal(result.status, 0);
   assert.equal(result.stdout, readFileSync(`${EXPECTED}/mizuho.msd.json`, 'utf8'));
   assert.match(result.stderr, /PASS/);
-  assert.match(result.stderr, /MSD schema v0\.1\.0 \(release v0\.1\.1\)/);
+  assert.match(result.stderr, /MSD schema v0\.1\.0 \(release v0\.1\.2\)/);
 
   // stdout is exactly the document — nothing prepended, nothing appended.
   const parsed = JSON.parse(result.stdout);
